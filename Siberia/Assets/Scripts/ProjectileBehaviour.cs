@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ProjectileBehaviour : MonoBehaviour
 {
+    public float x_max_bound = 20, x_min_bound = -20, y_max_bound = 20, y_min_bound = -20;
     private float time_alive = 0f;
-	public float duration = 3f, speed = 2f;
+	public float duration = 3f, speed = 6f;
 
     // Update is called once per frame
     void Update()
@@ -15,6 +16,31 @@ public class ProjectileBehaviour : MonoBehaviour
 		if(time_alive > duration){
 			Destroy(gameObject);
 		}
+    }
+
+    private void ClampToBounds()
+    {
+        Vector3 new_position = transform.position;
+        //Y bounds
+        if (transform.position.y < y_min_bound)
+        {
+            new_position.y = y_min_bound;
+        }
+        else if (transform.position.y > y_max_bound)
+        {
+            new_position.y = y_max_bound;
+        }
+
+        //X Bounds
+        if (transform.position.x < x_min_bound)
+        {
+            new_position.x = x_min_bound;
+        }
+        else if (transform.position.x > x_max_bound)
+        {
+            new_position.x = x_max_bound;
+        }
+        transform.position = new_position;
     }
 
     void OnTriggerEnter2D(Collider2D collision)

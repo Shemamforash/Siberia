@@ -16,7 +16,7 @@ TagManager:
   - 
   - Bullets
   - Player
-  - 
+  - Environment
   - 
   - 
   - 
@@ -41,4 +41,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Floor
+    uniqueID: 3923454857
+    locked: 0
+  - name: Walls
+    uniqueID: 1222100171
+    locked: 0
+  - name: Entities
+    uniqueID: 4076758373
     locked: 0

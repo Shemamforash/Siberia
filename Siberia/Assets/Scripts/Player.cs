@@ -8,9 +8,8 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public float base_move_speed = 1f, meter_loss_amount = 16;
-    private float move_speed = 1f;
-    public float x_max_bound = 2, x_min_bound = -2, y_max_bound = 2, y_min_bound = -2;
+    public float base_move_speed = 3f, meter_loss_amount = 16;
+    private float move_speed = 3f;
 
     public GameObject beam_prefab, projectile_prefab, light_slider, dark_slider;
     private enum states { dark, light };
@@ -52,31 +51,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void ClampToBounds()
-    {
-        Vector3 new_position = transform.position;
-        //Y bounds
-        if (transform.position.y < y_min_bound)
-        {
-            new_position.y = y_min_bound;
-        }
-        else if (transform.position.y > y_max_bound)
-        {
-            new_position.y = y_max_bound;
-        }
-
-        //X Bounds
-        if (transform.position.x < x_min_bound)
-        {
-            new_position.x = x_min_bound;
-        }
-        else if (transform.position.x > x_max_bound)
-        {
-            new_position.x = x_max_bound;
-        }
-        transform.position = new_position;
-    }
-
     private void PointToMouse()
     {
         Vector3 reference_dir = new Vector3(0, 1, 0);
@@ -115,7 +89,7 @@ public class Player : MonoBehaviour
             movement_difference.x += move_speed;
         }
         my_rigidBody.MovePosition(my_rigidBody.position + movement_difference * Time.fixedDeltaTime);
-
+        // transform.position += movement_difference * Time.deltaTime;
         if (Input.GetKey("space"))
         {
             ToggleState();
@@ -153,11 +127,11 @@ public class Player : MonoBehaviour
     void Update()
     {
         DevInput();
-        //TakeInput();
-        ClampToBounds();
+        TakeInput();
         PointToMouse();
         TakeMouse();
         UpdateMeters();
+        
     }
 
     private void UpdateMeters()
@@ -178,7 +152,7 @@ public class Player : MonoBehaviour
                 dark_meter = 0;
             }
         }
-        move_speed = base_move_speed - light_meter / 200f;
+        move_speed = base_move_speed * (light_meter / 100f);
         damage = base_damage - light_meter / 10f + 1;
         range = base_range * dark_meter / 100f;
         accuracy = min_accuracy * (100 - dark_meter) / 100f;
@@ -189,6 +163,5 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        TakeInput();
     }
 }
