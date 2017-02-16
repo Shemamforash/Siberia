@@ -198,15 +198,19 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1423884302061676, guid: ec0b1422e747a4b4f8d07e24dec6aa2d, type: 2}
-      propertyPath: m_Name
-      value: BasicEnemy (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 114789158144600740, guid: ec0b1422e747a4b4f8d07e24dec6aa2d,
         type: 2}
       propertyPath: player_object
       value: 
       objectReference: {fileID: 718394495}
+    - target: {fileID: 1423884302061676, guid: ec0b1422e747a4b4f8d07e24dec6aa2d, type: 2}
+      propertyPath: m_Name
+      value: BasicEnemy (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1423884302061676, guid: ec0b1422e747a4b4f8d07e24dec6aa2d, type: 2}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ec0b1422e747a4b4f8d07e24dec6aa2d, type: 2}
   m_IsPrefabParent: 0
