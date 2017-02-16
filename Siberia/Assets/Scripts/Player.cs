@@ -37,12 +37,16 @@ public class Player : MonoBehaviour
     private void PointToMouse()
     {
         Vector3 reference_dir = new Vector3(0, 1, 0);
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePosition.z = 0;
-		mousePosition.Normalize();
-        float dot_product = Vector3.Dot(reference_dir, mousePosition);
-        float theta = Mathf.Acos(dot_product);
-        Vector3 vect_rotation = new Vector3(0, 0, theta * Mathf.Rad2Deg);
+        Vector3 mouse_screen = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mouse_position = mouse_screen;
+		mouse_position = mouse_position - transform.position;
+        mouse_position.z = 0;
+        float dot_product = Vector3.Dot(reference_dir, mouse_position);
+        float theta = Mathf.Acos(dot_product / mouse_position.magnitude) * Mathf.Rad2Deg;
+		if(mouse_screen.x < transform.position.x){
+			theta = 360 - theta;
+		}
+        Vector3 vect_rotation = new Vector3(0, 0, 360 - theta);
         Quaternion new_rotation = Quaternion.Euler(vect_rotation);
         transform.rotation = new_rotation;
     }
