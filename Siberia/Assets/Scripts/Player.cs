@@ -8,7 +8,8 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public float move_speed = 1f, meter_loss_amount = 2;
+    public float base_move_speed = 1f, meter_loss_amount = 16;
+    private float move_speed = 1f;
     public float x_max_bound = 2, x_min_bound = -2, y_max_bound = 2, y_min_bound = -2;
 
     public GameObject beam_prefab, projectile_prefab, light_slider, dark_slider;
@@ -17,6 +18,8 @@ public class Player : MonoBehaviour
     private bool fired_projectile = false;
 
     private float light_meter = 100, dark_meter = 100;
+
+    private float base_damage, min_accuracy = 30f, base_range, damage, accuracy, range;
 
     void Start()
     {
@@ -29,7 +32,10 @@ public class Player : MonoBehaviour
         {
             if (current_state == states.dark)
             {
-                GameObject.Instantiate(projectile_prefab, transform.position, transform.rotation);
+                float z_value = transform.rotation.eulerAngles.z;
+                z_value += Random.Range(-accuracy, accuracy);
+                Quaternion projectile_rotation = Quaternion.Euler(0, 0, z_value);
+                GameObject.Instantiate(projectile_prefab, transform.position, projectile_rotation);
                 fired_projectile = true;
             }
             else
@@ -106,15 +112,35 @@ public class Player : MonoBehaviour
             movement_difference.x += move_speed;
         }
         transform.position += movement_difference * Time.deltaTime;
-        if(Input.GetKey("space")) {
+        if (Input.GetKey("space"))
+        {
             ToggleState();
         }
     }
 
-    private void ToggleState(){
-        if(current_state == states.dark){
+    private void DevInput()
+    {
+        if (Input.GetKey("e"))
+        {
+            if (Input.GetKey("l"))
+            {
+                light_meter = 0;
+            }
+            else if (Input.GetKey("d"))
+            {
+                dark_meter = 0;
+            }
+        }
+    }
+
+    private void ToggleState()
+    {
+        if (current_state == states.dark)
+        {
             current_state = states.light;
-        } else {
+        }
+        else
+        {
             current_state = states.dark;
         }
     }
@@ -122,6 +148,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        DevInput();
         TakeInput();
         ClampToBounds();
         PointToMouse();
@@ -136,7 +163,7 @@ public class Player : MonoBehaviour
             light_meter -= meter_loss_amount * Time.deltaTime;
             if (light_meter < 0)
             {
-                SceneManager.LoadScene("Game Over");
+                // SceneManager.LoadScene("Game Over");
             }
         }
         else
@@ -147,6 +174,11 @@ public class Player : MonoBehaviour
                 dark_meter = 0;
             }
         }
+        move_speed = base_move_speed - light_meter / 200f;
+        damage = base_damage - light_meter / 10f + 1;
+        range = base_range * dark_meter / 100f;
+        accuracy = min_accuracy * (100 - dark_meter) / 100f;
+
         light_slider.GetComponent<Slider>().value = light_meter;
         dark_slider.GetComponent<Slider>().value = dark_meter;
     }
