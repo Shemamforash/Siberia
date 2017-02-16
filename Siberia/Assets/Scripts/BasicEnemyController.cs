@@ -7,6 +7,8 @@ public class BasicEnemyController : MonoBehaviour {
     [SerializeField]
     private float move_speed;
     [SerializeField]
+    private int enemy_HP;
+    [SerializeField]
     private GameObject player_object;
 
     private Transform enemy_transform;
@@ -39,5 +41,14 @@ public class BasicEnemyController : MonoBehaviour {
         Vector3 vect_rotation = new Vector3(0, 0, 360 - theta);
         Quaternion new_rotation = Quaternion.Euler(vect_rotation);
         transform.rotation = new_rotation;
+    }
+
+    public void take_damage(int dmg)
+    {
+        enemy_HP -= dmg;
+        if(enemy_HP <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }
