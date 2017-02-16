@@ -14,6 +14,13 @@ public class Player : MonoBehaviour
     private states current_state;
     private bool fired_projectile = false;
 
+    private Rigidbody2D my_rigidBody;
+
+    private void Start()
+    {
+        my_rigidBody = gameObject.GetComponent<Rigidbody2D>();
+    }
+
     private void TakeMouse()
     {
         if (Input.GetMouseButton(0) && fired_projectile == false)
@@ -78,7 +85,7 @@ public class Player : MonoBehaviour
 
     private void TakeInput()
     {
-        Vector3 movement_difference = new Vector3();
+        Vector2 movement_difference = new Vector2();
         if (Input.GetKey("w"))
         {
             movement_difference.y += move_speed;
@@ -95,15 +102,19 @@ public class Player : MonoBehaviour
         {
             movement_difference.x += move_speed;
         }
-        transform.position += movement_difference * Time.deltaTime;
+        my_rigidBody.MovePosition(my_rigidBody.position + movement_difference * Time.fixedDeltaTime);
     }
 
     // Update is called once per frame
     void Update()
     {
-        TakeInput();
-        ClampToBounds();
+        //ClampToBounds();
         PointToMouse();
         TakeMouse();
+    }
+
+    void FixedUpdate()
+    {
+        TakeInput();
     }
 }
