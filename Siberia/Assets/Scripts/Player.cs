@@ -1,18 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 //Veles and Perun
 
 public class Player : MonoBehaviour
 {
-    public float move_speed = 1f;
+    public float move_speed = 1f, meter_loss_amount = 2;
     public float x_max_bound = 2, x_min_bound = -2, y_max_bound = 2, y_min_bound = -2;
 
-    public GameObject beam_prefab, projectile_prefab;
+    public GameObject beam_prefab, projectile_prefab, light_slider, dark_slider;
     private enum states { dark, light };
     private states current_state;
     private bool fired_projectile = false;
+
+    private float light_meter = 100, dark_meter = 100;
+
+    void Start()
+    {
+        current_state = states.light;
+    }
 
     private void TakeMouse()
     {
@@ -28,7 +37,8 @@ public class Player : MonoBehaviour
 
             }
         }
-        if(Input.GetMouseButtonUp(0)){
+        if (Input.GetMouseButtonUp(0))
+        {
             fired_projectile = false;
         }
     }
@@ -96,6 +106,17 @@ public class Player : MonoBehaviour
             movement_difference.x += move_speed;
         }
         transform.position += movement_difference * Time.deltaTime;
+        if(Input.GetKey("space")) {
+            ToggleState();
+        }
+    }
+
+    private void ToggleState(){
+        if(current_state == states.dark){
+            current_state = states.light;
+        } else {
+            current_state = states.dark;
+        }
     }
 
     // Update is called once per frame
@@ -105,5 +126,28 @@ public class Player : MonoBehaviour
         ClampToBounds();
         PointToMouse();
         TakeMouse();
+        UpdateMeters();
+    }
+
+    private void UpdateMeters()
+    {
+        if (current_state == states.dark)
+        {
+            light_meter -= meter_loss_amount * Time.deltaTime;
+            if (light_meter < 0)
+            {
+                SceneManager.LoadScene("Game Over");
+            }
+        }
+        else
+        {
+            dark_meter -= meter_loss_amount * Time.deltaTime;
+            if (dark_meter < 0)
+            {
+                dark_meter = 0;
+            }
+        }
+        light_slider.GetComponent<Slider>().value = light_meter;
+        dark_slider.GetComponent<Slider>().value = dark_meter;
     }
 }
