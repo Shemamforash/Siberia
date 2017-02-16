@@ -19,8 +19,12 @@ public class ProjectileBehaviour : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+
         if (collision.gameObject.tag == "Enemy")
+        {
             collision.gameObject.GetComponent<BasicEnemyController>().take_damage(10);
+            Debug.Log("Hit target");
+        }
         Destroy(gameObject);
     }
 }
