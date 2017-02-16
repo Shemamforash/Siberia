@@ -36,7 +36,7 @@ Transform:
   m_GameObject: {fileID: 1882538889551224}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 6, y: 6, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -52,13 +52,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24c9973169bc7834d86ecf38669cf05d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  move_speed: 1
-  x_max_bound: 2
-  x_min_bound: -2
-  y_max_bound: 2
-  y_min_bound: -2
+  base_move_speed: 1
+  meter_loss_amount: 2
+  x_max_bound: 4
+  x_min_bound: -4
+  y_max_bound: 4
+  y_min_bound: -4
   beam_prefab: {fileID: 0}
-  projectile_prefab: {fileID: 0}
+  projectile_prefab: {fileID: 1850494287697962, guid: 7cc14c3b601274745983d04b86bbfad4,
+    type: 2}
+  light_slider: {fileID: 0}
+  dark_slider: {fileID: 0}
+  base_damage: 0
+  min_accuracy: 10
+  base_range: 0
+  damage: 0
+  accuracy: 0
+  range: 0
 --- !u!212 &212052253257656596
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -90,7 +100,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
