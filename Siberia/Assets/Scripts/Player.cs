@@ -17,12 +17,15 @@ public class Player : MonoBehaviour
     private states current_state;
     private bool fired_projectile = false;
 
+    private Rigidbody2D my_rigidBody;
+
     private float light_meter = 100, dark_meter = 100;
 
     private float base_damage, min_accuracy = 30f, base_range, damage, accuracy, range;
 
     void Start()
     {
+        my_rigidBody = gameObject.GetComponent<Rigidbody2D>();
         current_state = states.light;
     }
 
@@ -94,7 +97,7 @@ public class Player : MonoBehaviour
 
     private void TakeInput()
     {
-        Vector3 movement_difference = new Vector3();
+        Vector2 movement_difference = new Vector2();
         if (Input.GetKey("w"))
         {
             movement_difference.y += move_speed;
@@ -111,7 +114,8 @@ public class Player : MonoBehaviour
         {
             movement_difference.x += move_speed;
         }
-        transform.position += movement_difference * Time.deltaTime;
+        my_rigidBody.MovePosition(my_rigidBody.position + movement_difference * Time.fixedDeltaTime);
+
         if (Input.GetKey("space"))
         {
             ToggleState();
@@ -149,7 +153,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         DevInput();
-        TakeInput();
+        //TakeInput();
         ClampToBounds();
         PointToMouse();
         TakeMouse();
@@ -181,5 +185,10 @@ public class Player : MonoBehaviour
 
         light_slider.GetComponent<Slider>().value = light_meter;
         dark_slider.GetComponent<Slider>().value = dark_meter;
+    }
+
+    void FixedUpdate()
+    {
+        TakeInput();
     }
 }
