@@ -6,8 +6,22 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float move_speed = 1;
+    public float move_speed = 0.2f;
     public float x_max_bound = 1, x_min_bound = -1, y_max_bound = 1, y_min_bound = -1;
+
+    public GameObject beam_prefab, projectile_prefab;
+    private enum states {dark, light};
+    private states current_state;
+
+    private void TakeMouse() {
+        if(Input.GetMouseButton(0)){
+            if(current_state == states.dark) {
+                GameObject.Instantiate(projectile_prefab, transform.position, transform.rotation);
+            } else {
+
+            }
+        }
+    }
 
     private void ClampToBounds()
     {
@@ -79,5 +93,6 @@ public class Player : MonoBehaviour
 		TakeInput();
 		ClampToBounds();
         PointToMouse();
+        TakeMouse();
     }
 }
