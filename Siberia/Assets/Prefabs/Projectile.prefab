@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114981566442582354}
   - component: {fileID: 58830809059524418}
   - component: {fileID: 50496510092355716}
+  - component: {fileID: 114325699976517382}
   m_Layer: 8
   m_Name: Projectile
   m_TagString: Untagged
@@ -77,6 +78,33 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.1
+--- !u!114 &114325699976517382
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1850494287697962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f6e006e9ce2b33499973dfc7f38c26d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emit: 1
+  emitTime: 0
+  material: {fileID: 0}
+  lifeTime: 0.5
+  colors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  sizes:
+  - 0.02
+  uvLengthScale: 0.01
+  higherQualityUVs: 1
+  movePixelsForRebuild: 6
+  maxRebuildTime: 0.1
+  minVertexDistance: 0.1
+  maxVertexDistance: 0.1
+  maxAngle: 90
+  autoDestruct: 1
 --- !u!114 &114981566442582354
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -88,8 +116,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91f3f7506c77bc145940c2607f6d05b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 3
-  speed: 3
+  x_max_bound: 20
+  x_min_bound: -20
+  y_max_bound: 20
+  y_min_bound: -20
 --- !u!212 &212855904679953844
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -6,7 +6,7 @@ public class ProjectileBehaviour : MonoBehaviour
 {
     public float x_max_bound = 20, x_min_bound = -20, y_max_bound = 20, y_min_bound = -20;
     private float time_alive = 0f;
-	public float duration = 3f, speed = 6f;
+	private float duration = 3f, speed = 12f;
 
     // Update is called once per frame
     void Update()

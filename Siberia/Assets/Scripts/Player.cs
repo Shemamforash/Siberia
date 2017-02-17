@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
         current_state = states.light;
     }
 
+    private float time_since_last_fire = 0f, fire_rate = 0.1f;
+
     private void TakeMouse()
     {
         if (Input.GetMouseButton(0) && fired_projectile == false)
@@ -44,11 +46,17 @@ public class Player : MonoBehaviour
             {
 
             }
+        } else if(fired_projectile) {
+            time_since_last_fire += Time.deltaTime;
+            if(time_since_last_fire >= fire_rate){
+                time_since_last_fire = 0;
+                fired_projectile = false;
+            }
         }
-        if (Input.GetMouseButtonUp(0))
-        {
-            fired_projectile = false;
-        }
+        // if (Input.GetMouseButtonUp(0))
+        // {
+            // fired_projectile = false;
+        // }
     }
 
     private void PointToMouse()
