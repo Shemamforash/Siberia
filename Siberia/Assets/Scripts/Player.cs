@@ -67,6 +67,8 @@ public class Player : MonoBehaviour
         Vector3 vect_rotation = new Vector3(0, 0, 360 - theta);
         Quaternion new_rotation = Quaternion.Euler(vect_rotation);
         transform.rotation = new_rotation;
+        Transform light = transform.Find("Radial Light");
+        light.rotation = Quaternion.Euler(Vector3.up);
     }
 
     private void TakeInput()

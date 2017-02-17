@@ -5,11 +5,11 @@ using UnityEngine;
 public class BasicEnemyController : MonoBehaviour {
 
     [SerializeField]
-    private float move_speed;
+    private float move_speed = 1;
     [SerializeField]
-    private int enemy_HP;
+    private int enemy_HP = 5;
     [SerializeField]
-    private GameObject player_object;
+    public GameObject player_object;
 
     private Transform enemy_transform;
     private Transform player_transform;
