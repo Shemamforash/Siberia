@@ -98,8 +98,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   move_speed: 1
-  enemy_HP: 5
+  enemy_HP: 100
   player_object: {fileID: 0}
+  damage_text: {fileID: 1389180245191612, guid: e5467d6baf025f64baec636b8aabc1d1,
+    type: 2}
 --- !u!135 &135645443209975452
 SphereCollider:
   m_ObjectHideFlags: 1

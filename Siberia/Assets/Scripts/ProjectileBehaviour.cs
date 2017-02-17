@@ -6,16 +6,23 @@ public class ProjectileBehaviour : MonoBehaviour
 {
     public float x_max_bound = 20, x_min_bound = -20, y_max_bound = 20, y_min_bound = -20;
     private float time_alive = 0f;
-	private float duration = 3f, speed = 12f;
+    private float duration = 3f, speed = 12f;
+    private List<GameObject> trails = new List<GameObject>();
+
+    public void RegisterTrail(GameObject trail)
+    {
+        this.trails.Add(trail);
+    }
 
     // Update is called once per frame
     void Update()
     {
         transform.position += transform.up * Time.deltaTime * speed;
-		time_alive += Time.deltaTime;
-		if(time_alive > duration){
-			Destroy(gameObject);
-		}
+        time_alive += Time.deltaTime;
+        if (time_alive > duration)
+        {
+            DestroyProjectile();
+        }
     }
 
     private void ClampToBounds()
@@ -43,14 +50,22 @@ public class ProjectileBehaviour : MonoBehaviour
         transform.position = new_position;
     }
 
+    private void DestroyProjectile()
+    {
+        foreach (GameObject trail in trails)
+        {
+            Destroy(trail);
+        }
+        Destroy(gameObject);
+    }
+
     void OnTriggerEnter2D(Collider2D collision)
     {
-
         if (collision.gameObject.tag == "Enemy")
         {
             collision.gameObject.GetComponent<BasicEnemyController>().take_damage(10);
             Debug.Log("Hit target");
         }
-        Destroy(gameObject);
+        DestroyProjectile();
     }
 }

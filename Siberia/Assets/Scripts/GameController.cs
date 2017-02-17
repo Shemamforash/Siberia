@@ -4,6 +4,29 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
 	public Transform player_transform;
+	
+	private static List<GameObject> enemies = new List<GameObject>();
+
+	public static void RegisterEnemy(GameObject enemy){
+		enemies.Add(enemy);
+	}
+
+	public static void UnregisterEnemey(GameObject enemy){
+		// int old_enemy_pos = enemies.IndexOf(enemy);
+		// enemies[old_enemy_pos] = null;
+		enemies.Remove(enemy);
+	}
+
+	public static List<GameObject> Enemies(){
+		// List<GameObject> new_enemies = new List<GameObject>();
+		// foreach(GameObject enemy in enemies){
+			// if(enemy != null){
+				// new_enemies.Add(enemy);
+			// }
+		// }
+		// enemies = new_enemies;
+		return enemies;
+	}
 
 	// Use this for initialization
 	void Start () {

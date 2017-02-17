@@ -21,12 +21,12 @@ public class Player : MonoBehaviour
 
     private float light_meter = 100, dark_meter = 100;
 
-    private float base_damage, min_accuracy = 30f, base_range, damage, accuracy, range;
+    private float base_damage, min_accuracy = 30f, base_range = 20f, damage, accuracy, range;
 
     void Start()
     {
         my_rigidBody = gameObject.GetComponent<Rigidbody2D>();
-        current_state = states.light;
+        current_state = states.dark;
         torch_object = transform.Find("Torch").gameObject;
     }
 
@@ -34,10 +34,9 @@ public class Player : MonoBehaviour
 
     private void TakeMouse()
     {
-
         if (current_state == states.dark)
         {
-            if (Input.GetMouseButton(0) && fired_projectile == false)
+            if (Input.GetMouseButton(0) && !fired_projectile)
             {
                 float z_value = transform.rotation.eulerAngles.z;
                 z_value += Random.Range(-accuracy, accuracy);
@@ -45,35 +44,48 @@ public class Player : MonoBehaviour
                 GameObject.Instantiate(projectile_prefab, transform.position, projectile_rotation);
                 fired_projectile = true;
             }
-            else if (fired_projectile)
-            {
-                time_since_last_fire += Time.deltaTime;
-                if (time_since_last_fire >= fire_rate)
-                {
-                    time_since_last_fire = 0;
-                    fired_projectile = false;
-                }
-            }
+            torch_object.GetComponent<LOSRadialLight>().enabled = false;
         }
-
-        Debug.Log(range);
-
         else if (current_state == states.light)
         {
             if (Input.GetMouseButton(0))
             {
-                torch_object.GetComponent<LOSRadialLight>().radius = range;
+                if (range != 0)
+                {
+                    torch_object.GetComponent<LOSRadialLight>().enabled = true;
+                    torch_object.GetComponent<LOSRadialLight>().radius = range;
+                }
+                if (!fired_projectile)
+                {
+                    for(int i = GameController.Enemies().Count - 1; i >= 0; --i)
+                    {
+                        GameObject enemy = GameController.Enemies()[i];
+                        Ray2D ray_to_enemy = new Ray2D();
+                        Vector3 dir_to_enemy = enemy.transform.position - transform.position;
+                        GameObject hit_object = Physics2D.Raycast(transform.position, dir_to_enemy, 100f).collider.gameObject;
+                        if (hit_object.tag == "Player" && Vector3.Distance(transform.position, enemy.transform.position) < range)
+                        {
+                            enemy.GetComponent<BasicEnemyController>().take_damage(1);
+                        }
+                    }
+                    fired_projectile = true;
+                }
             }
-            else
+            else if (Input.GetMouseButtonUp(0))
             {
-                torch_object.GetComponent<LOSRadialLight>().radius = 0;
+                torch_object.GetComponent<LOSRadialLight>().enabled = false;
+            }
+
+        }
+        if (fired_projectile)
+        {
+            time_since_last_fire += Time.deltaTime;
+            if (time_since_last_fire >= fire_rate)
+            {
+                time_since_last_fire = 0;
+                fired_projectile = false;
             }
         }
-
-        // if (Input.GetMouseButtonUp(0))
-        // {
-        // fired_projectile = false;
-        // }
     }
 
     private void PointToMouse()
@@ -116,7 +128,7 @@ public class Player : MonoBehaviour
         }
         my_rigidBody.MovePosition(my_rigidBody.position + movement_difference * Time.fixedDeltaTime);
         // transform.position += movement_difference * Time.deltaTime;
-        if (Input.GetKey("space"))
+        if (Input.GetKeyUp("space"))
         {
             ToggleState();
         }
