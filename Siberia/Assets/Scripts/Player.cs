@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using LOS;
 
 //Veles and Perun
 
@@ -11,10 +12,10 @@ public class Player : MonoBehaviour
     public float base_move_speed = 3f, meter_loss_amount = 16;
     private float move_speed = 3f;
 
-    public GameObject beam_prefab, projectile_prefab, light_slider, dark_slider;
+    public GameObject torch_object, projectile_prefab, light_slider, dark_slider;
     private enum states { dark, light };
     private states current_state;
-    private bool fired_projectile = false;
+    private bool fired_projectile = false, torch_on = false;
 
     private Rigidbody2D my_rigidBody;
 
@@ -26,15 +27,17 @@ public class Player : MonoBehaviour
     {
         my_rigidBody = gameObject.GetComponent<Rigidbody2D>();
         current_state = states.light;
+        torch_object = transform.Find("Torch").gameObject;
     }
 
     private float time_since_last_fire = 0f, fire_rate = 0.1f;
 
     private void TakeMouse()
     {
-        if (Input.GetMouseButton(0) && fired_projectile == false)
+
+        if (current_state == states.dark)
         {
-            if (current_state == states.dark)
+            if (Input.GetMouseButton(0) && fired_projectile == false)
             {
                 float z_value = transform.rotation.eulerAngles.z;
                 z_value += Random.Range(-accuracy, accuracy);
@@ -42,20 +45,34 @@ public class Player : MonoBehaviour
                 GameObject.Instantiate(projectile_prefab, transform.position, projectile_rotation);
                 fired_projectile = true;
             }
-            else
+            else if (fired_projectile)
             {
-
-            }
-        } else if(fired_projectile) {
-            time_since_last_fire += Time.deltaTime;
-            if(time_since_last_fire >= fire_rate){
-                time_since_last_fire = 0;
-                fired_projectile = false;
+                time_since_last_fire += Time.deltaTime;
+                if (time_since_last_fire >= fire_rate)
+                {
+                    time_since_last_fire = 0;
+                    fired_projectile = false;
+                }
             }
         }
+
+        Debug.Log(range);
+
+        else if (current_state == states.light)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                torch_object.GetComponent<LOSRadialLight>().radius = range;
+            }
+            else
+            {
+                torch_object.GetComponent<LOSRadialLight>().radius = 0;
+            }
+        }
+
         // if (Input.GetMouseButtonUp(0))
         // {
-            // fired_projectile = false;
+        // fired_projectile = false;
         // }
     }
 
@@ -75,8 +92,7 @@ public class Player : MonoBehaviour
         Vector3 vect_rotation = new Vector3(0, 0, 360 - theta);
         Quaternion new_rotation = Quaternion.Euler(vect_rotation);
         transform.rotation = new_rotation;
-        Transform light = transform.Find("Radial Light");
-        light.rotation = Quaternion.Euler(Vector3.up);
+        torch_object.transform.rotation = Quaternion.Euler(Vector3.up);
     }
 
     private void TakeInput()
@@ -141,7 +157,7 @@ public class Player : MonoBehaviour
         PointToMouse();
         TakeMouse();
         UpdateMeters();
-        
+
     }
 
     private void UpdateMeters()
