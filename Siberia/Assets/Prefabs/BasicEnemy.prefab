@@ -122,6 +122,10 @@ MonoBehaviour:
   enemy_HP: 100
   detection_radius: 4
   chase_radius_multiplier: 2
+  wander_radius: 4
+  environment_layer_mask:
+    serializedVersion: 2
+    m_Bits: 1024
   player_object: {fileID: 0}
   damage_text: {fileID: 1389180245191612, guid: e5467d6baf025f64baec636b8aabc1d1,
     type: 2}

@@ -9,10 +9,17 @@ public class BasicEnemyController : MonoBehaviour {
     private float move_speed = 1;
     [SerializeField]
     private int enemy_HP = 100;
+
     [SerializeField]
     private float detection_radius = 4;
     [SerializeField]
     private float chase_radius_multiplier = 2;
+
+    [SerializeField]
+    private float wander_radius = 4;
+    [SerializeField]
+    private LayerMask environment_layer_mask = -1;
+
     [SerializeField]
     public GameObject player_object;
 
@@ -25,6 +32,9 @@ public class BasicEnemyController : MonoBehaviour {
 
     private float active_detection_radius;
 
+    private Vector2 waypoint;
+    private float wander_counter;
+
     // Use this for initialization
     void Start () {
         canvas_object = GameObject.Find("Canvas");
@@ -34,6 +44,9 @@ public class BasicEnemyController : MonoBehaviour {
         enemy_rigidbody = gameObject.GetComponent<Rigidbody2D>();
 
         active_detection_radius = detection_radius;
+
+        waypoint = enemy_transform.position;
+        wander_counter = Random.Range(5.0f, 10.0f);
 
         GameController.RegisterEnemy(gameObject);
     }
@@ -57,12 +70,48 @@ public class BasicEnemyController : MonoBehaviour {
             active_detection_radius = detection_radius;
 
             //Wander
+            Enemy_Wander();
         }
 	}
 
     private void Enemy_Wander()
     {
+        wander_counter -= Time.deltaTime;
 
+        if(wander_counter <= 0)
+        //Find new waypoint
+        {
+            float wander_distance = Random.Range(0.0f, wander_radius);
+            Vector2 wander_direction = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
+            wander_direction.Normalize();
+
+            //See if the desired walk collides with a wall
+            RaycastHit2D raycast_hit = Physics2D.Raycast(enemy_rigidbody.position, wander_direction, wander_distance, environment_layer_mask);
+            if(raycast_hit.collider != null)
+            {
+                //Debug.Log("Can't move there");
+            }
+            else
+            {
+                waypoint = wander_direction * wander_distance;
+            }
+
+            wander_counter = Random.Range(5.0f, 10.0f);
+        }
+        else
+        //Move towards current waypoint
+        {
+            Vector2 dir_to_waypoint = waypoint - enemy_rigidbody.position;
+
+            //If the distance to the waypoint is small, stop moving
+            //This prevents the enemy from spinning on the target
+            if(dir_to_waypoint.magnitude > 0.1f)
+            {
+                dir_to_waypoint.Normalize();
+                enemy_rigidbody.MovePosition(enemy_rigidbody.position + dir_to_waypoint * move_speed * Time.deltaTime);
+                Face_direction(dir_to_waypoint);
+            }
+        }
     }
 
     private void Enemy_Approach(Vector2 dir_to_player)
