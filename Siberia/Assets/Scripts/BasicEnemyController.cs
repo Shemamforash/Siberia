@@ -45,7 +45,7 @@ public class BasicEnemyController : MonoBehaviour {
 
         active_detection_radius = detection_radius;
 
-        waypoint = enemy_transform.position;
+        waypoint = enemy_rigidbody.position;
         wander_counter = Random.Range(5.0f, 10.0f);
 
         GameController.RegisterEnemy(gameObject);
@@ -54,7 +54,7 @@ public class BasicEnemyController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        Vector3 distance_to_player = player_transform.position - enemy_transform.position;
+        Vector2 distance_to_player = new Vector2(player_transform.position.x, player_transform.position.y) - enemy_rigidbody.position;
 
         if(distance_to_player.magnitude < active_detection_radius)
         {
@@ -111,6 +111,10 @@ public class BasicEnemyController : MonoBehaviour {
                 enemy_rigidbody.MovePosition(enemy_rigidbody.position + dir_to_waypoint * move_speed * Time.deltaTime);
                 Face_direction(dir_to_waypoint);
             }
+            else
+            {
+                Debug.Log("Reached target");
+            }
         }
     }
 
@@ -134,6 +138,15 @@ public class BasicEnemyController : MonoBehaviour {
         transform.rotation = new_rotation;
     }
 
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Terrain")
+        {
+            //Stop wandering until a new direction is picked
+            waypoint = enemy_rigidbody.position;
+        }
+    }
+
     public void take_damage(int dmg)
     {
         enemy_HP -= dmg;
@@ -147,4 +160,6 @@ public class BasicEnemyController : MonoBehaviour {
             Destroy(gameObject);
         }
     }
+
+
 }
