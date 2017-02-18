@@ -10,30 +10,66 @@ public class BasicEnemyController : MonoBehaviour {
     [SerializeField]
     private int enemy_HP = 100;
     [SerializeField]
+    private float detection_radius = 4;
+    [SerializeField]
+    private float chase_radius_multiplier = 2;
+    [SerializeField]
     public GameObject player_object;
 
     private Transform enemy_transform;
     private Transform player_transform;
+    private Rigidbody2D enemy_rigidbody;
 
     public GameObject damage_text;
     private GameObject canvas_object;
 
+    private float active_detection_radius;
+
     // Use this for initialization
     void Start () {
         canvas_object = GameObject.Find("Canvas");
+
         enemy_transform = gameObject.transform;
         player_transform = player_object.transform;
+        enemy_rigidbody = gameObject.GetComponent<Rigidbody2D>();
+
+        active_detection_radius = detection_radius;
+
         GameController.RegisterEnemy(gameObject);
     }
 	
 	// Update is called once per frame
-	void Update (){
-        Vector3 dirToPlayer = player_transform.position - enemy_transform.position;
-        dirToPlayer.Normalize();
+	void Update ()
+    {
+        Vector3 distance_to_player = player_transform.position - enemy_transform.position;
 
-        enemy_transform.position += dirToPlayer * move_speed * Time.deltaTime;
-        Face_direction(dirToPlayer);
+        if(distance_to_player.magnitude < active_detection_radius)
+        {
+            //Spotted player; increase detection radius
+            active_detection_radius = detection_radius * chase_radius_multiplier;
+
+            distance_to_player.Normalize();
+            Enemy_Approach(new Vector2(distance_to_player.x, distance_to_player.y));
+        }
+        else
+        {
+            //No sight of player; reset detection radius
+            active_detection_radius = detection_radius;
+
+            //Wander
+        }
 	}
+
+    private void Enemy_Wander()
+    {
+
+    }
+
+    private void Enemy_Approach(Vector2 dir_to_player)
+    {
+        enemy_rigidbody.MovePosition(enemy_rigidbody.position + dir_to_player * move_speed * Time.deltaTime);
+        Face_direction(dir_to_player);
+    }
 
     private void Face_direction(Vector3 direction)
     {

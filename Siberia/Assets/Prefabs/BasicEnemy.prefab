@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212009962612840594}
   - component: {fileID: 58782644769259342}
   - component: {fileID: 114575607499798084}
+  - component: {fileID: 50801672663410804}
   m_Layer: 11
   m_Name: BasicEnemy
   m_TagString: Enemy
@@ -72,6 +73,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &50801672663410804
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1423884302061676}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!58 &58782644769259342
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -99,6 +120,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   move_speed: 1
   enemy_HP: 100
+  detection_radius: 4
+  chase_radius_multiplier: 2
   player_object: {fileID: 0}
   damage_text: {fileID: 1389180245191612, guid: e5467d6baf025f64baec636b8aabc1d1,
     type: 2}
