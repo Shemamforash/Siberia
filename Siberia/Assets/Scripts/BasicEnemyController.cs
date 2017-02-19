@@ -23,7 +23,6 @@ public class BasicEnemyController : MonoBehaviour {
     [SerializeField]
     public GameObject player_object;
 
-    private Transform enemy_transform;
     private Transform player_transform;
     private Rigidbody2D enemy_rigidbody;
 
@@ -31,19 +30,22 @@ public class BasicEnemyController : MonoBehaviour {
     private GameObject canvas_object;
 
     private float active_detection_radius;
+    private Vector2 last_seen_player_location;
+    private bool seen_player;
 
     private Vector2 waypoint;
     private float wander_counter;
+    
 
     // Use this for initialization
     void Start () {
         canvas_object = GameObject.Find("Canvas");
 
-        enemy_transform = gameObject.transform;
         player_transform = player_object.transform;
         enemy_rigidbody = gameObject.GetComponent<Rigidbody2D>();
 
         active_detection_radius = detection_radius;
+        seen_player = false;
 
         waypoint = enemy_rigidbody.position;
         wander_counter = Random.Range(5.0f, 10.0f);
@@ -56,13 +58,37 @@ public class BasicEnemyController : MonoBehaviour {
     {
         Vector2 distance_to_player = new Vector2(player_transform.position.x, player_transform.position.y) - enemy_rigidbody.position;
 
+        //Is the player within sight range of the enemy?
         if(distance_to_player.magnitude < active_detection_radius)
         {
-            //Spotted player; increase detection radius
-            active_detection_radius = detection_radius * chase_radius_multiplier;
+            Vector2 dir_to_player = distance_to_player.normalized;
 
-            distance_to_player.Normalize();
-            Enemy_Approach(new Vector2(distance_to_player.x, distance_to_player.y));
+            //Can the enemy see the player, or has it seen it recently?
+            RaycastHit2D raycast_hit = Physics2D.Raycast(enemy_rigidbody.position, dir_to_player, distance_to_player.magnitude, environment_layer_mask);
+            if (raycast_hit.collider != null)
+            {
+                if (seen_player)
+                {
+                    Enemy_Approach();
+                }
+                else
+                {
+                    //No sight of player; reset detection radius
+                    active_detection_radius = detection_radius;
+
+                    //Wander
+                    Enemy_Wander();
+                }
+            }
+            else
+            {
+                //Spotted player; increase detection radius
+                seen_player = true;
+                active_detection_radius = detection_radius * chase_radius_multiplier;
+                last_seen_player_location = new Vector2(player_transform.position.x, player_transform.position.y);
+
+                Enemy_Approach();
+            }
         }
         else
         {
@@ -111,17 +137,27 @@ public class BasicEnemyController : MonoBehaviour {
                 enemy_rigidbody.MovePosition(enemy_rigidbody.position + dir_to_waypoint * move_speed * Time.deltaTime);
                 Face_direction(dir_to_waypoint);
             }
-            else
-            {
-                Debug.Log("Reached target");
-            }
         }
     }
 
-    private void Enemy_Approach(Vector2 dir_to_player)
+    private void Enemy_Approach()
     {
-        enemy_rigidbody.MovePosition(enemy_rigidbody.position + dir_to_player * move_speed * Time.deltaTime);
-        Face_direction(dir_to_player);
+        //Move directly towards last known location of player
+        Vector2 dir_to_target = last_seen_player_location - enemy_rigidbody.position;
+        if(dir_to_target.magnitude > 0.1f)
+        {
+            dir_to_target.Normalize();
+            enemy_rigidbody.MovePosition(enemy_rigidbody.position + dir_to_target * move_speed * Time.deltaTime);
+            Face_direction(dir_to_target);
+        }
+        else
+        {
+            //Reached last known location of player. Need to re-establish eye contact.
+            seen_player = false;
+            //Reset waypoint in case visual contact not re-established
+            //The enemy will then start wandering from this new point
+            waypoint = enemy_rigidbody.position;
+        }
     }
 
     private void Face_direction(Vector3 direction)
