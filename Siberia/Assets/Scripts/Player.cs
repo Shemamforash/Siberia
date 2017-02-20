@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     private float move_speed = 3f;
 
     public GameObject torch_object, projectile_prefab, light_slider, dark_slider;
-    private enum states { dark, light };
+    public enum states { dark, light };
     private states current_state;
     private bool fired_projectile = false, torch_on = false;
 
@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
         {
             if (Input.GetMouseButton(0) && !fired_projectile)
             {
+                dark_meter -= 0.5f;
                 float z_value = transform.rotation.eulerAngles.z;
                 z_value += Random.Range(-accuracy, accuracy);
                 Quaternion projectile_rotation = Quaternion.Euler(0, 0, z_value);
@@ -57,6 +58,7 @@ public class Player : MonoBehaviour
                 }
                 if (!fired_projectile)
                 {
+                    light_meter -= 0.5f;
                     for(int i = GameController.Enemies().Count - 1; i >= 0; --i)
                     {
                         GameObject enemy = GameController.Enemies()[i];
@@ -65,7 +67,7 @@ public class Player : MonoBehaviour
                         GameObject hit_object = Physics2D.Raycast(transform.position, dir_to_enemy, 100f).collider.gameObject;
                         if (hit_object.tag == "Player" && Vector3.Distance(transform.position, enemy.transform.position) < range)
                         {
-                            enemy.GetComponent<BasicEnemyController>().take_damage(1);
+                            enemy.GetComponent<BasicEnemyController>().take_damage(3, states.light);
                         }
                     }
                     fired_projectile = true;
@@ -199,7 +201,12 @@ public class Player : MonoBehaviour
         dark_slider.GetComponent<Slider>().value = dark_meter;
     }
 
-    void FixedUpdate()
+    public void ReceivePickup(int value, states type)
     {
-    }
+        if(type == states.dark){
+            dark_meter += value;
+        } else {
+            light_meter += value;
+        }
+    }  
 }

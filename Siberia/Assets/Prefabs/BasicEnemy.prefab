@@ -67,7 +67,7 @@ Transform:
   m_GameObject: {fileID: 1423884302061676}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.87, y: -0.93, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 4569066235922634}
   m_Father: {fileID: 0}
@@ -127,6 +127,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   player_object: {fileID: 0}
+  light_pickup_prefab: {fileID: 1294057044569948, guid: e03b6a6c258aa6741a1aa32a3913d574,
+    type: 2}
+  dark_pickup_prefab: {fileID: 1624425020401072, guid: cf1bde400e5b60d4a8f951c1f9f5828e,
+    type: 2}
   damage_text: {fileID: 1389180245191612, guid: e5467d6baf025f64baec636b8aabc1d1,
     type: 2}
 --- !u!135 &135645443209975452

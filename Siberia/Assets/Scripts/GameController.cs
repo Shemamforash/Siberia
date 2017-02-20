@@ -11,20 +11,11 @@ public class GameController : MonoBehaviour {
 		enemies.Add(enemy);
 	}
 
-	public static void UnregisterEnemey(GameObject enemy){
-		// int old_enemy_pos = enemies.IndexOf(enemy);
-		// enemies[old_enemy_pos] = null;
+	public static void UnregisterEnemy(GameObject enemy){
 		enemies.Remove(enemy);
 	}
 
 	public static List<GameObject> Enemies(){
-		// List<GameObject> new_enemies = new List<GameObject>();
-		// foreach(GameObject enemy in enemies){
-			// if(enemy != null){
-				// new_enemies.Add(enemy);
-			// }
-		// }
-		// enemies = new_enemies;
 		return enemies;
 	}
 

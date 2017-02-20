@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BasicEnemyController : MonoBehaviour {
+public class BasicEnemyController : MonoBehaviour
+{
 
     [SerializeField]
     private float move_speed = 1;
@@ -22,6 +23,7 @@ public class BasicEnemyController : MonoBehaviour {
 
     [SerializeField]
     public GameObject player_object;
+    public GameObject light_pickup_prefab, dark_pickup_prefab;
 
     private Transform player_transform;
     private Rigidbody2D enemy_rigidbody;
@@ -35,12 +37,20 @@ public class BasicEnemyController : MonoBehaviour {
 
     private Vector2 waypoint;
     private float wander_counter;
-    
+
+    private GameObject spawner;
+
+
+    public void SetSpawner(GameObject spawner) {
+        this.spawner = spawner;
+    }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         canvas_object = GameObject.Find("Canvas");
 
+        player_object = GameObject.Find("Player");
         player_transform = player_object.transform;
         enemy_rigidbody = gameObject.GetComponent<Rigidbody2D>();
 
@@ -52,14 +62,14 @@ public class BasicEnemyController : MonoBehaviour {
 
         GameController.RegisterEnemy(gameObject);
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
         Vector2 distance_to_player = new Vector2(player_transform.position.x, player_transform.position.y) - enemy_rigidbody.position;
 
         //Is the player within sight range of the enemy?
-        if(distance_to_player.magnitude < active_detection_radius)
+        if (distance_to_player.magnitude < active_detection_radius)
         {
             Vector2 dir_to_player = distance_to_player.normalized;
 
@@ -98,13 +108,13 @@ public class BasicEnemyController : MonoBehaviour {
             //Wander
             Enemy_Wander();
         }
-	}
+    }
 
     private void Enemy_Wander()
     {
         wander_counter -= Time.deltaTime;
 
-        if(wander_counter <= 0)
+        if (wander_counter <= 0)
         //Find new waypoint
         {
             float wander_distance = Random.Range(0.0f, wander_radius);
@@ -113,7 +123,7 @@ public class BasicEnemyController : MonoBehaviour {
 
             //See if the desired walk collides with a wall
             RaycastHit2D raycast_hit = Physics2D.Raycast(enemy_rigidbody.position, wander_direction, wander_distance, environment_layer_mask);
-            if(raycast_hit.collider != null)
+            if (raycast_hit.collider != null)
             {
                 //Debug.Log("Can't move there");
             }
@@ -131,7 +141,7 @@ public class BasicEnemyController : MonoBehaviour {
 
             //If the distance to the waypoint is small, stop moving
             //This prevents the enemy from spinning on the target
-            if(dir_to_waypoint.magnitude > 0.1f)
+            if (dir_to_waypoint.magnitude > 0.1f)
             {
                 dir_to_waypoint.Normalize();
                 enemy_rigidbody.MovePosition(enemy_rigidbody.position + dir_to_waypoint * move_speed * Time.deltaTime);
@@ -144,7 +154,7 @@ public class BasicEnemyController : MonoBehaviour {
     {
         //Move directly towards last known location of player
         Vector2 dir_to_target = last_seen_player_location - enemy_rigidbody.position;
-        if(dir_to_target.magnitude > 0.1f)
+        if (dir_to_target.magnitude > 0.1f)
         {
             dir_to_target.Normalize();
             enemy_rigidbody.MovePosition(enemy_rigidbody.position + dir_to_target * move_speed * Time.deltaTime);
@@ -176,26 +186,35 @@ public class BasicEnemyController : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Terrain")
+        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Terrain")
         {
             //Stop wandering until a new direction is picked
             waypoint = enemy_rigidbody.position;
         }
     }
 
-    public void take_damage(int dmg)
+    public void take_damage(int dmg, Player.states type)
     {
         enemy_HP -= dmg;
         Vector2 enemy_screen_location = Camera.main.WorldToScreenPoint(transform.position);
         GameObject new_damage = GameObject.Instantiate(damage_text, enemy_screen_location, Quaternion.Euler(Vector3.up));
         new_damage.transform.SetParent(canvas_object.transform);
         new_damage.GetComponent<Text>().text = dmg.ToString();
-        if(enemy_HP <= 0)
+        if (enemy_HP <= 0)
         {
-            GameController.UnregisterEnemey(gameObject);
+            GameObject new_pickup = null;
+            if (type == Player.states.light)
+            {
+                new_pickup = GameObject.Instantiate(dark_pickup_prefab, transform.position, transform.rotation);
+            }
+            else
+            {
+                new_pickup = GameObject.Instantiate(light_pickup_prefab, transform.position, transform.rotation);
+            }
+            new_pickup.GetComponent<Spinny>().SetPickupValue(5, type);
+            GameController.UnregisterEnemy(gameObject);
+            spawner.GetComponent<SpawnerBehaviour>().Unregister(gameObject);
             Destroy(gameObject);
         }
     }
-
-
 }
