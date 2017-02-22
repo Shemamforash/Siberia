@@ -9,15 +9,15 @@ public abstract class BasicEnemyController : MonoBehaviour
     [SerializeField]
     protected float move_speed = 1;
     [SerializeField]
-    private int enemy_HP = 100;
+    protected int enemy_HP = 100;
 
     [SerializeField]
-    private float detection_radius = 4;
+    protected float detection_radius = 4;
     [SerializeField]
     private float chase_radius_multiplier = 2;
 
     [SerializeField]
-    private float wander_radius = 4;
+    protected float wander_radius = 4;
     [SerializeField]
     protected LayerMask environment_layer_mask = -1;
     [SerializeField]
@@ -40,15 +40,21 @@ public abstract class BasicEnemyController : MonoBehaviour
     protected Vector2 waypoint;
     private float wander_counter;
 
-    private GameObject spawner;
+    protected GameObject spawner;
 
 
-    public void SetSpawner(GameObject spawner) {
+    public void SetSpawner(GameObject spawner)
+    {
         this.spawner = spawner;
     }
 
     // Use this for initialization
     void Start()
+    {
+        Init();
+    }
+
+    protected void Init()
     {
         canvas_object = GameObject.Find("Canvas");
 
@@ -65,10 +71,12 @@ public abstract class BasicEnemyController : MonoBehaviour
         GameController.RegisterEnemy(gameObject);
     }
 
-    protected abstract void Extra_Setup();
+    void Update(){
+        MoveEnemy();
+    }
 
     // Update is called once per frame
-    void Update()
+    protected void MoveEnemy()
     {
         Vector2 distance_to_player = new Vector2(player_transform.position.x, player_transform.position.y) - enemy_rigidbody.position;
 
@@ -112,11 +120,7 @@ public abstract class BasicEnemyController : MonoBehaviour
             //Wander
             Enemy_Wander();
         }
-
-        Extra_Update();
     }
-
-    protected abstract void Extra_Update(); 
 
     private void Enemy_Wander()
     {
@@ -201,10 +205,14 @@ public abstract class BasicEnemyController : MonoBehaviour
             {
                 new_pickup = GameObject.Instantiate(light_pickup_prefab, transform.position, transform.rotation);
             }
-            new_pickup.GetComponent<Spinny>().SetPickupValue(5, type);
+            if (new_pickup != null)
+            {
+                new_pickup.GetComponent<Spinny>().SetPickupValue(5, type);
+            }
             GameController.UnregisterEnemy(gameObject);
             spawner.GetComponent<SpawnerBehaviour>().Unregister(gameObject);
             Destroy(gameObject);
+            //Lol
         }
     }
 }

@@ -55,14 +55,4 @@ public class MeleeEnemyController : BasicEnemyController
             waypoint = enemy_rigidbody.position;
         }
     }
-
-    protected override void Extra_Setup()
-    {
-        //Nothing needs doing
-    }
-
-    protected override void Extra_Update()
-    {
-        //Nothing needs doing
-    }
 }

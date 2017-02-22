@@ -13,13 +13,16 @@ public class TankEnemyController : BasicEnemyController
 
     private float shockwave_countdown;
 
-    protected override void Extra_Setup()
+    void Start()
     {
+        base.Init();
         shockwave_countdown = shockwave_cooldown;
     }
 
-    protected override void Extra_Update()
+    void Update()
     {
+        base.MoveEnemy();
+
         if(shockwave_countdown >= -5)
             shockwave_countdown -= Time.deltaTime;
         Debug.Log("SW_countown: " + shockwave_countdown);
