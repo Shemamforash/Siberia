@@ -50,7 +50,7 @@ public class ProjectileBehaviour : MonoBehaviour
         transform.position = new_position;
     }
 
-    private void DestroyProjectile()
+    protected void DestroyProjectile()
     {
         foreach (GameObject trail in trails)
         {
@@ -64,7 +64,7 @@ public class ProjectileBehaviour : MonoBehaviour
         if (collision.gameObject.tag == "Enemy")
         {
             collision.gameObject.GetComponent<BasicEnemyController>().take_damage(10, Player.states.dark);
-            Debug.Log("Hit target");
+            //Debug.Log("Hit target");
         }
         DestroyProjectile();
     }

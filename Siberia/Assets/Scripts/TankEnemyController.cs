@@ -10,7 +10,6 @@ public class TankEnemyController : BasicEnemyController
     [SerializeField]
     private float shockwave_cooldown;
 
-
     private float shockwave_countdown;
     private float firepause;
 
