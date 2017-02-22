@@ -10,10 +10,12 @@ public class SapperBehaviour : BasicEnemyController
     void Start()
     {
         base.Init();
+        /*
         move_speed = 4;
         enemy_HP = 1;
         detection_radius = 8;
         wander_radius = 10;
+        *///
     }
 
     void Update()
@@ -23,7 +25,7 @@ public class SapperBehaviour : BasicEnemyController
 
     public override void Enemy_React(Rigidbody2D enemy_rigidbody, Vector2 player_position, Vector2 last_seen_player_location)
     {
-
+        base.Chase_Player();
     }
 
     private void Detonate(GameObject other)
