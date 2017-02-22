@@ -3,13 +3,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeEnemyController : BasicEnemyController
+public class TankEnemyController : BasicEnemyController
 {
+    [SerializeField]
+    GameObject shockwave_attack;
+    [SerializeField]
+    private float shockwave_cooldown;
+
+
+    private float shockwave_countdown;
+
+    protected override void Extra_Setup()
+    {
+        shockwave_countdown = shockwave_cooldown;
+    }
+
+    protected override void Extra_Update()
+    {
+        if(shockwave_countdown >= -5)
+            shockwave_countdown -= Time.deltaTime;
+        Debug.Log("SW_countown: " + shockwave_countdown);
+    }
+
     public override void Enemy_React(Rigidbody2D enemy_rigidbody, Vector2 player_position, Vector2 last_seen_player_location)
     {
+        //In-range of player
+        Vector2 distance_to_player = (player_position - enemy_rigidbody.position);
+        if (distance_to_player.sqrMagnitude < 2.0)
+        {
+            fire_shockwave(enemy_rigidbody);
+        }
+
         //Move directly towards last known location of player
         Vector2 dir_to_target = last_seen_player_location - enemy_rigidbody.position;
-        if (dir_to_target.magnitude > 0.1f)
+        if (dir_to_target.magnitude > 0.1)
         {
             dir_to_target.Normalize();
 
@@ -17,8 +44,6 @@ public class MeleeEnemyController : BasicEnemyController
 
             //Use raycasts to repel from walls
             float raycastRange = 1.0f;
-            Debug.DrawRay(enemy_rigidbody.position, Quaternion.AngleAxis(45, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target, Color.red);
-            Debug.DrawRay(enemy_rigidbody.position, Quaternion.AngleAxis(-45, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target, Color.blue);
             RaycastHit2D wallAvoidCastLeft = Physics2D.Raycast(enemy_rigidbody.position, Quaternion.AngleAxis(45, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target, raycastRange, environment_layer_mask);
             RaycastHit2D wallAvoidCastRight = Physics2D.Raycast(enemy_rigidbody.position, Quaternion.AngleAxis(-45, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target, raycastRange, environment_layer_mask);
             if (wallAvoidCastLeft.collider != null)
@@ -48,7 +73,6 @@ public class MeleeEnemyController : BasicEnemyController
         }
         else
         {
-            //Reached last known location of player. Need to re-establish eye contact.
             seen_player = false;
             //Reset waypoint in case visual contact not re-established
             //The enemy will then start wandering from this new point
@@ -56,13 +80,13 @@ public class MeleeEnemyController : BasicEnemyController
         }
     }
 
-    protected override void Extra_Setup()
+    private void fire_shockwave(Rigidbody2D enemy_rigidbody)
     {
-        //Nothing needs doing
-    }
-
-    protected override void Extra_Update()
-    {
-        //Nothing needs doing
+        if(shockwave_countdown <= 0)
+        {
+            Instantiate(shockwave_attack, enemy_rigidbody.position, Quaternion.AngleAxis(enemy_rigidbody.rotation, new Vector3(0.0f, 0.0f, 1.0f)));
+            shockwave_countdown = shockwave_cooldown;
+        }
+        
     }
 }

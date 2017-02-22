@@ -65,6 +65,8 @@ public abstract class BasicEnemyController : MonoBehaviour
         GameController.RegisterEnemy(gameObject);
     }
 
+    protected abstract void Extra_Setup();
+
     // Update is called once per frame
     void Update()
     {
@@ -81,7 +83,7 @@ public abstract class BasicEnemyController : MonoBehaviour
             {
                 if (seen_player)
                 {
-                    Enemy_React(enemy_rigidbody, last_seen_player_location);
+                    Enemy_React(enemy_rigidbody, new Vector2(player_transform.position.x, player_transform.position.y), last_seen_player_location);
                 }
                 else
                 {
@@ -99,7 +101,7 @@ public abstract class BasicEnemyController : MonoBehaviour
                 active_detection_radius = detection_radius * chase_radius_multiplier;
                 last_seen_player_location = new Vector2(player_transform.position.x, player_transform.position.y);
 
-                Enemy_React(enemy_rigidbody, last_seen_player_location);
+                Enemy_React(enemy_rigidbody, last_seen_player_location, last_seen_player_location);
             }
         }
         else
@@ -110,7 +112,11 @@ public abstract class BasicEnemyController : MonoBehaviour
             //Wander
             Enemy_Wander();
         }
+
+        Extra_Update();
     }
+
+    protected abstract void Extra_Update(); 
 
     private void Enemy_Wander()
     {
@@ -152,7 +158,7 @@ public abstract class BasicEnemyController : MonoBehaviour
         }
     }
 
-    public abstract void Enemy_React(Rigidbody2D enemy_rigidbody, Vector2 last_seen_player_location);
+    public abstract void Enemy_React(Rigidbody2D enemy_rigidbody, Vector2 player_position, Vector2 last_seen_player_location);
 
     public void Face_direction(Vector3 direction)
     {
