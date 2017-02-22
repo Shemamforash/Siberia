@@ -7,17 +7,17 @@ public class BasicEnemyController : MonoBehaviour
 {
 
     [SerializeField]
-    private float move_speed = 1;
+    protected float move_speed = 1;
     [SerializeField]
-    private int enemy_HP = 100;
+    protected int enemy_HP = 100;
 
     [SerializeField]
-    private float detection_radius = 4;
+    protected float detection_radius = 4;
     [SerializeField]
     private float chase_radius_multiplier = 2;
 
     [SerializeField]
-    private float wander_radius = 4;
+    protected float wander_radius = 4;
     [SerializeField]
     private LayerMask environment_layer_mask = -1;
 
@@ -38,15 +38,21 @@ public class BasicEnemyController : MonoBehaviour
     private Vector2 waypoint;
     private float wander_counter;
 
-    private GameObject spawner;
+    protected GameObject spawner;
 
 
-    public void SetSpawner(GameObject spawner) {
+    public void SetSpawner(GameObject spawner)
+    {
         this.spawner = spawner;
     }
 
     // Use this for initialization
     void Start()
+    {
+        Init();
+    }
+
+    protected void Init()
     {
         canvas_object = GameObject.Find("Canvas");
 
@@ -63,8 +69,11 @@ public class BasicEnemyController : MonoBehaviour
         GameController.RegisterEnemy(gameObject);
     }
 
+    void Update(){
+        MoveEnemy();
+    }
     // Update is called once per frame
-    void Update()
+    protected void MoveEnemy()
     {
         Vector2 distance_to_player = new Vector2(player_transform.position.x, player_transform.position.y) - enemy_rigidbody.position;
 
@@ -211,7 +220,10 @@ public class BasicEnemyController : MonoBehaviour
             {
                 new_pickup = GameObject.Instantiate(light_pickup_prefab, transform.position, transform.rotation);
             }
-            new_pickup.GetComponent<Spinny>().SetPickupValue(5, type);
+            if (new_pickup != null)
+            {
+                new_pickup.GetComponent<Spinny>().SetPickupValue(5, type);
+            }
             GameController.UnregisterEnemy(gameObject);
             spawner.GetComponent<SpawnerBehaviour>().Unregister(gameObject);
             Destroy(gameObject);

@@ -54,6 +54,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy_prefab: {fileID: 1423884302061676, guid: ec0b1422e747a4b4f8d07e24dec6aa2d,
     type: 2}
+  sapper_prefab: {fileID: 1423884302061676, guid: 160a5334a47f01f42a2a82e753be69bf,
+    type: 2}
 --- !u!212 &212434855689636846
 SpriteRenderer:
   m_ObjectHideFlags: 1

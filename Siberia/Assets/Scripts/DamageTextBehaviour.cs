@@ -5,20 +5,21 @@ using UnityEngine.UI;
 
 public class DamageTextBehaviour : MonoBehaviour
 {
-
-    public float duration = 2, time_alive = 0;
+    public float duration = 0.5f, time_alive = 0;
 
     private float v_x, v_y, g = -9.8f, anim_speed = 10;
 
-    void Start()
+    public void Start()
     {
-		g *= anim_speed;
+        g *= anim_speed;
         v_x = Random.Range(-6, 6f) * anim_speed;
         v_y = Random.Range(-10, 10f) * anim_speed;
     }
+	
     // Update is called once per frame
     void Update()
     {
+
         time_alive += Time.deltaTime;
         if (time_alive > duration)
         {
@@ -27,8 +28,8 @@ public class DamageTextBehaviour : MonoBehaviour
         else
         {
             float alpha = (1f / duration * time_alive);
-			alpha *= alpha;
-			alpha = 1 - alpha;
+            alpha *= alpha;
+            alpha = 1 - alpha;
             Color current_col = GetComponent<Text>().color;
             current_col.a = alpha;
             GetComponent<Text>().color = current_col;
@@ -41,7 +42,8 @@ public class DamageTextBehaviour : MonoBehaviour
             float x_dist = Time.deltaTime * v_x;
             Vector3 pos_diff = new Vector3(x_dist, y_dist, 0);
             transform.position += pos_diff;
-            // transform.position += new Vector3(0, 10 * Time.deltaTime, 0);
+            transform.position += new Vector3(0, 10 * Time.deltaTime, 0);
         }
+
     }
 }

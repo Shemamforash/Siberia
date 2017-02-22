@@ -13,15 +13,15 @@ public class Player : MonoBehaviour
     private float move_speed = 3f;
 
     public GameObject torch_object, projectile_prefab, light_slider, dark_slider;
-    public enum states { dark, light };
+    public enum states { dark, light, none };
     private states current_state;
-    private bool fired_projectile = false, torch_on = false;
+    private bool fired_projectile_light = false, fired_projectile_dark = false, torch_on = false;
 
     private Rigidbody2D my_rigidBody;
 
     private float light_meter = 100, dark_meter = 100;
 
-    private float base_damage, min_accuracy = 30f, base_range = 20f, damage, accuracy, range;
+    private float base_damage, min_accuracy = 30f, base_range = 10f, damage, accuracy, range;
 
     void Start()
     {
@@ -30,20 +30,21 @@ public class Player : MonoBehaviour
         torch_object = transform.Find("Torch").gameObject;
     }
 
-    private float time_since_last_fire = 0f, fire_rate = 0.1f;
+    private float time_since_last_fire_dark = 0f, time_since_last_fire_light = 0f, fire_rate_dark = 0.1f, fire_rate_light = 0.5f;
+    public LayerMask mask;
 
     private void TakeMouse()
     {
         if (current_state == states.dark)
         {
-            if (Input.GetMouseButton(0) && !fired_projectile)
+            if (Input.GetMouseButton(0) && !fired_projectile_dark)
             {
                 dark_meter -= 0.5f;
                 float z_value = transform.rotation.eulerAngles.z;
                 z_value += Random.Range(-accuracy, accuracy);
                 Quaternion projectile_rotation = Quaternion.Euler(0, 0, z_value);
                 GameObject.Instantiate(projectile_prefab, transform.position, projectile_rotation);
-                fired_projectile = true;
+                fired_projectile_dark = true;
             }
             torch_object.GetComponent<LOSRadialLight>().enabled = false;
         }
@@ -56,21 +57,20 @@ public class Player : MonoBehaviour
                     torch_object.GetComponent<LOSRadialLight>().enabled = true;
                     torch_object.GetComponent<LOSRadialLight>().radius = range;
                 }
-                if (!fired_projectile)
+                if (!fired_projectile_light)
                 {
                     light_meter -= 0.5f;
-                    for(int i = GameController.Enemies().Count - 1; i >= 0; --i)
+                    for (int i = GameController.Enemies().Count - 1; i >= 0; --i)
                     {
                         GameObject enemy = GameController.Enemies()[i];
-                        Ray2D ray_to_enemy = new Ray2D();
                         Vector3 dir_to_enemy = enemy.transform.position - transform.position;
-                        GameObject hit_object = Physics2D.Raycast(transform.position, dir_to_enemy, 100f).collider.gameObject;
-                        if (hit_object.tag == "Player" && Vector3.Distance(transform.position, enemy.transform.position) < range)
+                        GameObject hit_object = Physics2D.Raycast(transform.position, dir_to_enemy, 100f, mask).collider.gameObject;
+                        if (hit_object.tag == "Enemy" && Vector3.Distance(transform.position, enemy.transform.position) < range)
                         {
                             enemy.GetComponent<BasicEnemyController>().take_damage(3, states.light);
                         }
                     }
-                    fired_projectile = true;
+                    fired_projectile_light = true;
                 }
             }
             else if (Input.GetMouseButtonUp(0))
@@ -79,13 +79,24 @@ public class Player : MonoBehaviour
             }
 
         }
-        if (fired_projectile)
+        if (fired_projectile_dark)
         {
-            time_since_last_fire += Time.deltaTime;
-            if (time_since_last_fire >= fire_rate)
+            time_since_last_fire_dark += Time.deltaTime;
+
+            if (time_since_last_fire_dark >= fire_rate_dark)
             {
-                time_since_last_fire = 0;
-                fired_projectile = false;
+                time_since_last_fire_dark = 0;
+                fired_projectile_dark = false;
+            }
+
+        }
+        else if (fired_projectile_light)
+        {
+            time_since_last_fire_light += Time.deltaTime;
+            if (time_since_last_fire_light >= fire_rate_light)
+            {
+                time_since_last_fire_light = 0;
+                fired_projectile_light = false;
             }
         }
     }
@@ -181,6 +192,7 @@ public class Player : MonoBehaviour
             light_meter -= meter_loss_amount * Time.deltaTime;
             if (light_meter < 0)
             {
+                light_meter = 0;
                 // SceneManager.LoadScene("Game Over");
             }
         }
@@ -203,10 +215,13 @@ public class Player : MonoBehaviour
 
     public void ReceivePickup(int value, states type)
     {
-        if(type == states.dark){
+        if (type == states.dark)
+        {
             dark_meter += value;
-        } else {
+        }
+        else
+        {
             light_meter += value;
         }
-    }  
+    }
 }
