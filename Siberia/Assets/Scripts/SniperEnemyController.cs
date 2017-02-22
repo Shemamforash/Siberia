@@ -9,19 +9,24 @@ public class SniperEnemyController : BasicEnemyController
     [SerializeField]
     private float shot_range = 15f;
     [SerializeField]
-    private float charge_time = 1.0f;
+    private float charge_time = 1.0f; //How long the player has to be in view before firing
     [SerializeField]
-    private float warning_time = 0.1f;
+    private float warning_time = 0.1f; //How long the laser sight goes red for before firing
     [SerializeField]
-    private float cooldown_time = 1.0f;
+    private float cooldown_time = 1.0f; //How long after firing can the enemy start aiming again
+    [SerializeField]
+    private float hunt_time = 4.0f; //How long will the enemy track the player behind walls before getting bored
     [SerializeField]
     private LayerMask sniper_mask = -1;
+    [SerializeField]
+    private float min_preferred_range = 5.0f; 
 
     private LineRenderer laser_sight;
 
     private float charge_countdown;
     private float cooldown_countdown;
     private float warning_countdown;
+    private float hunt_countdown;
     private int state; //0: aiming, 1: locking, 2: warning, 3: cooldown
 
     private Vector2 fire_direction;
@@ -36,6 +41,7 @@ public class SniperEnemyController : BasicEnemyController
         charge_countdown = 0;
         cooldown_countdown = 0;
         warning_countdown = 0;
+        hunt_countdown = 0;
         state = 0;
     }
 
@@ -83,6 +89,8 @@ public class SniperEnemyController : BasicEnemyController
                         laser_sight.enabled = false;
                     }
                 }
+
+                hunt_countdown = 0;
             }
             else
             {
@@ -92,6 +100,17 @@ public class SniperEnemyController : BasicEnemyController
                 laser_sight.endColor = Color.white;
 
                 charge_countdown = 0;
+                hunt_countdown += Time.deltaTime;
+
+                if(hunt_countdown > hunt_time)
+                {
+                    laser_sight.enabled = false;
+                    //Player hasn't been visible for a while.
+                    seen_player = false;
+                    //Reset waypoint in case visual contact not re-established
+                    //The enemy will then start wandering from this new point
+                    waypoint = enemy_rigidbody.position;
+                }
             }
 
             //Update the laser sight position
@@ -110,12 +129,47 @@ public class SniperEnemyController : BasicEnemyController
             }
         }
 
-        //base.Chase_Player();
+        Face_direction(dir_to_player.normalized);
+
+        avoid_player(enemy_rigidbody, player_position);
     }
 
-    private void fire_sniper_bullet(Rigidbody2D enemy_rigidbody)
+    private void avoid_player(Rigidbody2D enemy_rigidbody, Vector2 player_position)
     {
-        
-        
+        //Move away from player
+        Vector2 dir_awayfrom_player =  enemy_rigidbody.position - player_position;
+        if (dir_awayfrom_player.sqrMagnitude < min_preferred_range * min_preferred_range)
+        {
+            dir_awayfrom_player.Normalize();
+
+            Vector2 dir_to_move = dir_awayfrom_player * move_speed;
+
+            //Use raycasts to repel from walls
+            float raycastRange = 1.0f;
+            RaycastHit2D wallAvoidCastLeft = Physics2D.Raycast(enemy_rigidbody.position, Quaternion.AngleAxis(45, new Vector3(0.0f, 0.0f, 1.0f)) * dir_awayfrom_player, raycastRange, environment_layer_mask);
+            RaycastHit2D wallAvoidCastRight = Physics2D.Raycast(enemy_rigidbody.position, Quaternion.AngleAxis(-45, new Vector3(0.0f, 0.0f, 1.0f)) * dir_awayfrom_player, raycastRange, environment_layer_mask);
+            if (wallAvoidCastLeft.collider != null)
+            {
+                float x_distance = wallAvoidCastLeft.point.x - enemy_rigidbody.position.x;
+                float y_distance = wallAvoidCastLeft.point.y - enemy_rigidbody.position.y;
+                float sq_distance = x_distance * x_distance + y_distance * y_distance;
+                float repelForce = raycastRange * raycastRange - sq_distance;
+
+                Vector3 avoid_strength = Quaternion.AngleAxis(-90, new Vector3(0.0f, 0.0f, 1.0f)) * dir_awayfrom_player * repelForce * wall_avoidance_strength;
+                dir_to_move += new Vector2(avoid_strength.x, avoid_strength.y);
+            }
+            if (wallAvoidCastRight.collider != null)
+            {
+                float x_distance = wallAvoidCastRight.point.x - enemy_rigidbody.position.x;
+                float y_distance = wallAvoidCastRight.point.y - enemy_rigidbody.position.y;
+                float sq_distance = x_distance * x_distance + y_distance * y_distance;
+                float repelForce = raycastRange * raycastRange - sq_distance;
+
+                Vector3 avoid_strength = Quaternion.AngleAxis(90, new Vector3(0.0f, 0.0f, 1.0f)) * dir_awayfrom_player * repelForce * wall_avoidance_strength;
+                dir_to_move += new Vector2(avoid_strength.x, avoid_strength.y);
+            }
+
+            enemy_rigidbody.MovePosition(enemy_rigidbody.position + dir_to_move * Time.deltaTime);
+        }
     }
 }
