@@ -12,20 +12,24 @@ public class TankEnemyController : BasicEnemyController
 
 
     private float shockwave_countdown;
+    private float firepause;
 
     void Start()
     {
         base.Init();
         shockwave_countdown = shockwave_cooldown;
+        firepause = 0.0f;
     }
 
     void Update()
     {
         base.MoveEnemy();
 
-        if(shockwave_countdown >= -5)
+        if(shockwave_countdown > 0)
             shockwave_countdown -= Time.deltaTime;
-        Debug.Log("SW_countown: " + shockwave_countdown);
+
+        if (firepause > 0)
+            firepause -= Time.deltaTime;
     }
 
     public override void Enemy_React(Rigidbody2D enemy_rigidbody, Vector2 player_position, Vector2 last_seen_player_location)
@@ -35,11 +39,12 @@ public class TankEnemyController : BasicEnemyController
         if (distance_to_player.sqrMagnitude < 2.0)
         {
             fire_shockwave(enemy_rigidbody);
+            firepause = 0.5f;
         }
 
         //Move directly towards last known location of player
         Vector2 dir_to_target = last_seen_player_location - enemy_rigidbody.position;
-        if (dir_to_target.magnitude > 0.1)
+        if (dir_to_target.magnitude > 0.1 && firepause <= 0)
         {
             dir_to_target.Normalize();
 
@@ -56,7 +61,7 @@ public class TankEnemyController : BasicEnemyController
                 float sq_distance = x_distance * x_distance + y_distance * y_distance;
                 float repelForce = raycastRange * raycastRange - sq_distance;
 
-                Vector3 avoid_strength = Quaternion.AngleAxis(-90, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target * wall_avoidance_strength;
+                Vector3 avoid_strength = Quaternion.AngleAxis(-90, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target * repelForce * wall_avoidance_strength;
                 dir_to_move += new Vector2(avoid_strength.x, avoid_strength.y);
             }
             if (wallAvoidCastRight.collider != null)
@@ -66,7 +71,7 @@ public class TankEnemyController : BasicEnemyController
                 float sq_distance = x_distance * x_distance + y_distance * y_distance;
                 float repelForce = raycastRange * raycastRange - sq_distance;
 
-                Vector3 avoid_strength = Quaternion.AngleAxis(90, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target * wall_avoidance_strength;
+                Vector3 avoid_strength = Quaternion.AngleAxis(90, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target * repelForce * wall_avoidance_strength;
                 dir_to_move += new Vector2(avoid_strength.x, avoid_strength.y);
             }
 
