@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnerBehaviour : MonoBehaviour
 {
-    public GameObject enemy_prefab, sapper_prefab;
+    public GameObject enemy_prefab, sapper_prefab, tank_prefab;
     private int total_enemies = 100;
     private int enemies_allowed_on_screen = 10;
 
@@ -25,7 +25,14 @@ public class SpawnerBehaviour : MonoBehaviour
             while (enemies_on_screen.Count < enemies_allowed_on_screen)
             {
                 GameObject new_enemy = null;
-                if (Random.Range(0, 10) < 3)
+                int enemy_ID = Random.Range(0, 10);
+
+                if (enemy_ID < 1)
+                {
+                    new_enemy = GameObject.Instantiate(tank_prefab, transform.position, transform.rotation);
+                    new_enemy.GetComponent<TankEnemyController>().SetSpawner(gameObject);
+                }
+                else if(enemy_ID < 4)
                 {
                     new_enemy = GameObject.Instantiate(sapper_prefab, transform.position, transform.rotation);
                     new_enemy.GetComponent<SapperBehaviour>().SetSpawner(gameObject);

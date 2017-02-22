@@ -264,7 +264,7 @@ public abstract class BasicEnemyController : MonoBehaviour
             GameController.UnregisterEnemy(gameObject);
             spawner.GetComponent<SpawnerBehaviour>().Unregister(gameObject);
             Destroy(gameObject);
-            //Lol
+            
         }
     }
 }

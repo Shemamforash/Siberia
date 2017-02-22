@@ -56,6 +56,8 @@ MonoBehaviour:
     type: 2}
   sapper_prefab: {fileID: 1423884302061676, guid: 160a5334a47f01f42a2a82e753be69bf,
     type: 2}
+  tank_prefab: {fileID: 1719714590094518, guid: 53fe3d72885d02d4bbbcff3c9b01e25d,
+    type: 2}
 --- !u!212 &212434855689636846
 SpriteRenderer:
   m_ObjectHideFlags: 1

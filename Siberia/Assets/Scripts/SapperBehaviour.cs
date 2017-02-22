@@ -15,7 +15,7 @@ public class SapperBehaviour : BasicEnemyController
         enemy_HP = 1;
         detection_radius = 8;
         wander_radius = 10;
-        *///
+        */
     }
 
     void Update()
