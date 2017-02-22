@@ -14,13 +14,13 @@ player_range: 10
 player_dark_fire_rate: 0.1
 player_light_fire_rate: 0.2
 
-light_damage:
-light_range:
-light_fire_rate:
+light_damage: 5
+light_range: 10
+light_fire_rate: 0.25
 
-dark_damage:
-dark_accuracy:
-dark_fire_rate:
+dark_damage: 10
+dark_accuracy: 30
+dark_fire_rate: 0.1
 
 grunt_move_speed: 1
 grunt_hp: 100

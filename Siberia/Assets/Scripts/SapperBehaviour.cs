@@ -9,16 +9,21 @@ public class SapperBehaviour : BasicEnemyController
 
     void Start()
     {
-		base.Init();
+        base.Init();
         move_speed = 4;
         enemy_HP = 1;
         detection_radius = 8;
         wander_radius = 10;
     }
 
-	void Update(){
-		base.MoveEnemy();
-	}
+    void Update()
+    {
+        base.MoveEnemy();
+    }
+
+    public override void Enemy_React(Rigidbody2D enemy_rigidbody, Vector2 last_seen_player_location)
+    {
+    }
 
     private void Detonate(GameObject other)
     {
@@ -38,16 +43,17 @@ public class SapperBehaviour : BasicEnemyController
                     // TODO player take damage
                 }
             }
-			take_damage(100, Player.states.none);
+            take_damage(100, Player.states.none);
         }
     }
 
     void OnCollisionEnter2D(Collision2D collider)
     {
-		Detonate(collider.gameObject);
+        Detonate(collider.gameObject);
     }
 
-	void OnTriggerEnter2D(Collider2D collider){
-		Detonate(collider.gameObject);
-	}
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        Detonate(collider.gameObject);
+    }
 }
