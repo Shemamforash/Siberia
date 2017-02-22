@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BasicEnemyController : MonoBehaviour
+public abstract class BasicEnemyController : MonoBehaviour
 {
 
     [SerializeField]
@@ -19,7 +19,9 @@ public class BasicEnemyController : MonoBehaviour
     [SerializeField]
     protected float wander_radius = 4;
     [SerializeField]
-    private LayerMask environment_layer_mask = -1;
+    protected LayerMask environment_layer_mask = -1;
+    [SerializeField]
+    protected float wall_avoidance_strength = 0.5f;
 
     [SerializeField]
     public GameObject player_object;
@@ -33,9 +35,9 @@ public class BasicEnemyController : MonoBehaviour
 
     private float active_detection_radius;
     private Vector2 last_seen_player_location;
-    private bool seen_player;
+    protected bool seen_player;
 
-    private Vector2 waypoint;
+    protected Vector2 waypoint;
     private float wander_counter;
 
     protected GameObject spawner;
@@ -88,7 +90,7 @@ public class BasicEnemyController : MonoBehaviour
             {
                 if (seen_player)
                 {
-                    Enemy_Approach();
+                    Enemy_React(enemy_rigidbody, last_seen_player_location);
                 }
                 else
                 {
@@ -106,7 +108,7 @@ public class BasicEnemyController : MonoBehaviour
                 active_detection_radius = detection_radius * chase_radius_multiplier;
                 last_seen_player_location = new Vector2(player_transform.position.x, player_transform.position.y);
 
-                Enemy_Approach();
+                Enemy_React(enemy_rigidbody, last_seen_player_location);
             }
         }
         else
@@ -159,27 +161,9 @@ public class BasicEnemyController : MonoBehaviour
         }
     }
 
-    private void Enemy_Approach()
-    {
-        //Move directly towards last known location of player
-        Vector2 dir_to_target = last_seen_player_location - enemy_rigidbody.position;
-        if (dir_to_target.magnitude > 0.1f)
-        {
-            dir_to_target.Normalize();
-            enemy_rigidbody.MovePosition(enemy_rigidbody.position + dir_to_target * move_speed * Time.deltaTime);
-            Face_direction(dir_to_target);
-        }
-        else
-        {
-            //Reached last known location of player. Need to re-establish eye contact.
-            seen_player = false;
-            //Reset waypoint in case visual contact not re-established
-            //The enemy will then start wandering from this new point
-            waypoint = enemy_rigidbody.position;
-        }
-    }
+    public abstract void Enemy_React(Rigidbody2D enemy_rigidbody, Vector2 last_seen_player_location);
 
-    private void Face_direction(Vector3 direction)
+    public void Face_direction(Vector3 direction)
     {
         Vector3 reference_dir = new Vector3(0, 1, 0);
         float dot_product = Vector3.Dot(reference_dir, direction);
