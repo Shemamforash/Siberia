@@ -72,7 +72,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
@@ -88,10 +88,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7f9f514ac35e94489b370483f055368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  x_max_bound: 20
-  x_min_bound: -20
-  y_max_bound: 20
-  y_min_bound: -20
+  sniper_bullet_duration: 3
+  sniper_bullet_speed: 30
 --- !u!212 &212640993858212496
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -58,6 +58,8 @@ MonoBehaviour:
     type: 2}
   tank_prefab: {fileID: 1719714590094518, guid: 53fe3d72885d02d4bbbcff3c9b01e25d,
     type: 2}
+  sniper_prefab: {fileID: 1678576913543770, guid: 0189e8a8ade20594590f058835fdbe29,
+    type: 2}
 --- !u!212 &212434855689636846
 SpriteRenderer:
   m_ObjectHideFlags: 1
