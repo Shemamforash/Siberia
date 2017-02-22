@@ -17,8 +17,6 @@ public class MeleeEnemyController : BasicEnemyController
 
             //Use raycasts to repel from walls
             float raycastRange = 1.0f;
-            Debug.DrawRay(enemy_rigidbody.position, Quaternion.AngleAxis(45, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target, Color.red);
-            Debug.DrawRay(enemy_rigidbody.position, Quaternion.AngleAxis(-45, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target, Color.blue);
             RaycastHit2D wallAvoidCastLeft = Physics2D.Raycast(enemy_rigidbody.position, Quaternion.AngleAxis(45, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target, raycastRange, environment_layer_mask);
             RaycastHit2D wallAvoidCastRight = Physics2D.Raycast(enemy_rigidbody.position, Quaternion.AngleAxis(-45, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target, raycastRange, environment_layer_mask);
             if (wallAvoidCastLeft.collider != null)
@@ -28,7 +26,7 @@ public class MeleeEnemyController : BasicEnemyController
                 float sq_distance = x_distance * x_distance + y_distance * y_distance;
                 float repelForce = raycastRange * raycastRange - sq_distance;
 
-                Vector3 avoid_strength = Quaternion.AngleAxis(-90, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target * wall_avoidance_strength;
+                Vector3 avoid_strength = Quaternion.AngleAxis(-90, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target * repelForce * wall_avoidance_strength;
                 dir_to_move += new Vector2(avoid_strength.x, avoid_strength.y);
             }
             if (wallAvoidCastRight.collider != null)
@@ -38,7 +36,7 @@ public class MeleeEnemyController : BasicEnemyController
                 float sq_distance = x_distance * x_distance + y_distance * y_distance;
                 float repelForce = raycastRange * raycastRange - sq_distance;
 
-                Vector3 avoid_strength = Quaternion.AngleAxis(90, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target * wall_avoidance_strength;
+                Vector3 avoid_strength = Quaternion.AngleAxis(90, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target * repelForce * wall_avoidance_strength;
                 dir_to_move += new Vector2(avoid_strength.x, avoid_strength.y);
             }
 
