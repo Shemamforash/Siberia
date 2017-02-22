@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BasicEnemyController : MonoBehaviour
+public abstract class BasicEnemyController : MonoBehaviour
 {
 
     [SerializeField]
-    private float move_speed = 1;
+    protected float move_speed = 1;
     [SerializeField]
     private int enemy_HP = 100;
 
@@ -19,9 +19,9 @@ public class BasicEnemyController : MonoBehaviour
     [SerializeField]
     private float wander_radius = 4;
     [SerializeField]
-    private LayerMask environment_layer_mask = -1;
+    protected LayerMask environment_layer_mask = -1;
     [SerializeField]
-    private float wall_avoidance_strength = 0.5f;
+    protected float wall_avoidance_strength = 0.5f;
 
     [SerializeField]
     public GameObject player_object;
@@ -35,9 +35,9 @@ public class BasicEnemyController : MonoBehaviour
 
     private float active_detection_radius;
     private Vector2 last_seen_player_location;
-    private bool seen_player;
+    protected bool seen_player;
 
-    private Vector2 waypoint;
+    protected Vector2 waypoint;
     private float wander_counter;
 
     private GameObject spawner;
@@ -81,7 +81,7 @@ public class BasicEnemyController : MonoBehaviour
             {
                 if (seen_player)
                 {
-                    Enemy_Approach();
+                    Enemy_React(enemy_rigidbody, last_seen_player_location);
                 }
                 else
                 {
@@ -99,7 +99,7 @@ public class BasicEnemyController : MonoBehaviour
                 active_detection_radius = detection_radius * chase_radius_multiplier;
                 last_seen_player_location = new Vector2(player_transform.position.x, player_transform.position.y);
 
-                Enemy_Approach();
+                Enemy_React(enemy_rigidbody, last_seen_player_location);
             }
         }
         else
@@ -152,58 +152,9 @@ public class BasicEnemyController : MonoBehaviour
         }
     }
 
-    private void Enemy_Approach()
-    {
-        //Move directly towards last known location of player
-        Vector2 dir_to_target = last_seen_player_location - enemy_rigidbody.position;
-        if (dir_to_target.magnitude > 0.1f)
-        {
-            dir_to_target.Normalize();
+    public abstract void Enemy_React(Rigidbody2D enemy_rigidbody, Vector2 last_seen_player_location);
 
-            Vector2 dir_to_move = dir_to_target * move_speed;
-
-            //Use raycasts to repel from walls
-            float raycastRange = 1.0f;
-            Debug.DrawRay(enemy_rigidbody.position, Quaternion.AngleAxis(45, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target, Color.red);
-            Debug.DrawRay(enemy_rigidbody.position, Quaternion.AngleAxis(-45, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target, Color.blue);
-            RaycastHit2D wallAvoidCastLeft = Physics2D.Raycast(enemy_rigidbody.position, Quaternion.AngleAxis(45, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target, raycastRange, environment_layer_mask);
-            RaycastHit2D wallAvoidCastRight = Physics2D.Raycast(enemy_rigidbody.position, Quaternion.AngleAxis(-45, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target, raycastRange, environment_layer_mask);
-            if(wallAvoidCastLeft.collider != null)
-            {
-                float x_distance = wallAvoidCastLeft.point.x - enemy_rigidbody.position.x;
-                float y_distance = wallAvoidCastLeft.point.y - enemy_rigidbody.position.y;
-                float sq_distance = x_distance * x_distance + y_distance * y_distance;
-                float repelForce = raycastRange * raycastRange - sq_distance;
-
-                Vector3 avoid_strength = Quaternion.AngleAxis(-90, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target * wall_avoidance_strength;
-                dir_to_move += new Vector2(avoid_strength.x, avoid_strength.y);
-            }
-            if (wallAvoidCastRight.collider != null)
-            {
-                float x_distance = wallAvoidCastRight.point.x - enemy_rigidbody.position.x;
-                float y_distance = wallAvoidCastRight.point.y - enemy_rigidbody.position.y;
-                float sq_distance = x_distance * x_distance + y_distance * y_distance;
-                float repelForce = raycastRange * raycastRange - sq_distance;
-
-                Vector3 avoid_strength = Quaternion.AngleAxis(90, new Vector3(0.0f, 0.0f, 1.0f)) * dir_to_target * wall_avoidance_strength;
-                dir_to_move += new Vector2(avoid_strength.x, avoid_strength.y);
-            }
-
-
-            enemy_rigidbody.MovePosition(enemy_rigidbody.position + dir_to_move * Time.deltaTime);
-            Face_direction(dir_to_target);
-        }
-        else
-        {
-            //Reached last known location of player. Need to re-establish eye contact.
-            seen_player = false;
-            //Reset waypoint in case visual contact not re-established
-            //The enemy will then start wandering from this new point
-            waypoint = enemy_rigidbody.position;
-        }
-    }
-
-    private void Face_direction(Vector3 direction)
+    public void Face_direction(Vector3 direction)
     {
         Vector3 reference_dir = new Vector3(0, 1, 0);
         float dot_product = Vector3.Dot(reference_dir, direction);
