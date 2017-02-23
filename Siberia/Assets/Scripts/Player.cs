@@ -12,10 +12,16 @@ public class Player : MonoBehaviour
     public float base_move_speed = 3f, meter_loss_amount = 16;
     private float move_speed = 3f;
 
-    public GameObject torch_object, projectile_prefab, light_slider, dark_slider;
+    public GameObject torch_object, projectile_prefab;
+    public GameObject light_slider, dark_slider;
+    public Image state_UI;
+
     public enum states { dark, light, none };
     private states current_state;
     private bool fired_projectile_light = false, fired_projectile_dark = false, torch_on = false;
+
+    private Color lightColour = new Color(0.9f, 0.8f, 0.1f);
+    private Color darkColour = new Color(0.8f, 0.1f, 0.1f);
 
     private Rigidbody2D my_rigidBody;
 
@@ -167,10 +173,12 @@ public class Player : MonoBehaviour
         if (current_state == states.dark)
         {
             current_state = states.light;
+            state_UI.color = lightColour;
         }
         else
         {
             current_state = states.dark;
+            state_UI.color = darkColour;
         }
     }
 
