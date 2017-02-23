@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212639124673975068}
   - component: {fileID: 61530905304427548}
   - component: {fileID: 114295230444188736}
-  m_Layer: 9
+  m_Layer: 13
   m_Name: Dark Pickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}

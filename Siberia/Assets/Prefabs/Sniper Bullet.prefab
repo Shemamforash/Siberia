@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sniper_bullet_duration: 3
-  sniper_bullet_speed: 30
+  sniper_bullet_speed: 20
 --- !u!212 &212640993858212496
 SpriteRenderer:
   m_ObjectHideFlags: 1

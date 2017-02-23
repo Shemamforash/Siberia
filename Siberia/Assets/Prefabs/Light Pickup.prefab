@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212493605184388220}
   - component: {fileID: 61332110127929966}
   - component: {fileID: 114363597932799662}
-  m_Layer: 9
+  m_Layer: 13
   m_Name: Light Pickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
