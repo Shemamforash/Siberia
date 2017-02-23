@@ -61,7 +61,7 @@ public class SniperEnemyController : BasicEnemyController
             
             //Aim in the player's direction
             RaycastHit2D laser_hit = Physics2D.Raycast(enemy_rigidbody.position, dir_to_player, shot_range, sniper_mask);
-            if (laser_hit.collider.tag == "Player")
+            if (laser_hit.collider != null && laser_hit.collider.tag == "Player")
             {
                 state = 1;
                 //Purple laser indicates lock-on
