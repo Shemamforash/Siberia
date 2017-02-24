@@ -8,11 +8,11 @@ public class GameController : MonoBehaviour
     public Transform player_transform;
 
     private static List<GameObject> enemies = new List<GameObject>();
+    private static Dictionary<string, float> game_data = new Dictionary<string, float>();
 
     public void Awake()
     {
         StreamReader file_reader = new StreamReader("Assets/Scripts/game_data.txt");
-        Dictionary<string, float> game_data = new Dictionary<string, float>();
         string next_line = file_reader.ReadLine();
         while (next_line != null)
         {
@@ -36,6 +36,11 @@ public class GameController : MonoBehaviour
             game_data["light_damage"],
             game_data["dark_damage"]
         );
+    }
+
+    public static Dictionary<string, float> GetGameData()
+    {
+        return game_data;
     }
 
     public static void RegisterEnemy(GameObject enemy)

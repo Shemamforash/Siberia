@@ -4,20 +4,27 @@ using UnityEngine;
 
 public class SapperBehaviour : BasicEnemyController
 {
-    public int damage_radius = 5, damage = 10;
+    private int damage_radius;
     public LayerMask mask;
 
     void Start()
     {
         base.Init();
-        /*
-        move_speed = 4;
-        enemy_HP = 1;
-        detection_radius = 8;
-        wander_radius = 10;
-        */
+        SetSapperVals();
     }
 
+    private void SetSapperVals(){
+        Dictionary<string, float> game_data = GameController.GetGameData();
+        this.move_speed = game_data["sapper_move_speed"];
+        this.health = game_data["sapper_hp"];
+        this.detection_radius = game_data["sapper_detection_rad"];
+        this.chase_radius_multiplier = game_data["sapper_chase_radius_multiplier"];
+        this.wander_radius = game_data["sapper_wander_radius"];
+        this.damage = game_data["sapper_damage"];
+        this.fire_rate = game_data["sapper_fire_rate"];
+        this.powerup_value = game_data["sapper_powerup_value"];
+        this.damage_radius = (int)game_data["sapper_damage_radius"];
+    }
     void Update()
     {
         base.MoveEnemy();

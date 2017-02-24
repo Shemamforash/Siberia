@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public class SniperEnemyController : BasicEnemyController
@@ -7,19 +8,19 @@ public class SniperEnemyController : BasicEnemyController
     [SerializeField]
     private GameObject sniper_shot;
     [SerializeField]
-    private float shot_range = 15f;
+    private float shot_range;
     [SerializeField]
-    private float charge_time = 1.0f; //How long the player has to be in view before firing
+    private float charge_time; //How long the player has to be in view before firing
     [SerializeField]
-    private float warning_time = 0.1f; //How long the laser sight goes red for before firing
+    private float warning_time; //How long the laser sight goes red for before firing
     [SerializeField]
-    private float cooldown_time = 1.0f; //How long after firing can the enemy start aiming again
+    private float cooldown_time; //How long after firing can the enemy start aiming again
     [SerializeField]
-    private float hunt_time = 4.0f; //How long will the enemy track the player behind walls before getting bored
+    private float hunt_time; //How long will the enemy track the player behind walls before getting bored
     [SerializeField]
     private LayerMask sniper_mask = -1;
     [SerializeField]
-    private float min_preferred_range = 5.0f; 
+    private float min_preferred_range = 5.0f;
 
     private LineRenderer laser_sight;
 
@@ -34,7 +35,7 @@ public class SniperEnemyController : BasicEnemyController
     void Start()
     {
         base.Init();
-
+        SetSniperVals();
         laser_sight = this.gameObject.transform.GetChild(0).GetComponent<LineRenderer>();
         laser_sight.widthMultiplier = 0.05f;
 
@@ -43,6 +44,25 @@ public class SniperEnemyController : BasicEnemyController
         warning_countdown = 0;
         hunt_countdown = 0;
         state = 0;
+    }
+
+    private void SetSniperVals()
+    {
+        Dictionary<string, float> game_data = GameController.GetGameData();
+        this.move_speed = game_data["sniper_move_speed"];
+        this.health = game_data["sniper_hp"];
+        this.detection_radius = game_data["sniper_detection_rad"];
+        this.chase_radius_multiplier = game_data["sniper_chase_radius_multiplier"];
+        this.wander_radius = game_data["sniper_wander_radius"];
+        this.damage = game_data["sniper_damage"];
+        this.charge_time = game_data["sniper_charge_time"];
+        this.warning_time = game_data["sniper_warning_time"];
+        this.cooldown_time = game_data["sniper_cooldown_time"];
+        this.powerup_value = game_data["sniper_powerup_value"];
+        this.hunt_time = game_data["sniper_hunt_time"];
+        this.min_preferred_range = game_data["sniper_min_range"];
+        this.wall_avoidance_strength = game_data["sniper_wall_avoidance"];
+        this.shot_range = game_data["sniper_range"];
     }
 
     void Update()
@@ -57,8 +77,8 @@ public class SniperEnemyController : BasicEnemyController
         if (state == 0 || state == 1 || state == 2)
         {
             laser_sight.enabled = true;
-            fire_direction = dir_to_player.normalized; 
-            
+            fire_direction = dir_to_player.normalized;
+
             //Aim in the player's direction
             RaycastHit2D laser_hit = Physics2D.Raycast(enemy_rigidbody.position, dir_to_player, shot_range, sniper_mask);
             if (laser_hit.collider != null && laser_hit.collider.tag == "Player")
@@ -102,7 +122,7 @@ public class SniperEnemyController : BasicEnemyController
                 charge_countdown = 0;
                 hunt_countdown += Time.deltaTime;
 
-                if(hunt_countdown > hunt_time)
+                if (hunt_countdown > hunt_time)
                 {
                     laser_sight.enabled = false;
                     //Player hasn't been visible for a while.
@@ -117,12 +137,12 @@ public class SniperEnemyController : BasicEnemyController
             Vector3[] laser_sight_points = { enemy_rigidbody.position, laser_hit.point };
             laser_sight.SetPositions(laser_sight_points);
         }
-        else if(state == 3)
+        else if (state == 3)
         {
             //Recharge
             cooldown_countdown += Time.deltaTime;
 
-            if(cooldown_countdown > cooldown_time)
+            if (cooldown_countdown > cooldown_time)
             {
                 state = 0;
                 cooldown_countdown = 0;
@@ -137,7 +157,7 @@ public class SniperEnemyController : BasicEnemyController
     private void avoid_player(Rigidbody2D enemy_rigidbody, Vector2 player_position)
     {
         //Move away from player
-        Vector2 dir_awayfrom_player =  enemy_rigidbody.position - player_position;
+        Vector2 dir_awayfrom_player = enemy_rigidbody.position - player_position;
         if (dir_awayfrom_player.sqrMagnitude < min_preferred_range * min_preferred_range)
         {
             dir_awayfrom_player.Normalize();

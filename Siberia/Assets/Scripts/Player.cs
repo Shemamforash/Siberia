@@ -63,7 +63,8 @@ public class Player : MonoBehaviour
                 float z_value = transform.rotation.eulerAngles.z;
                 z_value += Random.Range(-accuracy, accuracy);
                 Quaternion projectile_rotation = Quaternion.Euler(0, 0, z_value);
-                GameObject.Instantiate(projectile_prefab, transform.position, projectile_rotation);
+                GameObject new_projectile = GameObject.Instantiate(projectile_prefab, transform.position, projectile_rotation);
+                new_projectile.GetComponent<ProjectileBehaviour>().SetDamage((int)dark_damage);
                 fired_projectile_dark = true;
             }
             torch_object.GetComponent<LOSRadialLight>().enabled = false;
@@ -230,8 +231,8 @@ public class Player : MonoBehaviour
                 dark_meter = 0;
             }
         }
-        move_speed = Player.base_move_speed * (light_meter / 100f);
-        dark_damage = Player.base_dark_damage - light_meter / 10f + 1;
+        move_speed = Player.base_move_speed * ((light_meter / 200f) + 0.5f);
+        dark_damage = Player.base_dark_damage * (light_meter / 100f) + 1;
         light_damage = Player.base_light_damage - light_meter / 10f + 1;
         range = Player.base_range * dark_meter / 100f;
         accuracy = Player.base_accuracy * (100 - dark_meter) / 100f;

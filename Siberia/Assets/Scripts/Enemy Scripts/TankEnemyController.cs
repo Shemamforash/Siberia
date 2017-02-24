@@ -16,15 +16,29 @@ public class TankEnemyController : BasicEnemyController
     void Start()
     {
         base.Init();
+        SetTankVals();
         shockwave_countdown = shockwave_cooldown;
         firepause = 0.0f;
+    }
+    private void SetTankVals()
+    {
+        Dictionary<string, float> game_data = GameController.GetGameData();
+        this.move_speed = game_data["tank_move_speed"];
+        this.health = game_data["tank_hp"];
+        this.detection_radius = game_data["tank_detection_rad"];
+        this.chase_radius_multiplier = game_data["tank_chase_radius_multiplier"];
+        this.wander_radius = game_data["tank_wander_radius"];
+        this.damage = game_data["tank_damage"];
+        this.fire_rate = game_data["tank_fire_rate"];
+        this.powerup_value = game_data["tank_powerup_value"];
+        this.wall_avoidance_strength = game_data["tank_wall_avoidance"];
     }
 
     void Update()
     {
         base.MoveEnemy();
 
-        if(shockwave_countdown > 0)
+        if (shockwave_countdown > 0)
             shockwave_countdown -= Time.deltaTime;
 
         if (firepause > 0)
@@ -49,11 +63,11 @@ public class TankEnemyController : BasicEnemyController
 
     private void fire_shockwave(Rigidbody2D enemy_rigidbody)
     {
-        if(shockwave_countdown <= 0)
+        if (shockwave_countdown <= 0)
         {
             Instantiate(shockwave_attack, enemy_rigidbody.position, Quaternion.AngleAxis(enemy_rigidbody.rotation, new Vector3(0.0f, 0.0f, 1.0f)));
             shockwave_countdown = shockwave_cooldown;
         }
-        
+
     }
 }

@@ -8,8 +8,8 @@ player_accuracy: 30
 player_range: 10
 dark_fire_rate: 0.1
 light_fire_rate: 0.5
-light_damage: 5
-dark_damage: 10
+light_damage: 10
+dark_damage: 25
 
 grunt_move_speed: 1
 grunt_hp: 100
@@ -19,6 +19,7 @@ grunt_wander_radius: 4
 grunt_damage: 2
 grunt_fire_rate: 1
 grunt_powerup_value: 5
+grunt_wall_avoidance: 1
 
 sapper_move_speed: 4
 sapper_hp: 1
@@ -28,6 +29,33 @@ sapper_wander_radius: 8
 sapper_damage: 5
 sapper_fire_rate: 1
 sapper_powerup_value: 0
+sapper_damage_radius: 3
+sapper_wall_avoidance: 0.5
+
+sniper_move_speed: 2
+sniper_hp: 50
+sniper_detection_rad: 2
+sniper_chase_radius_multiplier: 10
+sniper_wander_radius: 8
+sniper_damage: 20
+sniper_charge_time: 1
+sniper_warning_time: 0.2
+sniper_cooldown_time: 1
+sniper_powerup_value: 10
+sniper_hunt_time: 4
+sniper_min_range: 6
+sniper_wall_avoidance: 1
+sniper_range: 15
+
+tank_move_speed: 4
+tank_hp: 400
+tank_detection_rad: 2
+tank_chase_radius_multiplier: 10
+tank_wander_radius: 8
+tank_damage: 5
+tank_fire_rate: 1
+tank_powerup_value: 20
+tank_wall_avoidance: 0.5
 
 basic_spawner_total: 100
 basic_spawner_allowed: 10

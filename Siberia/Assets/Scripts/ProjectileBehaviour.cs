@@ -6,12 +6,17 @@ public class ProjectileBehaviour : MonoBehaviour
 {
     public float x_max_bound = 20, x_min_bound = -20, y_max_bound = 20, y_min_bound = -20;
     private float time_alive = 0f;
-    private float duration = 3f, speed = 12f;
-    private List<GameObject> trails = new List<GameObject>();
+    private float duration, speed;
+    private int damage;
 
-    public void RegisterTrail(GameObject trail)
-    {
-        this.trails.Add(trail);
+    void Start(){
+        Dictionary<string, float> game_data = GameController.GetGameData();
+        this.duration = game_data["projectile_duration"];
+        this.speed = game_data["projectile_speed"];
+    }
+
+    public void SetDamage(int damage){
+        this.damage = damage;
     }
 
     // Update is called once per frame
@@ -52,10 +57,6 @@ public class ProjectileBehaviour : MonoBehaviour
 
     protected void DestroyProjectile()
     {
-        foreach (GameObject trail in trails)
-        {
-            Destroy(trail);
-        }
         Destroy(gameObject);
     }
 
@@ -63,7 +64,7 @@ public class ProjectileBehaviour : MonoBehaviour
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            collision.gameObject.GetComponent<BasicEnemyController>().take_damage(10, Player.states.dark);
+            collision.gameObject.GetComponent<BasicEnemyController>().take_damage(damage, Player.states.dark);
             //Debug.Log("Hit target");
         }
         DestroyProjectile();

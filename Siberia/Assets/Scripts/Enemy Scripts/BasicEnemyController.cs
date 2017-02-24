@@ -7,8 +7,6 @@ public abstract class BasicEnemyController : MonoBehaviour
 {
     [SerializeField]
     protected LayerMask environment_layer_mask = -1;
-    [SerializeField]
-    protected float wall_avoidance_strength = 0.5f;
 
     [SerializeField]
     public GameObject player_object;
@@ -29,8 +27,7 @@ public abstract class BasicEnemyController : MonoBehaviour
 
     protected GameObject spawner;
 
-    protected float move_speed, health, detection_radius, chase_radius_multiplier, wander_radius, damage, fire_rate, powerup_value;
-
+    protected float move_speed, health, detection_radius, chase_radius_multiplier, wander_radius, damage, fire_rate, powerup_value, wall_avoidance_strength;
 
     public void SetSpawner(GameObject spawner)
     {
@@ -248,7 +245,7 @@ public abstract class BasicEnemyController : MonoBehaviour
             }
             if (new_pickup != null)
             {
-                new_pickup.GetComponent<Spinny>().SetPickupValue(5, type);
+                new_pickup.GetComponent<Spinny>().SetPickupValue((int)powerup_value, type);
             }
             GameController.UnregisterEnemy(gameObject);
             spawner.GetComponent<SpawnerBehaviour>().Unregister(gameObject);
