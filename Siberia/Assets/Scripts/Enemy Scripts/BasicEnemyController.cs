@@ -29,6 +29,8 @@ public abstract class BasicEnemyController : MonoBehaviour
 
     protected GameObject spawner;
 
+    protected float move_speed, health, detection_radius, chase_radius_multiplier, wander_radius, damage, fire_rate, powerup_value;
+
 
     public void SetSpawner(GameObject spawner)
     {
@@ -228,12 +230,12 @@ public abstract class BasicEnemyController : MonoBehaviour
 
     public void take_damage(int dmg, Player.states type)
     {
-        enemy_HP -= dmg;
+        health -= dmg;
         Vector2 enemy_screen_location = Camera.main.WorldToScreenPoint(transform.position);
         GameObject new_damage = GameObject.Instantiate(damage_text, enemy_screen_location, Quaternion.Euler(Vector3.up));
         new_damage.transform.SetParent(canvas_object.transform);
         new_damage.GetComponent<Text>().text = dmg.ToString();
-        if (enemy_HP <= 0)
+        if (health <= 0)
         {
             GameObject new_pickup = null;
             if (type == Player.states.light)
