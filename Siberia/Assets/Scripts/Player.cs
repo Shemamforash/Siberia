@@ -73,6 +73,7 @@ public class Player : MonoBehaviour
         {
             if (Input.GetMouseButton(0))
             {
+                light_meter -= 4f * Time.deltaTime;
                 if (range != 0)
                 {
                     torch_object.GetComponent<LOSRadialLight>().enabled = true;
@@ -80,7 +81,6 @@ public class Player : MonoBehaviour
                 }
                 if (!fired_projectile_light)
                 {
-                    light_meter -= 0.5f;
                     for (int i = GameController.Enemies().Count - 1; i >= 0; --i)
                     {
                         GameObject enemy = GameController.Enemies()[i];
@@ -221,6 +221,8 @@ public class Player : MonoBehaviour
             {
                 light_meter = 0;
                 // SceneManager.LoadScene("Game Over");
+            } else if (dark_meter > 100){
+                dark_meter = 100;
             }
         }
         else
@@ -229,12 +231,19 @@ public class Player : MonoBehaviour
             if (dark_meter < 0)
             {
                 dark_meter = 0;
+            } else if (dark_meter > 100){
+                dark_meter = 100;
             }
         }
-        move_speed = Player.base_move_speed * ((light_meter / 200f) + 0.5f);
-        dark_damage = Player.base_dark_damage * (light_meter / 100f) + 1;
-        light_damage = Player.base_light_damage - light_meter / 10f + 1;
-        range = Player.base_range * dark_meter / 100f;
+        //Min move speed is 50% base_speed
+        float light_meter_mod = light_meter / 200f + 0.5f;
+        move_speed = Player.base_move_speed * light_meter_mod;
+        //Min dark damage = 1
+        dark_damage = Player.base_dark_damage * light_meter_mod;
+        //Min light damage = 1
+        light_damage = Player.base_light_damage - (10 - light_meter / 10f) + 1;
+        //Min light range = 0
+        range = Player.base_range * (dark_meter / 200f + 0.5f);
         accuracy = Player.base_accuracy * (100 - dark_meter) / 100f;
 
         light_slider.GetComponent<Slider>().value = light_meter;

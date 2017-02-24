@@ -22,6 +22,7 @@ public class MeleeEnemyController : BasicEnemyController
         this.fire_rate = game_data["grunt_fire_rate"];
         this.powerup_value = game_data["grunt_powerup_value"];
         this.wall_avoidance_strength = game_data["grunt_wall_avoidance"];
+        this.size = game_data["grunt_size"];
     }
 
     public override void Enemy_React(Rigidbody2D enemy_rigidbody, Vector2 player_position, Vector2 last_seen_player_location)

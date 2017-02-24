@@ -125,7 +125,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 10000
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -158,8 +158,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24c9973169bc7834d86ecf38669cf05d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  base_move_speed: 3
-  meter_loss_amount: 2
   torch_object: {fileID: 0}
   projectile_prefab: {fileID: 1850494287697962, guid: 7cc14c3b601274745983d04b86bbfad4,
     type: 2}
@@ -168,6 +166,7 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 3072
+  state_UI: {fileID: 0}
 --- !u!114 &114705007112958480
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -182,11 +181,11 @@ MonoBehaviour:
   isStatic: 0
   coneAngle: 0
   faceAngle: 0
-  degreeStep: 0.66
+  degreeStep: 2
   invertMode: 0
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 3328
+    m_Bits: 3072
   color: {r: 1, g: 1, b: 1, a: 0.18431373}
   material: {fileID: 2100000, guid: 2e91f08796cbd44849f1e15382cade3d, type: 2}
   orderInLayer: 0

@@ -24,6 +24,7 @@ public class SapperBehaviour : BasicEnemyController
         this.fire_rate = game_data["sapper_fire_rate"];
         this.powerup_value = game_data["sapper_powerup_value"];
         this.damage_radius = (int)game_data["sapper_damage_radius"];
+        this.size = game_data["sapper_size"];
     }
     void Update()
     {

@@ -63,6 +63,7 @@ public class SniperEnemyController : BasicEnemyController
         this.min_preferred_range = game_data["sniper_min_range"];
         this.wall_avoidance_strength = game_data["sniper_wall_avoidance"];
         this.shot_range = game_data["sniper_range"];
+        this.size = game_data["sniper_size"];
     }
 
     void Update()

@@ -27,7 +27,7 @@ public abstract class BasicEnemyController : MonoBehaviour
 
     protected GameObject spawner;
 
-    protected float move_speed, health, detection_radius, chase_radius_multiplier, wander_radius, damage, fire_rate, powerup_value, wall_avoidance_strength;
+    protected float move_speed, health, detection_radius, chase_radius_multiplier, wander_radius, damage, fire_rate, powerup_value, wall_avoidance_strength, size;
 
     public void SetSpawner(GameObject spawner)
     {
@@ -38,6 +38,10 @@ public abstract class BasicEnemyController : MonoBehaviour
     void Start()
     {
         Init();
+    }
+
+    public int GetSize(){
+        return (int)size;
     }
 
     protected void Init()
@@ -238,10 +242,12 @@ public abstract class BasicEnemyController : MonoBehaviour
             if (type == Player.states.light)
             {
                 new_pickup = GameObject.Instantiate(dark_pickup_prefab, transform.position, transform.rotation);
+                type = Player.states.dark;
             }
             else
             {
                 new_pickup = GameObject.Instantiate(light_pickup_prefab, transform.position, transform.rotation);
+                type = Player.states.light;
             }
             if (new_pickup != null)
             {

@@ -30,6 +30,7 @@ public class Spinny : MonoBehaviour {
 	public void SetPickupValue(int value, Player.states type){
 		this.value = value;
 		this.type = type;
+		transform.localScale *= Mathf.Sqrt(value) * 1 / 5;
 	}
 
 	void OnTriggerEnter2D(Collider2D other){

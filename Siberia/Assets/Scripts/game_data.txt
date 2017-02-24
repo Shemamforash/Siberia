@@ -2,7 +2,7 @@ levels: 1
 level_basic_spawners: 4
 
 player_health: 100
-player_meter_loss_rate: 8
+player_meter_loss_rate: 2
 player_move_speed: 3
 player_accuracy: 30
 player_range: 10
@@ -13,17 +13,18 @@ dark_damage: 25
 
 grunt_move_speed: 1
 grunt_hp: 100
-grunt_detection_rad: 4
+grunt_detection_rad: 6
 grunt_chase_radius_multiplier: 2
 grunt_wander_radius: 4
 grunt_damage: 2
 grunt_fire_rate: 1
 grunt_powerup_value: 5
 grunt_wall_avoidance: 1
+grunt_size: 1
 
 sapper_move_speed: 4
 sapper_hp: 1
-sapper_detection_rad: 2
+sapper_detection_rad: 4
 sapper_chase_radius_multiplier: 10
 sapper_wander_radius: 8
 sapper_damage: 5
@@ -31,10 +32,11 @@ sapper_fire_rate: 1
 sapper_powerup_value: 0
 sapper_damage_radius: 3
 sapper_wall_avoidance: 0.5
+sapper_size: 5
 
 sniper_move_speed: 2
 sniper_hp: 50
-sniper_detection_rad: 2
+sniper_detection_rad: 8
 sniper_chase_radius_multiplier: 10
 sniper_wander_radius: 8
 sniper_damage: 20
@@ -46,16 +48,18 @@ sniper_hunt_time: 4
 sniper_min_range: 6
 sniper_wall_avoidance: 1
 sniper_range: 15
+sniper_size: 10
 
 tank_move_speed: 4
 tank_hp: 400
-tank_detection_rad: 2
+tank_detection_rad: 4
 tank_chase_radius_multiplier: 10
 tank_wander_radius: 8
 tank_damage: 5
 tank_fire_rate: 1
 tank_powerup_value: 20
 tank_wall_avoidance: 0.5
+tank_size: 20
 
 basic_spawner_total: 100
 basic_spawner_allowed: 10
@@ -68,5 +72,54 @@ damage_text_duration: 0.5
 projectile_speed: 12
 projectile_duration: 3
 
+spawner_low_burn_spawn_rate: 5
+spawner_medium_burn_spawn_rate: 2
+spawner_high_burn_spawn_rate: 1
+
+spawner_tiny_enemy_count: 10
+spawner_small_enemy_count: 20
+spawner_medium_enemy_count: 50
+spawner_big_enemy_count: 100
+spawner_massive_enemy_count: 200
+
+spawner_onlygrunts_grunt_chance: 1
+spawner_onlygrunts_sapper_chance: 0
+spawner_onlygrunts_sniper_chance: 0
+spawner_onlygrunts_tank_chance: 0
+
+spawner_onlysappers_grunt_chance: 0
+spawner_onlysappers_sapper_chance: 1
+spawner_onlysappers_sniper_chance: 0
+spawner_onlysappers_tank_chance: 0
+
+spawner_onlysnipers_grunt_chance: 0
+spawner_onlysnipers_sapper_chance: 0
+spawner_onlysnipers_sniper_chance: 1
+spawner_onlysnipers_tank_chance: 0
+
+spawner_onlytanks_grunt_chance: 0
+spawner_onlytanks_sapper_chance: 0
+spawner_onlytanks_sniper_chance: 0
+spawner_onlytanks_tank_chance: 1
+
+spawner_a_grunt_chance: 0.8
+spawner_a_sapper_chance: 0.2
+spawner_a_sniper_chance: 0
+spawner_a_tank_chance: 0
+
+spawner_b_grunt_chance: 0.6
+spawner_b_sapper_chance: 0.1
+spawner_b_sniper_chance: 0.3
+spawner_b_tank_chance: 0
+
+spawner_c_grunt_chance: 0.5
+spawner_c_sapper_chance: 0.2
+spawner_c_sniper_chance: 0.2
+spawner_c_tank_chance: 0.1
+
+spawner_d_grunt_chance: 0.2
+spawner_d_sapper_chance: 0.3
+spawner_d_sniper_chance: 0.2
+spawner_d_tank_chance: 0.3
 
 

@@ -32,6 +32,7 @@ public class TankEnemyController : BasicEnemyController
         this.fire_rate = game_data["tank_fire_rate"];
         this.powerup_value = game_data["tank_powerup_value"];
         this.wall_avoidance_strength = game_data["tank_wall_avoidance"];
+        this.size = game_data["tank_size"];
     }
 
     void Update()
