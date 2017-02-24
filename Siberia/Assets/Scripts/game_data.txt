@@ -25,8 +25,9 @@ sapper_hp: 1
 sapper_detection_rad: 2
 sapper_chase_radius_multiplier: 10
 sapper_wander_radius: 8
-sapper_damage: 10
-sapper_damage_radius: 5
+sapper_damage: 5
+sapper_fire_rate: 1
+sapper_powerup_value: 0
 
 basic_spawner_total: 100
 basic_spawner_allowed: 10

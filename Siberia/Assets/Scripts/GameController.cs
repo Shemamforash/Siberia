@@ -36,7 +36,6 @@ public class GameController : MonoBehaviour
             game_data["light_damage"],
             game_data["dark_damage"]
         );
-
     }
 
     public static void RegisterEnemy(GameObject enemy)

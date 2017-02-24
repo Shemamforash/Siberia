@@ -5,19 +5,6 @@ using UnityEngine.UI;
 
 public abstract class BasicEnemyController : MonoBehaviour
 {
-
-    [SerializeField]
-    protected float move_speed = 1;
-    [SerializeField]
-    protected int enemy_HP = 100;
-
-    [SerializeField]
-    protected float detection_radius = 4;
-    [SerializeField]
-    private float chase_radius_multiplier = 2;
-
-    [SerializeField]
-    protected float wander_radius = 4;
     [SerializeField]
     protected LayerMask environment_layer_mask = -1;
     [SerializeField]
