@@ -1,26 +1,15 @@
-levels: 5
-
-level: 1
+levels: 1
 level_basic_spawners: 4
 
-level: 2
-level_basic_spawners: 8
-
-player_meter_loss_rate: 16
+player_health: 100
+player_meter_loss_rate: 8
 player_move_speed: 3
-player_damage: 10
 player_accuracy: 30
 player_range: 10
-player_dark_fire_rate: 0.1
-player_light_fire_rate: 0.2
-
-light_damage: 5
-light_range: 10
-light_fire_rate: 0.25
-
-dark_damage: 10
-dark_accuracy: 30
 dark_fire_rate: 0.1
+light_fire_rate: 0.5
+light_damage: 5
+dark_damage: 10
 
 grunt_move_speed: 1
 grunt_hp: 100

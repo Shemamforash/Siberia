@@ -9,10 +9,8 @@ public class GameController : MonoBehaviour
 
     private static List<GameObject> enemies = new List<GameObject>();
 
-    public void Start()
+    public void Awake()
     {
-        //Sorry, it was doing an error, and I don't want to mess with this.
-        /*
         StreamReader file_reader = new StreamReader("Assets/Scripts/game_data.txt");
         Dictionary<string, float> game_data = new Dictionary<string, float>();
         string next_line = file_reader.ReadLine();
@@ -27,8 +25,18 @@ public class GameController : MonoBehaviour
             }
             next_line = file_reader.ReadLine();
         }
-        Debug.Log(game_data);
-        */
+        Player.SetPlayerVals(
+            game_data["player_health"],
+            game_data["player_meter_loss_rate"],
+            game_data["player_move_speed"],
+            game_data["player_accuracy"],
+            game_data["player_range"],
+            game_data["dark_fire_rate"],
+            game_data["light_fire_rate"],
+            game_data["light_damage"],
+            game_data["dark_damage"]
+        );
+
     }
 
     public static void RegisterEnemy(GameObject enemy)

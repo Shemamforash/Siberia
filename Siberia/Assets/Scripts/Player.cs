@@ -9,35 +9,49 @@ using LOS;
 
 public class Player : MonoBehaviour
 {
-    public float base_move_speed = 3f, meter_loss_amount = 16;
-    private float move_speed = 3f;
+    private static float player_health, meter_loss_amount, base_move_speed, base_accuracy, base_range, dark_fire_rate, light_fire_rate, base_light_damage, base_dark_damage;
 
+    public static void SetPlayerVals(float player_health, float meter_loss_amount, float base_move_speed, float base_accuracy, float base_range, float dark_fire_rate, float light_fire_rate, float base_light_damage, float base_dark_damage){
+        Player.player_health = player_health;
+        Player.meter_loss_amount = meter_loss_amount;
+        Player.base_move_speed = base_move_speed;
+        Player.base_accuracy = base_accuracy;
+        Player.base_range = base_range;
+        Player.dark_fire_rate = dark_fire_rate;
+        Player.light_fire_rate = light_fire_rate;
+        Player.base_light_damage = base_light_damage;
+        Player.base_dark_damage = base_dark_damage;
+    }
+
+    //States
+    public enum states { dark, light, none };
+    private states current_state = states.dark;
+
+    //Exposed Variables
     public GameObject torch_object, projectile_prefab;
     public GameObject light_slider, dark_slider;
+    public LayerMask mask;
+    private Rigidbody2D my_rigidBody;
     public Image state_UI;
 
-    public enum states { dark, light, none };
-    private states current_state;
-    private bool fired_projectile_light = false, fired_projectile_dark = false, torch_on = false;
-
+    //Colors!
     private Color lightColour = new Color(0.9f, 0.8f, 0.1f);
     private Color darkColour = new Color(0.8f, 0.1f, 0.1f);
 
-    private Rigidbody2D my_rigidBody;
+    //Game logic
+    private bool fired_projectile_light = false, fired_projectile_dark = false;
+    private float light_meter, dark_meter, dark_damage, light_damage, accuracy, range, move_speed;
+    private float time_since_last_fire_dark = 0f, time_since_last_fire_light = 0f;
 
-    private float light_meter = 100, dark_meter = 100;
-
-    private float base_damage, min_accuracy = 30f, base_range = 10f, damage, accuracy, range;
 
     void Start()
     {
         my_rigidBody = gameObject.GetComponent<Rigidbody2D>();
-        current_state = states.dark;
         torch_object = transform.Find("Torch").gameObject;
-    }
 
-    private float time_since_last_fire_dark = 0f, time_since_last_fire_light = 0f, fire_rate_dark = 0.1f, fire_rate_light = 0.5f;
-    public LayerMask mask;
+        light_meter = Player.player_health;
+        dark_meter = Player.player_health;
+    }
 
     private void TakeMouse()
     {
@@ -73,7 +87,7 @@ public class Player : MonoBehaviour
                         GameObject hit_object = Physics2D.Raycast(transform.position, dir_to_enemy, 100f, mask).collider.gameObject;
                         if (hit_object.tag == "Enemy" && Vector3.Distance(transform.position, enemy.transform.position) < range)
                         {
-                            enemy.GetComponent<BasicEnemyController>().take_damage(3, states.light);
+                            enemy.GetComponent<BasicEnemyController>().take_damage((int)light_damage, states.light);
                         }
                     }
                     fired_projectile_light = true;
@@ -85,11 +99,15 @@ public class Player : MonoBehaviour
             }
 
         }
+        
+    }
+
+    private void UpdateWeaponCooldowns(){
         if (fired_projectile_dark)
         {
             time_since_last_fire_dark += Time.deltaTime;
 
-            if (time_since_last_fire_dark >= fire_rate_dark)
+            if (time_since_last_fire_dark >= Player.dark_fire_rate)
             {
                 time_since_last_fire_dark = 0;
                 fired_projectile_dark = false;
@@ -99,7 +117,7 @@ public class Player : MonoBehaviour
         else if (fired_projectile_light)
         {
             time_since_last_fire_light += Time.deltaTime;
-            if (time_since_last_fire_light >= fire_rate_light)
+            if (time_since_last_fire_light >= Player.light_fire_rate)
             {
                 time_since_last_fire_light = 0;
                 fired_projectile_light = false;
@@ -146,7 +164,6 @@ public class Player : MonoBehaviour
             movement_difference.x += move_speed;
         }
         my_rigidBody.MovePosition(my_rigidBody.position + movement_difference * Time.fixedDeltaTime);
-        // transform.position += movement_difference * Time.deltaTime;
         if (Input.GetKeyUp("space"))
         {
             ToggleState();
@@ -190,6 +207,7 @@ public class Player : MonoBehaviour
         PointToMouse();
         TakeMouse();
         UpdateMeters();
+        UpdateWeaponCooldowns();
 
     }
 
@@ -197,7 +215,7 @@ public class Player : MonoBehaviour
     {
         if (current_state == states.dark)
         {
-            light_meter -= meter_loss_amount * Time.deltaTime;
+            light_meter -= Player.meter_loss_amount * Time.deltaTime;
             if (light_meter < 0)
             {
                 light_meter = 0;
@@ -206,16 +224,17 @@ public class Player : MonoBehaviour
         }
         else
         {
-            dark_meter -= meter_loss_amount * Time.deltaTime;
+            dark_meter -= Player.meter_loss_amount * Time.deltaTime;
             if (dark_meter < 0)
             {
                 dark_meter = 0;
             }
         }
-        move_speed = base_move_speed * (light_meter / 100f);
-        damage = base_damage - light_meter / 10f + 1;
-        range = base_range * dark_meter / 100f;
-        accuracy = min_accuracy * (100 - dark_meter) / 100f;
+        move_speed = Player.base_move_speed * (light_meter / 100f);
+        dark_damage = Player.base_dark_damage - light_meter / 10f + 1;
+        light_damage = Player.base_light_damage - light_meter / 10f + 1;
+        range = Player.base_range * dark_meter / 100f;
+        accuracy = Player.base_accuracy * (100 - dark_meter) / 100f;
 
         light_slider.GetComponent<Slider>().value = light_meter;
         dark_slider.GetComponent<Slider>().value = dark_meter;
