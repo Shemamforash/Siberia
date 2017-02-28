@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     private states current_state = states.dark;
 
     //Exposed Variables
-    public GameObject torch_object, projectile_prefab;
+    public GameObject torch_object, permanent_torch_object, projectile_prefab;
     public GameObject health_slider, health_color;
     public LayerMask mask;
     private Rigidbody2D my_rigidBody;
@@ -49,6 +49,7 @@ public class Player : MonoBehaviour
     {
         my_rigidBody = gameObject.GetComponent<Rigidbody2D>();
         torch_object = transform.Find("Torch").gameObject;
+        permanent_torch_object = transform.Find("Permanent Torch").gameObject;
 
         current_health = Player.player_health;
     }
@@ -144,6 +145,7 @@ public class Player : MonoBehaviour
         Quaternion new_rotation = Quaternion.Euler(vect_rotation);
         transform.rotation = new_rotation;
         torch_object.transform.rotation = Quaternion.Euler(Vector3.up);
+        permanent_torch_object.transform.rotation = Quaternion.Euler(Vector3.up);
     }
 
     private void TakeInput()
@@ -208,8 +210,6 @@ public class Player : MonoBehaviour
 
     private void UpdateMeters()
     {
-
-        current_health -= Player.meter_loss_amount * Time.deltaTime;
         if (current_health < 0)
         {
             current_health = 0;
