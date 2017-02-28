@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
         {
             if (Input.GetMouseButton(0) && !fired_projectile_dark)
             {
-                current_health -= 0.5f;
+                current_health -= 0.2f;
                 float z_value = transform.rotation.eulerAngles.z;
                 z_value += Random.Range(-accuracy, accuracy);
                 Quaternion projectile_rotation = Quaternion.Euler(0, 0, z_value);
@@ -74,7 +74,6 @@ public class Player : MonoBehaviour
         {
             if (Input.GetMouseButton(0))
             {
-                current_health -= 4f * Time.deltaTime;
                 if (range != 0)
                 {
                     torch_object.GetComponent<LOSRadialLight>().enabled = true;
@@ -82,6 +81,7 @@ public class Player : MonoBehaviour
                 }
                 if (!fired_projectile_light)
                 {
+                    current_health -= 0.2f;
                     for (int i = GameController.Enemies().Count - 1; i >= 0; --i)
                     {
                         GameObject enemy = GameController.Enemies()[i];
@@ -168,7 +168,7 @@ public class Player : MonoBehaviour
             movement_difference.x += move_speed;
         }
         my_rigidBody.MovePosition(my_rigidBody.position + movement_difference * Time.fixedDeltaTime);
-        if (Input.GetKeyUp("space"))
+        if (Input.GetKeyUp("space") || Input.GetMouseButtonUp(1))
         {
             ToggleState();
         }
@@ -233,21 +233,21 @@ public class Player : MonoBehaviour
         float light_mod = current_health / 100f;
         float dark_mod = 1 - light_mod;
 
-        float quarter_speed = Player.base_move_speed * 0.25f;
+        float half_speed = Player.base_move_speed * 0.5f;
 
         if (current_state == states.dark)
         {
             float quarter_damage = 0.25f * Player.base_dark_damage;
             damage = quarter_damage + (3 * quarter_damage * dark_mod);
             accuracy = Player.base_accuracy * dark_mod;
-            move_speed = quarter_speed + (3 * dark_mod * quarter_speed);
+            move_speed = half_speed + (dark_mod * half_speed);
         }
         else
         {
             float quarter_damage = 0.25f * Player.base_light_damage;
             damage = quarter_damage + (3 * quarter_damage * light_mod);
-            range = Player.base_range * dark_mod;
-            move_speed = quarter_speed + (3 * light_mod * quarter_speed);
+            range = Player.base_range * (dark_mod / 2f + 0.5f);
+            move_speed = half_speed + (light_mod * half_speed);
         }
 
         health_slider.GetComponent<Slider>().value = current_health;
@@ -263,16 +263,26 @@ public class Player : MonoBehaviour
         {
             current_health += (int)(0.5f * value);
         }
-   }
+    }
 
-   private float wave_particle_damage_timer = 1, wave_particle_damage_cooldown = 1;
+    private float wave_particle_damage_timer = 1, wave_particle_damage_cooldown = 1;
 
-   void OnParticleCollision(GameObject other)
-   {
-       if(wave_particle_damage_timer >= wave_particle_damage_cooldown){
-            Debug.Log("potato");
+    void OnParticleCollision(GameObject other)
+    {
+        if (wave_particle_damage_timer >= wave_particle_damage_cooldown)
+        {
             wave_particle_damage_timer = 0;
-       }
-       wave_particle_damage_timer += Time.deltaTime;
-   }
+            TakeDamage(10);
+        }
+        wave_particle_damage_timer += Time.deltaTime;
+    }
+
+    public void TakeDamage(float amount)
+    {
+        current_health -= (int)amount;
+        if (current_health < 0)
+        {
+            current_health = 0;
+        }
+    }
 }

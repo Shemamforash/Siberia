@@ -118,15 +118,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 845f2ddb1cec74c45986c3ade307b0ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  move_speed: 1
-  enemy_HP: 100
-  detection_radius: 4
-  chase_radius_multiplier: 2
-  wander_radius: 4
   environment_layer_mask:
     serializedVersion: 2
     m_Bits: 1024
-  wall_avoidance_strength: 1
   player_object: {fileID: 1882538889551224, guid: 03cfb824fa424644aa61314d57b917b7,
     type: 2}
   light_pickup_prefab: {fileID: 1294057044569948, guid: e03b6a6c258aa6741a1aa32a3913d574,
@@ -179,6 +173,6 @@ SpriteRenderer:
   m_SortingLayerID: -218208923
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 53676278d6aaca24a9e4a516d7a2ad3a, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.33823532, g: 0.33823532, b: 0.33823532, a: 1}
   m_FlipX: 0
   m_FlipY: 0

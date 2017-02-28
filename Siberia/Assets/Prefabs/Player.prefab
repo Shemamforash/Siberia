@@ -28,7 +28,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1839229907805052
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,7 +113,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1795275992338768}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_MotionVectors: 1
@@ -251,7 +251,7 @@ MonoBehaviour:
   isStatic: 0
   coneAngle: 0
   faceAngle: 0
-  degreeStep: 2
+  degreeStep: 1.01
   invertMode: 0
   obstacleLayer:
     serializedVersion: 2
@@ -286,7 +286,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 2e91f08796cbd44849f1e15382cade3d, type: 2}
   orderInLayer: 0
   sortingLayer: 0
-  radius: 7
+  radius: 15
   flashFrequency: 2
   flashOffset: 1
 --- !u!212 &212052253257656596

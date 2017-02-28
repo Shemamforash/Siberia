@@ -104,7 +104,8 @@ public class SniperEnemyController : BasicEnemyController
                     if (warning_countdown > warning_time)
                     {
                         state = 3;
-                        Instantiate(sniper_shot, enemy_rigidbody.position, Quaternion.LookRotation(new Vector3(0.0f, 0.0f, 1.0f), fire_direction));
+                        GameObject projectile = Instantiate(sniper_shot, enemy_rigidbody.position, Quaternion.LookRotation(new Vector3(0.0f, 0.0f, 1.0f), fire_direction));
+                        projectile.GetComponent<SniperProjectileBehaviour>().SetDamage(damage);
                         warning_countdown = 0;
                         charge_countdown = 0;
                         laser_sight.enabled = false;

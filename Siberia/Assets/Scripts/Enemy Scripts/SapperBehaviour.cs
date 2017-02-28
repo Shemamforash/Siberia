@@ -44,14 +44,15 @@ public class SapperBehaviour : BasicEnemyController
             foreach (Collider2D g in colliders_in_range)
             {
                 float distance = Vector2.Distance(transform.position, g.transform.position);
-                float damage_modifier = 10 - (damage / damage_radius * distance);
-                if (g.gameObject.tag == "Enemy")
-                {
-                    g.GetComponent<BasicEnemyController>().take_damage((int)damage_modifier, Player.states.none);
-                }
-                else
-                {
-                    // TODO player take damage
+                if(distance <= damage_radius){
+                    if (g.gameObject.tag == "Enemy")
+                    {
+                        g.GetComponent<BasicEnemyController>().take_damage((int)damage, Player.states.none);
+                    }
+                    else if(g.gameObject.tag == "Player")
+                    {
+                        g.GetComponent<Player>().TakeDamage(damage);
+                    }
                 }
             }
             take_damage(100, Player.states.none);

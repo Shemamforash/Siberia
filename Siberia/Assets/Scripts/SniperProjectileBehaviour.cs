@@ -8,7 +8,7 @@ public class SniperProjectileBehaviour : MonoBehaviour
     [SerializeField]
     private float sniper_bullet_speed = 30f;
 
-    private float lifetime;
+    private float lifetime, damage;
 
     // Update is called once per frame
     void Update()
@@ -22,11 +22,15 @@ public class SniperProjectileBehaviour : MonoBehaviour
         }
     }
 
+    public void SetDamage(float damage){
+        this.damage = damage;
+    }
+
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            Debug.Log("Hit the player bastard!");
+            collision.gameObject.GetComponent<Player>().TakeDamage(damage);
         }
         Destroy(gameObject);
     }

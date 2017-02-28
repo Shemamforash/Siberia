@@ -17,7 +17,7 @@ grunt_hp: 100
 grunt_detection_rad: 6
 grunt_chase_radius_multiplier: 2
 grunt_wander_radius: 4
-grunt_damage: 2
+grunt_damage: 1
 grunt_fire_rate: 1
 grunt_powerup_value: 5
 grunt_wall_avoidance: 1
@@ -40,7 +40,7 @@ sniper_hp: 50
 sniper_detection_rad: 8
 sniper_chase_radius_multiplier: 10
 sniper_wander_radius: 8
-sniper_damage: 20
+sniper_damage: 10
 sniper_charge_time: 1
 sniper_warning_time: 0.2
 sniper_cooldown_time: 1

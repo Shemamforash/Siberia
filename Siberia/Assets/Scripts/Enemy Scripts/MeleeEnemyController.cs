@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class MeleeEnemyController : BasicEnemyController
 {
+    private float cooldown;
 
     void Start(){
         base.Init();
@@ -23,10 +24,21 @@ public class MeleeEnemyController : BasicEnemyController
         this.powerup_value = game_data["grunt_powerup_value"];
         this.wall_avoidance_strength = game_data["grunt_wall_avoidance"];
         this.size = game_data["grunt_size"];
+        cooldown = fire_rate;
     }
 
     public override void Enemy_React(Rigidbody2D enemy_rigidbody, Vector2 player_position, Vector2 last_seen_player_location)
     {
         base.Chase_Player();
+    }
+
+    public void Update(){
+        if(Vector2.Distance(player_object.transform.position, gameObject.transform.position) < 0.5f){
+            if(cooldown >= fire_rate){
+                player_object.GetComponent<Player>().TakeDamage(this.damage);
+                cooldown = 0;
+            }
+        }
+        cooldown += Time.deltaTime;
     }
 }
