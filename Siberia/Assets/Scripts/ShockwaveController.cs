@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShockwaveController : MonoBehaviour {
 
     [SerializeField]
-    private float initialSpeed;
+    private float initialSpeed = 10;
 
     private float speed;
 

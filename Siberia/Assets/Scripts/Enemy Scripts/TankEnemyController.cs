@@ -50,7 +50,7 @@ public class TankEnemyController : BasicEnemyController
     {
         //In-range of player
         Vector2 distance_to_player = (player_position - enemy_rigidbody.position);
-        if (distance_to_player.sqrMagnitude < 2.0)
+        if (distance_to_player.sqrMagnitude < 8.0)
         {
             fire_shockwave(enemy_rigidbody);
             firepause = 0.5f;
@@ -66,7 +66,7 @@ public class TankEnemyController : BasicEnemyController
     {
         if (shockwave_countdown <= 0)
         {
-            Instantiate(shockwave_attack, enemy_rigidbody.position, Quaternion.AngleAxis(enemy_rigidbody.rotation, new Vector3(0.0f, 0.0f, 1.0f)));
+            GetComponent<ParticleSystem>().Play();
             shockwave_countdown = shockwave_cooldown;
         }
 

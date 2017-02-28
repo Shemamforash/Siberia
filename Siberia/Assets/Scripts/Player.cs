@@ -263,5 +263,16 @@ public class Player : MonoBehaviour
         {
             current_health += (int)(0.5f * value);
         }
-    }
+   }
+
+   private float wave_particle_damage_timer = 1, wave_particle_damage_cooldown = 1;
+
+   void OnParticleCollision(GameObject other)
+   {
+       if(wave_particle_damage_timer >= wave_particle_damage_cooldown){
+            Debug.Log("potato");
+            wave_particle_damage_timer = 0;
+       }
+       wave_particle_damage_timer += Time.deltaTime;
+   }
 }
