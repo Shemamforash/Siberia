@@ -9,12 +9,14 @@ using LOS;
 
 public class Player : MonoBehaviour
 {
-    private static float player_health, meter_loss_amount, base_move_speed, base_accuracy, base_range, dark_fire_rate, light_fire_rate, base_light_damage, base_dark_damage;
+    private static float player_health, meter_loss_amount, base_move_speed, base_armour, base_accuracy, base_range, dark_fire_rate, light_fire_rate, base_light_damage, base_dark_damage;
 
-    public static void SetPlayerVals(float player_health, float meter_loss_amount, float base_move_speed, float base_accuracy, float base_range, float dark_fire_rate, float light_fire_rate, float base_light_damage, float base_dark_damage){
+    public static void SetPlayerVals(float player_health, float meter_loss_amount, float base_move_speed, float base_armour, float base_accuracy, float base_range, float dark_fire_rate, float light_fire_rate, float base_light_damage, float base_dark_damage)
+    {
         Player.player_health = player_health;
         Player.meter_loss_amount = meter_loss_amount;
         Player.base_move_speed = base_move_speed;
+        Player.base_armour = base_armour;
         Player.base_accuracy = base_accuracy;
         Player.base_range = base_range;
         Player.dark_fire_rate = dark_fire_rate;
@@ -29,10 +31,9 @@ public class Player : MonoBehaviour
 
     //Exposed Variables
     public GameObject torch_object, projectile_prefab;
-    public GameObject light_slider, dark_slider;
+    public GameObject health_slider, health_color;
     public LayerMask mask;
     private Rigidbody2D my_rigidBody;
-    public Image state_UI;
 
     //Colors!
     private Color lightColour = new Color(0.9f, 0.8f, 0.1f);
@@ -40,7 +41,7 @@ public class Player : MonoBehaviour
 
     //Game logic
     private bool fired_projectile_light = false, fired_projectile_dark = false;
-    private float light_meter, dark_meter, dark_damage, light_damage, accuracy, range, move_speed;
+    private float current_health, damage, accuracy, range, move_speed, armour;
     private float time_since_last_fire_dark = 0f, time_since_last_fire_light = 0f;
 
 
@@ -49,8 +50,7 @@ public class Player : MonoBehaviour
         my_rigidBody = gameObject.GetComponent<Rigidbody2D>();
         torch_object = transform.Find("Torch").gameObject;
 
-        light_meter = Player.player_health;
-        dark_meter = Player.player_health;
+        current_health = Player.player_health;
     }
 
     private void TakeMouse()
@@ -59,12 +59,12 @@ public class Player : MonoBehaviour
         {
             if (Input.GetMouseButton(0) && !fired_projectile_dark)
             {
-                dark_meter -= 0.5f;
+                current_health -= 0.5f;
                 float z_value = transform.rotation.eulerAngles.z;
                 z_value += Random.Range(-accuracy, accuracy);
                 Quaternion projectile_rotation = Quaternion.Euler(0, 0, z_value);
                 GameObject new_projectile = GameObject.Instantiate(projectile_prefab, transform.position, projectile_rotation);
-                new_projectile.GetComponent<ProjectileBehaviour>().SetDamage((int)dark_damage);
+                new_projectile.GetComponent<ProjectileBehaviour>().SetDamage((int)damage);
                 fired_projectile_dark = true;
             }
             torch_object.GetComponent<LOSRadialLight>().enabled = false;
@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
         {
             if (Input.GetMouseButton(0))
             {
-                light_meter -= 4f * Time.deltaTime;
+                current_health -= 4f * Time.deltaTime;
                 if (range != 0)
                 {
                     torch_object.GetComponent<LOSRadialLight>().enabled = true;
@@ -88,7 +88,7 @@ public class Player : MonoBehaviour
                         GameObject hit_object = Physics2D.Raycast(transform.position, dir_to_enemy, 100f, mask).collider.gameObject;
                         if (hit_object.tag == "Enemy" && Vector3.Distance(transform.position, enemy.transform.position) < range)
                         {
-                            enemy.GetComponent<BasicEnemyController>().take_damage((int)light_damage, states.light);
+                            enemy.GetComponent<BasicEnemyController>().take_damage((int)damage, states.light);
                         }
                     }
                     fired_projectile_light = true;
@@ -100,10 +100,11 @@ public class Player : MonoBehaviour
             }
 
         }
-        
+
     }
 
-    private void UpdateWeaponCooldowns(){
+    private void UpdateWeaponCooldowns()
+    {
         if (fired_projectile_dark)
         {
             time_since_last_fire_dark += Time.deltaTime;
@@ -175,14 +176,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKey("e"))
         {
-            if (Input.GetKey("l"))
-            {
-                light_meter = 0;
-            }
-            else if (Input.GetKey("d"))
-            {
-                dark_meter = 0;
-            }
+            current_health = 0;
         }
     }
 
@@ -191,12 +185,12 @@ public class Player : MonoBehaviour
         if (current_state == states.dark)
         {
             current_state = states.light;
-            state_UI.color = lightColour;
+            health_color.GetComponent<Image>().color = lightColour;
         }
         else
         {
             current_state = states.dark;
-            state_UI.color = darkColour;
+            health_color.GetComponent<Image>().color = darkColour;
         }
     }
 
@@ -214,51 +208,60 @@ public class Player : MonoBehaviour
 
     private void UpdateMeters()
     {
+
+        current_health -= Player.meter_loss_amount * Time.deltaTime;
+        if (current_health < 0)
+        {
+            current_health = 0;
+            // SceneManager.LoadScene("Game Over");
+        }
+        else if (current_health > 100)
+        {
+            current_health = 100;
+        }
+
+        /*
+* One health bar 0-100 hp
+* Light form modifier = 1 / 100 * hp
+* Dark form modifier = 1 - light form modifier
+* Player attributes: Damage, accuracy/range, Armour, Speed
+* Dark form (closer to high health) -> lower damage, higher accuracy, higher armour, lower speed
+* Light form (closer to high health) -> higher damage, lower range, lower armour, higher speed
+*/
+
+        //Min move speed is 50% base_speed
+        float light_mod = current_health / 100f;
+        float dark_mod = 1 - light_mod;
+
+        float quarter_speed = Player.base_move_speed * 0.25f;
+
         if (current_state == states.dark)
         {
-            light_meter -= Player.meter_loss_amount * Time.deltaTime;
-            if (light_meter < 0)
-            {
-                light_meter = 0;
-                // SceneManager.LoadScene("Game Over");
-            } else if (dark_meter > 100){
-                dark_meter = 100;
-            }
+            float quarter_damage = 0.25f * Player.base_dark_damage;
+            damage = quarter_damage + (3 * quarter_damage * dark_mod);
+            accuracy = Player.base_accuracy * dark_mod;
+            move_speed = quarter_speed + (3 * dark_mod * quarter_speed);
         }
         else
         {
-            dark_meter -= Player.meter_loss_amount * Time.deltaTime;
-            if (dark_meter < 0)
-            {
-                dark_meter = 0;
-            } else if (dark_meter > 100){
-                dark_meter = 100;
-            }
+            float quarter_damage = 0.25f * Player.base_light_damage;
+            damage = quarter_damage + (3 * quarter_damage * light_mod);
+            range = Player.base_range * dark_mod;
+            move_speed = quarter_speed + (3 * light_mod * quarter_speed);
         }
-        //Min move speed is 50% base_speed
-        float light_meter_mod = light_meter / 200f + 0.5f;
-        move_speed = Player.base_move_speed * light_meter_mod;
-        //Min dark damage = 1
-        dark_damage = Player.base_dark_damage * light_meter_mod;
-        //Min light damage = 1
-        light_damage = Player.base_light_damage - (10 - light_meter / 10f) + 1;
-        //Min light range = 0
-        range = Player.base_range * (dark_meter / 200f + 0.5f);
-        accuracy = Player.base_accuracy * (100 - dark_meter) / 100f;
 
-        light_slider.GetComponent<Slider>().value = light_meter;
-        dark_slider.GetComponent<Slider>().value = dark_meter;
+        health_slider.GetComponent<Slider>().value = current_health;
     }
 
     public void ReceivePickup(int value, states type)
     {
-        if (type == states.dark)
+        if (type == current_state)
         {
-            dark_meter += value;
+            current_health += value;
         }
         else
         {
-            light_meter += value;
+            current_health += (int)(0.5f * value);
         }
     }
 }

@@ -29,6 +29,7 @@ public class GameController : MonoBehaviour
             game_data["player_health"],
             game_data["player_meter_loss_rate"],
             game_data["player_move_speed"],
+            game_data["player_armour"],
             game_data["player_accuracy"],
             game_data["player_range"],
             game_data["dark_fire_rate"],

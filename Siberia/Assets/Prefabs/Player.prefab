@@ -158,15 +158,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24c9973169bc7834d86ecf38669cf05d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  torch_object: {fileID: 0}
+  torch_object: {fileID: 1839229907805052}
   projectile_prefab: {fileID: 1850494287697962, guid: 7cc14c3b601274745983d04b86bbfad4,
     type: 2}
-  light_slider: {fileID: 0}
-  dark_slider: {fileID: 0}
+  health_slider: {fileID: 0}
+  health_color: {fileID: 0}
   mask:
     serializedVersion: 2
     m_Bits: 3072
-  state_UI: {fileID: 0}
 --- !u!114 &114705007112958480
 MonoBehaviour:
   m_ObjectHideFlags: 1
