@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using LOS;
 
 public abstract class BasicEnemyController : MonoBehaviour
 {
@@ -29,6 +30,8 @@ public abstract class BasicEnemyController : MonoBehaviour
 
     protected float move_speed, health, detection_radius, chase_radius_multiplier, wander_radius, damage, fire_rate, powerup_value, wall_avoidance_strength, size;
 
+    private LOSRadialLight permanent_torch_light, other_torch_light;
+
     public void SetSpawner(GameObject spawner)
     {
         this.spawner = spawner;
@@ -40,7 +43,8 @@ public abstract class BasicEnemyController : MonoBehaviour
         Init();
     }
 
-    public int GetSize(){
+    public int GetSize()
+    {
         return (int)size;
     }
 
@@ -58,11 +62,38 @@ public abstract class BasicEnemyController : MonoBehaviour
         waypoint = enemy_rigidbody.position;
         wander_counter = Random.Range(5.0f, 10.0f);
 
+        permanent_torch_light = player_object.transform.Find("Permanent Torch").GetComponent<LOSRadialLight>();
+        other_torch_light = player_object.transform.Find("Torch").GetComponent<LOSRadialLight>();
+
         GameController.RegisterEnemy(gameObject);
     }
 
-    void Update(){
+    void Update()
+    {
+        UpdateColor();
         MoveEnemy();
+    }
+
+
+    void UpdateColor()
+    {
+        float distance_to_player = Vector3.Distance(player_transform.position, transform.position);
+        float main_torch_range = permanent_torch_light.radius - 3;
+        float other_torch_range = other_torch_light.radius - 3;
+        //main torch up to 0.6 alpha
+        //other_torch up to 0.4 alpha
+        float main_torch_light_level = 0, other_torch_light_level = 0;
+        if (distance_to_player < main_torch_range)
+        {
+            main_torch_light_level = (1 - (1 / main_torch_range * distance_to_player)) * 0.6f;
+        }
+        if (distance_to_player < other_torch_range)
+        {
+            other_torch_light_level = (1 - (1 / other_torch_range * distance_to_player)) * 0.4f;
+        }
+        float total_illumination = main_torch_light_level + other_torch_light_level;
+        Color new_color = new Color(total_illumination, total_illumination, total_illumination);
+        transform.GetComponent<SpriteRenderer>().color = new_color;
     }
 
     // Update is called once per frame
@@ -233,9 +264,9 @@ public abstract class BasicEnemyController : MonoBehaviour
     {
         health -= dmg;
         Vector2 enemy_screen_location = Camera.main.WorldToScreenPoint(transform.position);
-        GameObject new_damage = GameObject.Instantiate(damage_text, enemy_screen_location, Quaternion.Euler(Vector3.up));
-        new_damage.transform.SetParent(canvas_object.transform);
-        new_damage.GetComponent<Text>().text = dmg.ToString();
+        GameObject new_damage = GameObject.Instantiate(damage_text, transform.position, Quaternion.Euler(Vector3.up));
+        new_damage.transform.SetParent(Camera.main.transform);
+        new_damage.GetComponent<DamageTextBehaviour>().SetDamage(dmg);
         if (health <= 0)
         {
             GameObject new_pickup = null;
@@ -254,9 +285,12 @@ public abstract class BasicEnemyController : MonoBehaviour
                 new_pickup.GetComponent<Spinny>().SetPickupValue((int)powerup_value, type);
             }
             GameController.UnregisterEnemy(gameObject);
-            spawner.GetComponent<SpawnerBehaviour>().Unregister(gameObject);
+            if (spawner != null)
+            {
+                spawner.GetComponent<SpawnerBehaviour>().Unregister(gameObject);
+            }
             Destroy(gameObject);
-            
+
         }
     }
 }

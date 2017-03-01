@@ -86,8 +86,12 @@ public class SniperEnemyController : BasicEnemyController
             {
                 state = 1;
                 //Purple laser indicates lock-on
-                laser_sight.startColor = Color.magenta;
-                laser_sight.endColor = Color.magenta;
+                float alpha = 1 / charge_time * charge_countdown;
+                if(alpha > 1){
+                    alpha = 1;
+                }
+                laser_sight.startColor = new Color(0.7f, 0.7f, 0.7f, alpha);
+                laser_sight.endColor = new Color(1f, 1f, 1f, alpha);
 
                 charge_countdown += Time.deltaTime;
 

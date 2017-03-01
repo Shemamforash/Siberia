@@ -36,8 +36,8 @@ public class Player : MonoBehaviour
     private Rigidbody2D my_rigidBody;
 
     //Colors!
-    private Color lightColour = new Color(0.9f, 0.8f, 0.1f);
-    private Color darkColour = new Color(0.8f, 0.1f, 0.1f);
+    private Color lightColour = new Color(0.9f, 0.9f, 0.9f);
+    private Color darkColour = new Color(0.1f, 0.1f, 0.1f);
 
     //Game logic
     private bool fired_projectile_light = false, fired_projectile_dark = false;
@@ -188,11 +188,13 @@ public class Player : MonoBehaviour
         {
             current_state = states.light;
             health_color.GetComponent<Image>().color = lightColour;
+            GetComponent<SpriteRenderer>().color = lightColour;
         }
         else
         {
             current_state = states.dark;
             health_color.GetComponent<Image>().color = darkColour;
+            GetComponent<SpriteRenderer>().color = darkColour;
         }
     }
 

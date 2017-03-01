@@ -64,7 +64,11 @@ public class ProjectileBehaviour : MonoBehaviour
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            collision.gameObject.GetComponent<BasicEnemyController>().take_damage(damage, Player.states.dark);
+            if(collision.gameObject.name.Contains("BasicEnemy")) {
+                collision.gameObject.GetComponent<MeleeEnemyController>().take_damage(damage, Player.states.dark);
+            } else {
+                collision.gameObject.GetComponent<BasicEnemyController>().take_damage(damage, Player.states.dark);
+            }
             //Debug.Log("Hit target");
         }
         DestroyProjectile();

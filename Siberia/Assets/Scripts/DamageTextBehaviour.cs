@@ -7,15 +7,19 @@ public class DamageTextBehaviour : MonoBehaviour
 {
     public float duration = 0.5f, time_alive = 0;
 
-    private float v_x, v_y, g = -9.8f, anim_speed = 10;
+    private float v_x, v_y, g = -9.8f, anim_speed = 0.02f;
 
     public void Start()
     {
-        g *= anim_speed;
-        v_x = Random.Range(-6, 6f) * anim_speed;
-        v_y = Random.Range(-10, 10f) * anim_speed;
+        // g *= 2;
+        v_x = Random.Range(-4, 4f);// * anim_speed;
+        v_y = Random.Range(-0f, 0f);// * anim_speed;
     }
 	
+    public void SetDamage(int damage){
+        transform.localScale *= Mathf.Sqrt(damage) / 4;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -28,11 +32,10 @@ public class DamageTextBehaviour : MonoBehaviour
         else
         {
             float alpha = (1f / duration * time_alive);
-            alpha *= alpha;
+            // alpha *= alpha;
             alpha = 1 - alpha;
-            Color current_col = GetComponent<Text>().color;
-            current_col.a = alpha;
-            GetComponent<Text>().color = current_col;
+            Color new_color = new Color(1f, 0f, 0f, alpha);
+            GetComponent<SpriteRenderer>().color = new_color;
 
             //s = ut + 1/2at^2
             float t_squared = Time.deltaTime * Time.deltaTime;
@@ -42,7 +45,7 @@ public class DamageTextBehaviour : MonoBehaviour
             float x_dist = Time.deltaTime * v_x;
             Vector3 pos_diff = new Vector3(x_dist, y_dist, 0);
             transform.position += pos_diff;
-            transform.position += new Vector3(0, 10 * Time.deltaTime, 0);
+            // transform.position += new Vector3(0, 10 * Time.deltaTime, 0);
         }
 
     }

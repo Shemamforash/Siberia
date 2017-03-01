@@ -27,6 +27,8 @@ public class SpawnerBehaviour : MonoBehaviour
                 GameObject new_enemy = null;
                 bool enemy_spawned = false;
                 int enemy_ID = Random.Range(0, 10);
+                GameObject prefab = null;
+
                 while (enemy_spawned == false)
                 {
                     enemy_ID += 1;
@@ -36,33 +38,31 @@ public class SpawnerBehaviour : MonoBehaviour
                     }
 
                     int size = 0;
-                    if (enemy_ID < 1)
+                    if (enemy_ID <= 1)
                     {
-                        new_enemy = GameObject.Instantiate(tank_prefab, transform.position, transform.rotation);
-                        new_enemy.GetComponent<TankEnemyController>().SetSpawner(gameObject);
-                        size = new_enemy.GetComponent<TankEnemyController>().GetSize();
+                        prefab = tank_prefab;
+                        size = (int)GameController.GetGameData()["tank_size"];
                     }
-                    else if (enemy_ID < 2)
+                    else if (enemy_ID <= 2)
                     {
-                        new_enemy = GameObject.Instantiate(sniper_prefab, transform.position, transform.rotation);
-                        new_enemy.GetComponent<SniperEnemyController>().SetSpawner(gameObject);
-                        size = new_enemy.GetComponent<SniperEnemyController>().GetSize();
+                        prefab = sniper_prefab;
+                        size = (int)GameController.GetGameData()["sniper_size"];
                     }
-                    else if (enemy_ID < 5)
+                    else if (enemy_ID <= 5)
                     {
-                        new_enemy = GameObject.Instantiate(sapper_prefab, transform.position, transform.rotation);
-                        new_enemy.GetComponent<SapperBehaviour>().SetSpawner(gameObject);
-                        size = new_enemy.GetComponent<SapperBehaviour>().GetSize();
+                        prefab = sapper_prefab;
+                        size = (int)GameController.GetGameData()["sapper_size"];
                     }
                     else
                     {
-                        new_enemy = GameObject.Instantiate(enemy_prefab, transform.position, transform.rotation);
-                        new_enemy.GetComponent<MeleeEnemyController>().SetSpawner(gameObject);
-                        size = new_enemy.GetComponent<MeleeEnemyController>().GetSize();
+                        prefab = enemy_prefab;
+                        size = (int)GameController.GetGameData()["grunt_size"];
 
                     }
                     if (total_enemies - size >= 0)
                     {
+                        new_enemy = GameObject.Instantiate(prefab, transform.position, transform.rotation);
+                        new_enemy.GetComponent<BasicEnemyController>().SetSpawner(gameObject);
                         total_enemies -= size;
                         enemy_spawned = true;
                     }

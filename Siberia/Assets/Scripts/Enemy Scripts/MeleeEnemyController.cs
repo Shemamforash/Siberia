@@ -30,9 +30,6 @@ public class MeleeEnemyController : BasicEnemyController
     public override void Enemy_React(Rigidbody2D enemy_rigidbody, Vector2 player_position, Vector2 last_seen_player_location)
     {
         base.Chase_Player();
-    }
-
-    public void Update(){
         if(Vector2.Distance(player_object.transform.position, gameObject.transform.position) < 0.5f){
             if(cooldown >= fire_rate){
                 player_object.GetComponent<Player>().TakeDamage(this.damage);
@@ -40,5 +37,10 @@ public class MeleeEnemyController : BasicEnemyController
             }
         }
         cooldown += Time.deltaTime;
+    }
+
+    public void take_damage(int dmg, Player.states type){
+        base.take_damage(dmg, type);
+        transform.Translate(Vector2.down * 0.1f);
     }
 }
