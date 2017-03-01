@@ -212,10 +212,9 @@ public class Player : MonoBehaviour
 
     private void UpdateMeters()
     {
-        if (current_health < 0)
+        if (current_health <= 0)
         {
-            current_health = 0;
-            // SceneManager.LoadScene("Game Over");
+            Camera.main.GetComponent<MenuNavigator>().LoadGameOver();
         }
         else if (current_health > 100)
         {

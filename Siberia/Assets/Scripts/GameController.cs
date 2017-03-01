@@ -9,34 +9,39 @@ public class GameController : MonoBehaviour
 
     private static List<GameObject> enemies = new List<GameObject>();
     private static Dictionary<string, float> game_data = new Dictionary<string, float>();
+    private static bool read_data = false;
 
     public void Awake()
     {
-        StreamReader file_reader = new StreamReader("Assets/Scripts/game_data.txt");
-        string next_line = file_reader.ReadLine();
-        while (next_line != null)
+        if (!GameController.read_data)
         {
-            if (next_line.Trim() != "")
+            StreamReader file_reader = new StreamReader("Assets/Scripts/game_data.txt");
+            string next_line = file_reader.ReadLine();
+            while (next_line != null)
             {
-                string[] line = next_line.Split(':');
-                string key = line[0];
-                float val = float.Parse(line[1].Trim());
-                game_data.Add(key, val);
+                if (next_line.Trim() != "")
+                {
+                    string[] line = next_line.Split(':');
+                    string key = line[0];
+                    float val = float.Parse(line[1].Trim());
+                    game_data.Add(key, val);
+                }
+                next_line = file_reader.ReadLine();
             }
-            next_line = file_reader.ReadLine();
+            Player.SetPlayerVals(
+                game_data["player_health"],
+                game_data["player_meter_loss_rate"],
+                game_data["player_move_speed"],
+                game_data["player_armour"],
+                game_data["player_accuracy"],
+                game_data["player_range"],
+                game_data["dark_fire_rate"],
+                game_data["light_fire_rate"],
+                game_data["light_damage"],
+                game_data["dark_damage"]
+            );
+            GameController.read_data = true;
         }
-        Player.SetPlayerVals(
-            game_data["player_health"],
-            game_data["player_meter_loss_rate"],
-            game_data["player_move_speed"],
-            game_data["player_armour"],
-            game_data["player_accuracy"],
-            game_data["player_range"],
-            game_data["dark_fire_rate"],
-            game_data["light_fire_rate"],
-            game_data["light_damage"],
-            game_data["dark_damage"]
-        );
     }
 
     public static Dictionary<string, float> GetGameData()
