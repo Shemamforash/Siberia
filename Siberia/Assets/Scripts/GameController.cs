@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System.Text.RegularExpressions;
 
 public class GameController : MonoBehaviour
 {
@@ -11,13 +12,15 @@ public class GameController : MonoBehaviour
     private static Dictionary<string, float> game_data = new Dictionary<string, float>();
     private static bool read_data = false;
 
+    public TextAsset game_data_file;
+
     public void Awake()
     {
         if (!GameController.read_data)
         {
-            StreamReader file_reader = new StreamReader("Assets/Scripts/game_data.txt");
-            string next_line = file_reader.ReadLine();
-            while (next_line != null)
+            string[] data_lines = Regex.Split (game_data_file.text, "\n|\r|\r\n" );
+
+            foreach(string next_line in data_lines)
             {
                 if (next_line.Trim() != "")
                 {
@@ -26,7 +29,6 @@ public class GameController : MonoBehaviour
                     float val = float.Parse(line[1].Trim());
                     game_data.Add(key, val);
                 }
-                next_line = file_reader.ReadLine();
             }
             Player.SetPlayerVals(
                 game_data["player_health"],

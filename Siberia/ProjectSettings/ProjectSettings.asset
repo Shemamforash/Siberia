@@ -460,8 +460,10 @@ PlayerSettings:
   XboxOneAllowedProductIds: []
   XboxOnePersistentLocalStorageSize: 0
   vrEditorSettings: {}
-  cloudServicesEnabled: {}
-  cloudProjectId: 
-  projectName: 
-  organizationId: 
+  cloudServicesEnabled:
+    Build: 1
+    UNet: 1
+  cloudProjectId: a8b55282-c982-4ae9-8f68-e1c6d753842a
+  projectName: Siberia
+  organizationId: shemamforash
   cloudEnabled: 0

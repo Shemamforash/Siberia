@@ -19,14 +19,26 @@ Platform assembly: E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\UnityE
 Loading E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
 Loading E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
-- Completed reload, in  0.061 seconds
+- Completed reload, in  0.099 seconds
 Platform assembly: E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\System.dll (this message is harmless)
 desktop: 1920x1080 60Hz; virtual: 3840x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 1.092494 ms
+UnloadTime: 1.114458 ms
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.815933 ms
+
+Unloading 132 unused Assets to reduce memory usage. Loaded Objects now: 284.
+Total: 0.421231 ms (FindLiveObjects: 0.033999 ms CreateObjectMapping: 0.014442 ms MarkObjects: 0.166988 ms  DeleteObjects: 0.192262 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.593158 ms
+
+Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 507.
+Total: 0.288543 ms (FindLiveObjects: 0.023468 ms CreateObjectMapping: 0.016548 ms MarkObjects: 0.240102 ms  DeleteObjects: 0.008123 ms)
+
 Setting up 2 worker threads for Enlighten.
-  Thread -> id: dd0 -> priority: 1 
-  Thread -> id: 542c -> priority: 1 
+  Thread -> id: 28ec -> priority: 1 
+  Thread -> id: 5f8 -> priority: 1 
