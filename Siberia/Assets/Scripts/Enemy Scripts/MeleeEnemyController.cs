@@ -38,9 +38,4 @@ public class MeleeEnemyController : BasicEnemyController
         }
         cooldown += Time.deltaTime;
     }
-
-    public void take_damage(int dmg, Player.states type){
-        base.take_damage(dmg, type);
-        transform.Translate(Vector2.down * 0.1f);
-    }
 }

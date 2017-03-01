@@ -64,8 +64,6 @@ public abstract class BasicEnemyController : MonoBehaviour
 
         permanent_torch_light = player_object.transform.Find("Permanent Torch").GetComponent<LOSRadialLight>();
         other_torch_light = player_object.transform.Find("Torch").GetComponent<LOSRadialLight>();
-
-        GameController.RegisterEnemy(gameObject);
     }
 
     void Update()
@@ -267,6 +265,9 @@ public abstract class BasicEnemyController : MonoBehaviour
         GameObject new_damage = GameObject.Instantiate(damage_text, transform.position, Quaternion.Euler(Vector3.up));
         new_damage.transform.SetParent(Camera.main.transform);
         new_damage.GetComponent<DamageTextBehaviour>().SetDamage(dmg);
+        if(type == Player.states.dark){
+            transform.Translate(Vector2.down * 0.2f);   
+        }
         if (health <= 0)
         {
             GameObject new_pickup = null;

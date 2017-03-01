@@ -9,13 +9,15 @@ public class ProjectileBehaviour : MonoBehaviour
     private float duration, speed;
     private int damage;
 
-    void Start(){
+    void Start()
+    {
         Dictionary<string, float> game_data = GameController.GetGameData();
         this.duration = game_data["projectile_duration"];
         this.speed = game_data["projectile_speed"];
     }
 
-    public void SetDamage(int damage){
+    public void SetDamage(int damage)
+    {
         this.damage = damage;
     }
 
@@ -64,11 +66,16 @@ public class ProjectileBehaviour : MonoBehaviour
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            if(collision.gameObject.name.Contains("BasicEnemy")) {
-                collision.gameObject.GetComponent<MeleeEnemyController>().take_damage(damage, Player.states.dark);
-            } else {
+            if (collision.gameObject.name.Contains("Sapper"))
+            {
+                collision.gameObject.GetComponent<SapperBehaviour>().Detonate(gameObject);
+            }
+            else
+            {
                 collision.gameObject.GetComponent<BasicEnemyController>().take_damage(damage, Player.states.dark);
             }
+
+
             //Debug.Log("Hit target");
         }
         DestroyProjectile();

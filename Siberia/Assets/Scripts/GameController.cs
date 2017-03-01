@@ -6,8 +6,6 @@ using System.Text.RegularExpressions;
 
 public class GameController : MonoBehaviour
 {
-    public Transform player_transform;
-
     private static List<GameObject> enemies = new List<GameObject>();
     private static Dictionary<string, float> game_data = new Dictionary<string, float>();
     private static bool read_data = false;
@@ -64,12 +62,5 @@ public class GameController : MonoBehaviour
     public static List<GameObject> Enemies()
     {
         return enemies;
-    }
-
-    void Update()
-    {
-        Vector3 new_pos = player_transform.position;
-        new_pos.z = -10;
-        transform.position = new_pos;
     }
 }

@@ -28,7 +28,7 @@ sapper_hp: 1
 sapper_detection_rad: 4
 sapper_chase_radius_multiplier: 10
 sapper_wander_radius: 8
-sapper_damage: 5
+sapper_damage: 10
 sapper_fire_rate: 1
 sapper_powerup_value: 0
 sapper_damage_radius: 3
@@ -40,7 +40,7 @@ sniper_hp: 50
 sniper_detection_rad: 8
 sniper_chase_radius_multiplier: 10
 sniper_wander_radius: 8
-sniper_damage: 10
+sniper_damage: 5
 sniper_charge_time: 1
 sniper_warning_time: 0.2
 sniper_cooldown_time: 1
@@ -56,7 +56,7 @@ tank_hp: 400
 tank_detection_rad: 4
 tank_chase_radius_multiplier: 10
 tank_wander_radius: 8
-tank_damage: 5
+tank_damage: 10
 tank_fire_rate: 1
 tank_powerup_value: 20
 tank_wall_avoidance: 0.5

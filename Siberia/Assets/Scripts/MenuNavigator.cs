@@ -12,4 +12,8 @@ public class MenuNavigator : MonoBehaviour {
 	public void LoadGameOver(){
 		SceneManager.LoadScene("Game Over");
 	}
+
+	public void LoadMainMenu(){
+		SceneManager.LoadScene("Main Menu");
+	}
 }

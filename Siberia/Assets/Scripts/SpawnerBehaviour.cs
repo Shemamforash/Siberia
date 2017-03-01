@@ -9,7 +9,7 @@ public class SpawnerBehaviour : MonoBehaviour
     private int enemies_allowed_on_screen = 10;
 
     private List<GameObject> enemies_on_screen = new List<GameObject>();
-    private float interval = 0.1f, time_since_last;
+    private float interval = 1f, time_since_last;
 
     public void Unregister(GameObject enemy)
     {
@@ -22,7 +22,8 @@ public class SpawnerBehaviour : MonoBehaviour
         time_since_last += Time.deltaTime;
         if (time_since_last >= interval)
         {
-            while (enemies_on_screen.Count < enemies_allowed_on_screen)
+            time_since_last = 0f;
+            if (enemies_on_screen.Count < enemies_allowed_on_screen)
             {
                 GameObject new_enemy = null;
                 bool enemy_spawned = false;
@@ -61,8 +62,10 @@ public class SpawnerBehaviour : MonoBehaviour
                     }
                     if (total_enemies - size >= 0)
                     {
-                        new_enemy = GameObject.Instantiate(prefab, transform.position, transform.rotation);
+                        Vector3 random_pos = (Vector2)transform.position + Random.insideUnitCircle;
+                        new_enemy = GameObject.Instantiate(prefab, random_pos, transform.rotation);
                         new_enemy.GetComponent<BasicEnemyController>().SetSpawner(gameObject);
+                        GameController.RegisterEnemy(new_enemy);
                         total_enemies -= size;
                         enemy_spawned = true;
                     }
@@ -71,7 +74,6 @@ public class SpawnerBehaviour : MonoBehaviour
                 if (total_enemies == 0)
                 {
                     Destroy(gameObject);
-                    break;
                 }
             }
         }

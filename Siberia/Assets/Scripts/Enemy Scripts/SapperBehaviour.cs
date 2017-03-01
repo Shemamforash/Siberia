@@ -6,6 +6,8 @@ public class SapperBehaviour : BasicEnemyController
 {
     private int damage_radius;
     public LayerMask mask;
+    private bool exploding = false;
+    private float exploding_time = 0f, explosion_duration = 2;
 
     void Start()
     {
@@ -13,7 +15,8 @@ public class SapperBehaviour : BasicEnemyController
         SetSapperVals();
     }
 
-    private void SetSapperVals(){
+    private void SetSapperVals()
+    {
         Dictionary<string, float> game_data = GameController.GetGameData();
         this.move_speed = game_data["sapper_move_speed"];
         this.health = game_data["sapper_hp"];
@@ -29,6 +32,14 @@ public class SapperBehaviour : BasicEnemyController
     void Update()
     {
         base.MoveEnemy();
+        if (exploding)
+        {
+            if (exploding_time >= explosion_duration)
+            {
+                Destroy(gameObject);
+            }
+            exploding_time += Time.deltaTime;
+        }
     }
 
     public override void Enemy_React(Rigidbody2D enemy_rigidbody, Vector2 player_position, Vector2 last_seen_player_location)
@@ -36,26 +47,37 @@ public class SapperBehaviour : BasicEnemyController
         base.Chase_Player();
     }
 
-    private void Detonate(GameObject other)
+    public void Detonate(GameObject other)
     {
-        if (other.tag == "Player" || other.tag == "Bullet")
+        if (!exploding && (other.tag == "Player" || other.tag == "Bullet"))
         {
+            exploding = true;
             Collider2D[] colliders_in_range = Physics2D.OverlapCircleAll(transform.position, damage_radius, mask);
             foreach (Collider2D g in colliders_in_range)
             {
-                float distance = Vector2.Distance(transform.position, g.transform.position);
-                if(distance <= damage_radius){
-                    if (g.gameObject.tag == "Enemy")
+                if (g.gameObject != this)
+                {
+                    float distance = Vector2.Distance(transform.position, g.transform.position);
+                    if (distance <= damage_radius)
                     {
-                        g.GetComponent<BasicEnemyController>().take_damage((int)damage, Player.states.none);
-                    }
-                    else if(g.gameObject.tag == "Player")
-                    {
-                        g.GetComponent<Player>().TakeDamage(damage);
+                        if (g.gameObject.tag == "Enemy")
+                        {
+                            if(g.gameObject.name.Contains("Sapper")){
+                                g.gameObject.GetComponent<SapperBehaviour>().Detonate(other);
+                            } else {
+                                g.gameObject.GetComponent<BasicEnemyController>().take_damage((int)damage, Player.states.none);
+                            };
+                        }
+                        else if (g.gameObject.tag == "Player")
+                        {
+                            g.GetComponent<Player>().TakeDamage(damage);
+                        }
                     }
                 }
             }
-            take_damage(100, Player.states.none);
+            GetComponent<ParticleSystem>().Play();
+            GetComponent<SpriteRenderer>().enabled = false;
+            GetComponent<CircleCollider2D>().enabled = false;
         }
     }
 

@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
 
     //States
     public enum states { dark, light, none };
-    private states current_state = states.dark;
+    private states current_state = states.light;
 
     //Exposed Variables
     public GameObject torch_object, permanent_torch_object, projectile_prefab;
@@ -52,6 +52,7 @@ public class Player : MonoBehaviour
         permanent_torch_object = transform.Find("Permanent Torch").gameObject;
 
         current_health = Player.player_health;
+        ToggleState();
     }
 
     private void TakeMouse()
@@ -89,7 +90,11 @@ public class Player : MonoBehaviour
                         GameObject hit_object = Physics2D.Raycast(transform.position, dir_to_enemy, 100f, mask).collider.gameObject;
                         if (hit_object.tag == "Enemy" && Vector3.Distance(transform.position, enemy.transform.position) < range)
                         {
-                            enemy.GetComponent<BasicEnemyController>().take_damage((int)damage, states.light);
+                            if(enemy.name.Contains("Sapper")){
+                                enemy.GetComponent<SapperBehaviour>().Detonate(gameObject);
+                            } else {
+                                enemy.GetComponent<BasicEnemyController>().take_damage((int)damage, states.light);
+                            }
                         }
                     }
                     fired_projectile_light = true;
@@ -216,9 +221,9 @@ public class Player : MonoBehaviour
         {
             Camera.main.GetComponent<MenuNavigator>().LoadGameOver();
         }
-        else if (current_health > 100)
+        else if (current_health > Player.player_health)
         {
-            current_health = 100;
+            current_health = Player.player_health;
         }
 
         /*
