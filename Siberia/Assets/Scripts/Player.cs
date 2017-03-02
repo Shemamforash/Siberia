@@ -109,6 +109,10 @@ public class Player : MonoBehaviour
 
     }
 
+    public Player.states GetState(){
+        return current_state;
+    }
+
     private void UpdateWeaponCooldowns()
     {
         if (fired_projectile_dark)

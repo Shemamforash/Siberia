@@ -36,6 +36,11 @@ public class SapperBehaviour : BasicEnemyController
         {
             if (exploding_time >= explosion_duration)
             {
+                GameController.UnregisterEnemy(gameObject);
+                if (spawner != null)
+                {
+                    spawner.GetComponent<SpawnerBehaviour>().Unregister(gameObject);
+                }
                 Destroy(gameObject);
             }
             exploding_time += Time.deltaTime;
@@ -65,7 +70,7 @@ public class SapperBehaviour : BasicEnemyController
                             if(g.gameObject.name.Contains("Sapper")){
                                 g.gameObject.GetComponent<SapperBehaviour>().Detonate(other);
                             } else {
-                                g.gameObject.GetComponent<BasicEnemyController>().take_damage((int)damage, Player.states.none);
+                                g.gameObject.GetComponent<BasicEnemyController>().take_damage((int)damage, player_object.GetComponent<Player>().GetState());
                             };
                         }
                         else if (g.gameObject.tag == "Player")

@@ -61,6 +61,11 @@ public class GameController : MonoBehaviour
 
     public static List<GameObject> Enemies()
     {
+        for(int i = enemies.Count - 1; i >= 0; --i){
+            if(enemies[i] == null){
+                enemies.RemoveAt(i);
+            }
+        }
         return enemies;
     }
 }
