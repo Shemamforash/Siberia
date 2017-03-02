@@ -9,12 +9,23 @@ public class Spinny : MonoBehaviour {
 
 	private Player.states type;
 
+    //Used in tutorial
+    [SerializeField]
+    private GameObject door;
+
 	// Use this for initialization
 	void Start () {
 		rotation_speed = Random.Range(90f, 180f);
 		if(Random.Range(0f, 1f) < 0.5f){
 			rotation_speed *= -1;
 		}
+
+        //Tutorial: Add pickup to door's list of things to check
+        if(door != null)
+        {
+            door.GetComponent<TutorialDoorController>().addEnemy();
+            value = 5;
+        }
 	}
 	
 	// Update is called once per frame
@@ -40,7 +51,14 @@ public class Spinny : MonoBehaviour {
 		}
 		if(other.gameObject.name == "Player"){
 			other.GetComponent<Player>().ReceivePickup(value, type);
-			Destroy(gameObject);
+
+            //Tutorial: Remove pickup from door's list of things to check
+            if (door != null)
+            {
+                door.GetComponent<TutorialDoorController>().removeEnemy();
+            }
+
+            Destroy(gameObject);
 		}
 	}
 }
