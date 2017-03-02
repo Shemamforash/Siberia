@@ -34,10 +34,12 @@ public class Player : MonoBehaviour
     public GameObject health_slider, health_color;
     public LayerMask mask;
     private Rigidbody2D my_rigidBody;
+    private SpriteRenderer sprite_renderer;
 
     //Colors!
     private Color lightColour = new Color(0.9f, 0.9f, 0.9f);
     private Color darkColour = new Color(0.1f, 0.1f, 0.1f);
+    private float damage_countdown;
 
     //Game logic
     private bool fired_projectile_light = false, fired_projectile_dark = false;
@@ -50,6 +52,9 @@ public class Player : MonoBehaviour
         my_rigidBody = gameObject.GetComponent<Rigidbody2D>();
         torch_object = transform.Find("Torch").gameObject;
         permanent_torch_object = transform.Find("Permanent Torch").gameObject;
+        sprite_renderer = GetComponent<SpriteRenderer>();
+
+        damage_countdown = 0.0f;
 
         current_health = Player.player_health;
         ToggleState();
@@ -197,13 +202,11 @@ public class Player : MonoBehaviour
         {
             current_state = states.light;
             health_color.GetComponent<Image>().color = lightColour;
-            GetComponent<SpriteRenderer>().color = lightColour;
         }
         else
         {
             current_state = states.dark;
             health_color.GetComponent<Image>().color = darkColour;
-            GetComponent<SpriteRenderer>().color = darkColour;
         }
     }
 
@@ -216,7 +219,25 @@ public class Player : MonoBehaviour
         TakeMouse();
         UpdateMeters();
         UpdateWeaponCooldowns();
+        UpdateColour();
 
+    }
+
+    private void UpdateColour()
+    {
+        if(damage_countdown > 0.0f)
+        {
+            damage_countdown -= Time.deltaTime;
+        }
+
+        if(current_state == states.dark)
+        {
+            sprite_renderer.color = darkColour + new Color(damage_countdown, 0.0f, 0.0f);
+        }
+        else
+        {
+            sprite_renderer.color = lightColour - new Color(0.0f, damage_countdown, damage_countdown, 0.0f);
+        }
     }
 
     private void UpdateMeters()
@@ -289,6 +310,9 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
+        //Flash red to indicate dmg
+        damage_countdown = 1.0f;
+
         current_health -= (int)amount;
         if (current_health < 0)
         {

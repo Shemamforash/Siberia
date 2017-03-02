@@ -60,7 +60,7 @@ public abstract class BasicEnemyController : MonoBehaviour
         seen_player = false;
 
         waypoint = enemy_rigidbody.position;
-        wander_counter = Random.Range(5.0f, 10.0f);
+        wander_counter = Random.Range(1.0f, 5.0f);
 
         permanent_torch_light = player_object.transform.Find("Permanent Torch").GetComponent<LOSRadialLight>();
         other_torch_light = player_object.transform.Find("Torch").GetComponent<LOSRadialLight>();
