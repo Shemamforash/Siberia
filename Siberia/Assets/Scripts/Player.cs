@@ -251,6 +251,7 @@ public class Player : MonoBehaviour
             damage = quarter_damage + (3 * quarter_damage * dark_mod);
             accuracy = Player.base_accuracy * dark_mod;
             move_speed = half_speed + (dark_mod * half_speed);
+            armour = 1 + Player.base_armour * light_mod;
         }
         else
         {
@@ -258,6 +259,7 @@ public class Player : MonoBehaviour
             damage = quarter_damage + (3 * quarter_damage * light_mod);
             range = Player.base_range * (dark_mod / 2f + 0.5f);
             move_speed = half_speed + (light_mod * half_speed);
+            armour = 1 + Player.base_armour * dark_mod;
         }
 
         health_slider.GetComponent<Slider>().value = current_health;
@@ -289,7 +291,7 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
-        current_health -= (int)amount;
+        current_health -= (int)(amount / armour);
         if (current_health < 0)
         {
             current_health = 0;

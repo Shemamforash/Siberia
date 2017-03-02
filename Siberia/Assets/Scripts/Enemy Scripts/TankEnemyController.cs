@@ -38,6 +38,7 @@ public class TankEnemyController : BasicEnemyController
     void Update()
     {
         base.MoveEnemy();
+        UpdateColor();
 
         if (shockwave_countdown > 0)
             shockwave_countdown -= Time.deltaTime;

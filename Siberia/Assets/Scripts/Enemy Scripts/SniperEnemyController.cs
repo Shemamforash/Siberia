@@ -69,6 +69,7 @@ public class SniperEnemyController : BasicEnemyController
     void Update()
     {
         base.MoveEnemy();
+        UpdateColor();
     }
 
     public override void Enemy_React(Rigidbody2D enemy_rigidbody, Vector2 player_position, Vector2 last_seen_player_location)
