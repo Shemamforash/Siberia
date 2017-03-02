@@ -8,6 +8,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main Menu.unity
   - enabled: 1
-    path: Assets/Scenes/Game.unity
-  - enabled: 1
     path: Assets/Scenes/Game Over.unity
+  - enabled: 1
+    path: Assets/Scenes/Next Level.unity
+  - enabled: 1
+    path: Assets/Scenes/You Won.unity
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level 1.unity
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level 2.unity
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level 3.unity
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level 4.unity
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level 5.unity

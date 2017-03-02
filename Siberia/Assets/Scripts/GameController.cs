@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Text.RegularExpressions;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -41,6 +42,12 @@ public class GameController : MonoBehaviour
                 game_data["dark_damage"]
             );
             GameController.read_data = true;
+        }
+    }
+
+    public void Update(){
+        if(enemies.Count == 0 && GameObject.FindGameObjectsWithTag("Spawner").Length == 0 && SceneManager.GetActiveScene().name.Contains("Level")) {
+            Camera.main.GetComponent<MenuNavigator>().NextLevel();
         }
     }
 

@@ -26,7 +26,6 @@ public class SpawnerBehaviour : MonoBehaviour
         sniper_chance = tank_chance + spawn_chances.y;
         sapper_chance = sniper_chance + spawn_chances.x;
         grunt_chance = 1;
-        Debug.Log(tank_chance + " " + sniper_chance + " " + sapper_chance + " " + grunt_chance);
     }
 
     // Update is called once per frame
@@ -46,7 +45,7 @@ public class SpawnerBehaviour : MonoBehaviour
                 while (enemy_spawned == false)
                 {
                     int size = 0;
-                    random += 0.1f;
+                    random += Random.Range(0f, 0.2f);
                     if (random > 1f)
                     {
                         random = 0;

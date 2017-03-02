@@ -3,7 +3,7 @@ level_basic_spawners: 4
 
 player_health: 100
 player_meter_loss_rate: 2
-player_move_speed: 6
+player_move_speed: 8
 player_armour: 3
 player_accuracy: 30
 player_range: 10
@@ -12,12 +12,12 @@ light_fire_rate: 0.5
 light_damage: 10
 dark_damage: 25
 
-grunt_move_speed: 2
+grunt_move_speed: 4
 grunt_hp: 50
 grunt_detection_rad: 10
 grunt_chase_radius_multiplier: 2
-grunt_wander_radius: 4
-grunt_damage: 1
+grunt_wander_radius: 8
+grunt_damage: 5
 grunt_fire_rate: 1
 grunt_powerup_value: 5
 grunt_wall_avoidance: 1
@@ -27,7 +27,7 @@ sapper_move_speed: 4
 sapper_hp: 1
 sapper_detection_rad: 4
 sapper_chase_radius_multiplier: 10
-sapper_wander_radius: 8
+sapper_wander_radius: 4
 sapper_damage: 10
 sapper_fire_rate: 1
 sapper_powerup_value: 0
@@ -39,7 +39,7 @@ sniper_move_speed: 2
 sniper_hp: 50
 sniper_detection_rad: 8
 sniper_chase_radius_multiplier: 10
-sniper_wander_radius: 8
+sniper_wander_radius: 15
 sniper_damage: 5
 sniper_charge_time: 1
 sniper_warning_time: 0.2
@@ -51,13 +51,13 @@ sniper_wall_avoidance: 1
 sniper_range: 15
 sniper_size: 10
 
-tank_move_speed: 4
+tank_move_speed: 3
 tank_hp: 300
 tank_detection_rad: 4
 tank_chase_radius_multiplier: 10
 tank_wander_radius: 8
 tank_damage: 10
-tank_fire_rate: 1
+tank_fire_rate: 2
 tank_powerup_value: 20
 tank_wall_avoidance: 0.5
 tank_size: 20

@@ -273,21 +273,25 @@ public abstract class BasicEnemyController : MonoBehaviour
         GameObject new_damage = GameObject.Instantiate(damage_text, transform.position, Quaternion.Euler(Vector3.up));
         new_damage.transform.SetParent(Camera.main.transform);
         new_damage.GetComponent<DamageTextBehaviour>().SetDamage(dmg);
-        if(type == Player.states.dark){
-            transform.Translate(Vector2.down * 0.2f);   
+        if (type == Player.states.dark)
+        {
+            transform.Translate(Vector2.down * 0.2f);
         }
         if (health <= 0)
         {
             GameObject new_pickup = null;
-            if (type == Player.states.light)
+            if (powerup_value != 0)
             {
-                new_pickup = GameObject.Instantiate(dark_pickup_prefab, transform.position, transform.rotation);
-                type = Player.states.dark;
-            }
-            else
-            {
-                new_pickup = GameObject.Instantiate(light_pickup_prefab, transform.position, transform.rotation);
-                type = Player.states.light;
+                if (type == Player.states.light)
+                {
+                    new_pickup = GameObject.Instantiate(dark_pickup_prefab, transform.position, transform.rotation);
+                    type = Player.states.dark;
+                }
+                else
+                {
+                    new_pickup = GameObject.Instantiate(light_pickup_prefab, transform.position, transform.rotation);
+                    type = Player.states.light;
+                }
             }
             if (new_pickup != null)
             {
