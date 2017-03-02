@@ -12,6 +12,9 @@ light_fire_rate: 4
 light_damage: 10
 dark_damage: 25
 
+tutorial_grunt_detection_rad: 0
+tutorial_grunt_wander_radius: 0
+
 grunt_move_speed: 4
 grunt_hp: 50
 grunt_detection_rad: 10
