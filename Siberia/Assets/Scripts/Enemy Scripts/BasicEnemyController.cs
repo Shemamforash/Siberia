@@ -168,7 +168,7 @@ public abstract class BasicEnemyController : MonoBehaviour
             }
             else
             {
-                waypoint = wander_direction * wander_distance;
+                waypoint = enemy_rigidbody.position + wander_direction * wander_distance;
             }
 
             wander_counter = Random.Range(5.0f, 10.0f);
