@@ -31,8 +31,6 @@ public class SapperBehaviour : BasicEnemyController
     }
     void Update()
     {
-        base.MoveEnemy();
-        UpdateColor();
         if (exploding)
         {
             if (exploding_time >= explosion_duration)
@@ -52,6 +50,11 @@ public class SapperBehaviour : BasicEnemyController
                 Destroy(gameObject);
             }
             exploding_time += Time.deltaTime;
+        }
+        else
+        {
+            base.MoveEnemy();
+            UpdateColor();
         }
     }
 
@@ -75,9 +78,12 @@ public class SapperBehaviour : BasicEnemyController
                     {
                         if (g.gameObject.tag == "Enemy")
                         {
-                            if(g.gameObject.name.Contains("Sapper")){
+                            if (g.gameObject.name.Contains("Sapper"))
+                            {
                                 g.gameObject.GetComponent<SapperBehaviour>().Detonate(other);
-                            } else {
+                            }
+                            else
+                            {
                                 g.gameObject.GetComponent<BasicEnemyController>().take_damage((int)damage, player_object.GetComponent<Player>().GetState());
                             };
                         }
@@ -90,7 +96,7 @@ public class SapperBehaviour : BasicEnemyController
             }
             GetComponent<ParticleSystem>().Play();
             GetComponent<SpriteRenderer>().enabled = false;
-            GetComponent<CircleCollider2D>().enabled = false;
+            GetComponent<PolygonCollider2D>().enabled = false;
         }
     }
 
