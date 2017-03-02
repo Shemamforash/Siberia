@@ -260,7 +260,7 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 3072
-  color: {r: 1, g: 1, b: 1, a: 0.478}
+  color: {r: 1, g: 1, b: 1, a: 0.496}
   material: {fileID: 2100000, guid: 2e91f08796cbd44849f1e15382cade3d, type: 2}
   orderInLayer: 0
   sortingLayer: 0
@@ -348,7 +348,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 786599272
+  randomSeed: 1414023983
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -762,7 +762,7 @@ ParticleSystem:
     serializedVersion: 3
     enabled: 1
     type: 11
-    radius: 1
+    radius: 0.2
     angle: 25
     length: 5
     boxX: 1
@@ -2943,7 +2943,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 943926763
+  randomSeed: -428580231
   InitialModule:
     serializedVersion: 3
     enabled: 1
