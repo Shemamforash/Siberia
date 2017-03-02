@@ -27,6 +27,8 @@ public abstract class BasicEnemyController : MonoBehaviour
     private float wander_counter;
 
     protected GameObject spawner;
+    [SerializeField]
+    protected GameObject door;
 
     protected float move_speed, health, detection_radius, chase_radius_multiplier, wander_radius, damage, fire_rate, powerup_value, wall_avoidance_strength, size;
 
@@ -64,6 +66,12 @@ public abstract class BasicEnemyController : MonoBehaviour
 
         permanent_torch_light = player_object.transform.Find("Permanent Torch").GetComponent<LOSRadialLight>();
         other_torch_light = player_object.transform.Find("Torch").GetComponent<LOSRadialLight>();
+
+        //Tutorial: Add one enemy to door counter
+        if (door != null)
+        {
+            door.GetComponent<TutorialDoorController>().addEnemy();
+        }
     }
 
     void Update()
@@ -289,6 +297,12 @@ public abstract class BasicEnemyController : MonoBehaviour
             if (spawner != null)
             {
                 spawner.GetComponent<SpawnerBehaviour>().Unregister(gameObject);
+            }
+
+            //Tutorial: Count down the number of enemies to kill before door opens
+            if (door != null)
+            {
+                door.GetComponent<TutorialDoorController>().removeEnemy();
             }
             Destroy(gameObject);
 
