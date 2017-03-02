@@ -67,10 +67,9 @@ public class Player : MonoBehaviour
     {
         if (current_state == states.dark)
         {
-            // torch_object.GetComponent<LOSRadialLight>().enabled = false;
             if (Input.GetMouseButton(0) && !fired_projectile_dark)
             {
-                current_health -= 0.5f;
+                current_health -= 0.2f;
                 float z_value = transform.rotation.eulerAngles.z;
                 z_value += Random.Range(-accuracy, accuracy);
                 Quaternion projectile_rotation = Quaternion.Euler(0, 0, z_value);
@@ -81,7 +80,6 @@ public class Player : MonoBehaviour
         }
         else if (current_state == states.light)
         {
-            // torch_object.GetComponent<LOSRadialLight>().enabled = true;
             if (Input.GetMouseButton(0))
             {
                 if (!fired_projectile_light)

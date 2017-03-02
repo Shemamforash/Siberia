@@ -1,97 +1,50 @@
 Initialize engine version: 5.5.1f1 (88d00a7498cd)
 GfxDevice: creating device client; threaded=1
 Direct3D:
-    Version:  Direct3D 11.0 [level 11.0]
-    Renderer: NVIDIA GeForce 840M (ID=0x1341)
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce GTX 1070 (ID=0x1b81)
     Vendor:   NVIDIA
-    VRAM:     2019 MB
-    Driver:   10.18.15.4279
+    VRAM:     3072 MB
+    Driver:   21.21.13.7849
 Begin MonoManager ReloadAssembly
-Platform assembly: C:\Users\Iovana\Desktop\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading C:\Users\Iovana\Desktop\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: C:\Users\Iovana\Desktop\Siberia\Siberia\Alpha_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
-Loading C:\Users\Iovana\Desktop\Siberia\Siberia\Alpha_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
-Platform assembly: C:\Users\Iovana\Desktop\Siberia\Siberia\Alpha_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading C:\Users\Iovana\Desktop\Siberia\Siberia\Alpha_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: C:\Users\Iovana\Desktop\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading C:\Users\Iovana\Desktop\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-Platform assembly: C:\Users\Iovana\Desktop\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading C:\Users\Iovana\Desktop\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-Platform assembly: C:\Users\Iovana\Desktop\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
-Loading C:\Users\Iovana\Desktop\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
-- Completed reload, in  0.072 seconds
-Platform assembly: C:\Users\Iovana\Desktop\Siberia\Siberia\Alpha_Data\Managed\System.Core.dll (this message is harmless)
-Platform assembly: C:\Users\Iovana\Desktop\Siberia\Siberia\Alpha_Data\Managed\System.dll (this message is harmless)
-desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
+Platform assembly: E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
+Loading E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
+- Completed reload, in  0.028 seconds
+Platform assembly: E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: E:\Documents\GitHub\Siberia\Siberia\Alpha_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 3840x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 1.687982 ms
+UnloadTime: 1.035026 ms
 Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 8.726112 ms
+UnloadTime: 5.661353 ms
 
-Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 509.
-Total: 2.429732 ms (FindLiveObjects: 1.549423 ms CreateObjectMapping: 0.371861 ms MarkObjects: 0.442917 ms  DeleteObjects: 0.036712 ms)
-
-Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 2.875808 ms
-
-Unloading 126 unused Assets to reduce memory usage. Loaded Objects now: 291.
-Total: 1.456655 ms (FindLiveObjects: 0.076977 ms CreateObjectMapping: 0.058029 ms MarkObjects: 0.695167 ms  DeleteObjects: 0.624111 ms)
-
-Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 2.152612 ms
-
-Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 497.
-Total: 0.898073 ms (FindLiveObjects: 0.069082 ms CreateObjectMapping: 0.039870 ms MarkObjects: 0.667140 ms  DeleteObjects: 0.120401 ms)
+Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 513.
+Total: 0.307499 ms (FindLiveObjects: 0.044831 ms CreateObjectMapping: 0.013840 ms MarkObjects: 0.229571 ms  DeleteObjects: 0.007221 ms)
 
 Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 1.608241 ms
+UnloadTime: 1.086476 ms
 
 Unloading 131 unused Assets to reduce memory usage. Loaded Objects now: 295.
-Total: 2.263539 ms (FindLiveObjects: 0.075003 ms CreateObjectMapping: 0.051318 ms MarkObjects: 1.442049 ms  DeleteObjects: 0.693588 ms)
-
-Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.979393 ms
-
-Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 509.
-Total: 0.827411 ms (FindLiveObjects: 0.093162 ms CreateObjectMapping: 0.059213 ms MarkObjects: 0.615032 ms  DeleteObjects: 0.058424 ms)
-
-Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 1.325595 ms
-
-Unloading 131 unused Assets to reduce memory usage. Loaded Objects now: 295.
-Total: 1.262039 ms (FindLiveObjects: 0.071845 ms CreateObjectMapping: 0.060003 ms MarkObjects: 0.549897 ms  DeleteObjects: 0.578714 ms)
-
-Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 1.305462 ms
-
-Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 509.
-Total: 0.826622 ms (FindLiveObjects: 0.082109 ms CreateObjectMapping: 0.043423 ms MarkObjects: 0.630427 ms  DeleteObjects: 0.069082 ms)
-
-Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 1.903915 ms
-
-Unloading 131 unused Assets to reduce memory usage. Loaded Objects now: 295.
-Total: 2.191298 ms (FindLiveObjects: 0.210800 ms CreateObjectMapping: 0.057239 ms MarkObjects: 0.957286 ms  DeleteObjects: 0.963602 ms)
+Total: 0.444399 ms (FindLiveObjects: 0.043326 ms CreateObjectMapping: 0.032194 ms MarkObjects: 0.159466 ms  DeleteObjects: 0.208208 ms)
 
 Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 1.109268 ms
+UnloadTime: 0.450717 ms
 
 Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 288.
-Total: 0.813200 ms (FindLiveObjects: 0.069477 ms CreateObjectMapping: 0.044212 ms MarkObjects: 0.635559 ms  DeleteObjects: 0.062766 ms)
+Total: 0.229571 ms (FindLiveObjects: 0.027380 ms CreateObjectMapping: 0.028583 ms MarkObjects: 0.170297 ms  DeleteObjects: 0.002707 ms)
 
-Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.875966 ms
-
-Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 509.
-Total: 0.702273 ms (FindLiveObjects: 0.059213 ms CreateObjectMapping: 0.035133 ms MarkObjects: 0.557002 ms  DeleteObjects: 0.049739 ms)
-
-Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 1.387177 ms
-
-Unloading 131 unused Assets to reduce memory usage. Loaded Objects now: 295.
-Total: 1.501657 ms (FindLiveObjects: 0.081320 ms CreateObjectMapping: 0.053292 ms MarkObjects: 0.729906 ms  DeleteObjects: 0.635559 ms)
-
-Setting up 1 worker threads for Enlighten.
-  Thread -> id: 3d70 -> priority: 1 
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 5da0 -> priority: 1 
+  Thread -> id: 5a04 -> priority: 1 
