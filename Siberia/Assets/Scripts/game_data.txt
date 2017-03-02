@@ -3,8 +3,8 @@ level_basic_spawners: 4
 
 player_health: 100
 player_meter_loss_rate: 2
-player_move_speed: 3
-player_armour: 10
+player_move_speed: 6
+player_armour: 3
 player_accuracy: 30
 player_range: 10
 dark_fire_rate: 0.1
@@ -12,9 +12,9 @@ light_fire_rate: 0.5
 light_damage: 10
 dark_damage: 25
 
-grunt_move_speed: 1
-grunt_hp: 100
-grunt_detection_rad: 6
+grunt_move_speed: 2
+grunt_hp: 50
+grunt_detection_rad: 10
 grunt_chase_radius_multiplier: 2
 grunt_wander_radius: 4
 grunt_damage: 1
@@ -52,7 +52,7 @@ sniper_range: 15
 sniper_size: 10
 
 tank_move_speed: 4
-tank_hp: 400
+tank_hp: 300
 tank_detection_rad: 4
 tank_chase_radius_multiplier: 10
 tank_wander_radius: 8

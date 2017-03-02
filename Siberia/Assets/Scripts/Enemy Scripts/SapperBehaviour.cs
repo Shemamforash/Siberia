@@ -32,6 +32,7 @@ public class SapperBehaviour : BasicEnemyController
     void Update()
     {
         base.MoveEnemy();
+        UpdateColor();
         if (exploding)
         {
             if (exploding_time >= explosion_duration)

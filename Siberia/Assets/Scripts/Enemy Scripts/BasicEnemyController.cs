@@ -62,7 +62,7 @@ public abstract class BasicEnemyController : MonoBehaviour
         seen_player = false;
 
         waypoint = enemy_rigidbody.position;
-        wander_counter = Random.Range(1.0f, 5.0f);
+        wander_counter = Random.Range(0.0f, 3.0f);
 
         permanent_torch_light = player_object.transform.Find("Permanent Torch").GetComponent<LOSRadialLight>();
         other_torch_light = player_object.transform.Find("Torch").GetComponent<LOSRadialLight>();
@@ -81,7 +81,7 @@ public abstract class BasicEnemyController : MonoBehaviour
     }
 
 
-    void UpdateColor()
+    protected void UpdateColor()
     {
         float distance_to_player = Vector3.Distance(player_transform.position, transform.position);
         float main_torch_range = permanent_torch_light.radius - 3;
