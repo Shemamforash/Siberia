@@ -41,6 +41,13 @@ public class SapperBehaviour : BasicEnemyController
                 {
                     spawner.GetComponent<SpawnerBehaviour>().Unregister(gameObject);
                 }
+
+                //Tutorial: Count down the number of enemies to kill before door opens
+                if (door != null)
+                {
+                    door.GetComponent<TutorialDoorController>().removeEnemy();
+                }
+
                 Destroy(gameObject);
             }
             exploding_time += Time.deltaTime;
