@@ -8,7 +8,7 @@ player_armour: 3
 player_accuracy: 30
 player_range: 10
 dark_fire_rate: 0.1
-light_fire_rate: 0.5
+light_fire_rate: 4
 light_damage: 10
 dark_damage: 25
 

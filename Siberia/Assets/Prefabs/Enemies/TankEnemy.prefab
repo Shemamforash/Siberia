@@ -101,6 +101,7 @@ MonoBehaviour:
     type: 2}
   damage_text: {fileID: 1389180245191612, guid: e5467d6baf025f64baec636b8aabc1d1,
     type: 2}
+  door: {fileID: 0}
   shockwave_attack: {fileID: 1347995848721826, guid: 8b693c8d36ac2d84ebac8e497812979a,
     type: 2}
   shockwave_cooldown: 1
@@ -1117,7 +1118,7 @@ ParticleSystem:
     flipV: 0
     randomRow: 1
   VelocityModule:
-    enabled: 1
+    enabled: 0
     x:
       scalar: 0
       maxCurve:
@@ -1564,7 +1565,7 @@ ParticleSystem:
     inWorldSpace: 0
     dampen: 0.8
   NoiseModule:
-    enabled: 1
+    enabled: 0
     strength:
       scalar: 0.2
       maxCurve:
@@ -2719,7 +2720,7 @@ ParticleSystemRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6789aef923faf5b47ae185251d8e8f17, type: 2}
+  - {fileID: 2100000, guid: 11f6d5d392d9b11449c8cd0fa3bb3043, type: 2}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0

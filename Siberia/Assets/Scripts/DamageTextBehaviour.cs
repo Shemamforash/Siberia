@@ -32,7 +32,7 @@ public class DamageTextBehaviour : MonoBehaviour
         else
         {
             float alpha = (1f / duration * time_alive);
-            // alpha *= alpha;
+            alpha *= alpha;
             alpha = 1 - alpha;
             Color new_color = new Color(1f, 0f, 0f, alpha);
             GetComponent<SpriteRenderer>().color = new_color;

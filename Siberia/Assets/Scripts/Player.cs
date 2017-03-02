@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
     private float current_health, damage, accuracy, range, move_speed, armour;
     private float time_since_last_fire_dark = 0f, time_since_last_fire_light = 0f;
 
+    private ParticleSystem blast_wave_particles, residual_particles;
 
     void Start()
     {
@@ -53,6 +54,8 @@ public class Player : MonoBehaviour
         torch_object = transform.Find("Torch").gameObject;
         permanent_torch_object = transform.Find("Permanent Torch").gameObject;
         sprite_renderer = GetComponent<SpriteRenderer>();
+        residual_particles = gameObject.GetComponent<ParticleSystem>();
+        blast_wave_particles = permanent_torch_object.GetComponent<ParticleSystem>();
 
         damage_countdown = 0.0f;
 
@@ -64,9 +67,10 @@ public class Player : MonoBehaviour
     {
         if (current_state == states.dark)
         {
+            // torch_object.GetComponent<LOSRadialLight>().enabled = false;
             if (Input.GetMouseButton(0) && !fired_projectile_dark)
             {
-                current_health -= 0.2f;
+                current_health -= 0.5f;
                 float z_value = transform.rotation.eulerAngles.z;
                 z_value += Random.Range(-accuracy, accuracy);
                 Quaternion projectile_rotation = Quaternion.Euler(0, 0, z_value);
@@ -74,47 +78,65 @@ public class Player : MonoBehaviour
                 new_projectile.GetComponent<ProjectileBehaviour>().SetDamage((int)damage);
                 fired_projectile_dark = true;
             }
-            torch_object.GetComponent<LOSRadialLight>().enabled = false;
         }
         else if (current_state == states.light)
         {
+            // torch_object.GetComponent<LOSRadialLight>().enabled = true;
             if (Input.GetMouseButton(0))
             {
-                if (range != 0)
-                {
-                    torch_object.GetComponent<LOSRadialLight>().enabled = true;
-                    torch_object.GetComponent<LOSRadialLight>().radius = range;
-                }
                 if (!fired_projectile_light)
                 {
-                    current_health -= 0.2f;
-                    for (int i = GameController.Enemies().Count - 1; i >= 0; --i)
-                    {
-                        GameObject enemy = GameController.Enemies()[i];
-                        Vector3 dir_to_enemy = enemy.transform.position - transform.position;
-                        GameObject hit_object = Physics2D.Raycast(transform.position, dir_to_enemy, 100f, mask).collider.gameObject;
-                        if (hit_object.tag == "Enemy" && Vector3.Distance(transform.position, enemy.transform.position) < range)
-                        {
-                            if(enemy.name.Contains("Sapper")){
-                                enemy.GetComponent<SapperBehaviour>().Detonate(gameObject);
-                            } else {
-                                enemy.GetComponent<BasicEnemyController>().take_damage((int)damage, states.light);
-                            }
-                        }
-                    }
+                    current_blast_radius = 0;
+                    blast_timer = 0;
+                    current_health -= 10f;
+                    max_blast_radius = range;
+                    blast_epicentre = transform.position;
+                    var blast_module = blast_wave_particles.main;
+                    blast_module.startSpeed = range;
+                    var residual_module = blast_wave_particles.main;
+                    residual_module.startSpeed = range;
                     fired_projectile_light = true;
+                    emitting_blast = true;
+                    blast_wave_particles.Play();
+                    residual_particles.Play();
                 }
             }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                torch_object.GetComponent<LOSRadialLight>().enabled = false;
-            }
-
         }
 
     }
 
-    public Player.states GetState(){
+    private float current_blast_radius = 0, max_blast_radius = 0f, blast_timer, blast_max_time = 2f;
+    private bool emitting_blast = false;
+    private Vector3 blast_epicentre;
+
+    public void UpdateLightPushBack()
+    {
+        if (emitting_blast)
+        {
+            blast_timer += Time.deltaTime;
+            if (blast_timer > blast_max_time)
+            {
+                emitting_blast = false;
+            }
+            current_blast_radius += max_blast_radius * Time.deltaTime;
+
+            Collider2D[] objects_in_range = Physics2D.OverlapCircleAll(blast_epicentre, current_blast_radius + 0.7f);
+            foreach (Collider2D collider in objects_in_range)
+            {
+                GameObject collider_object = collider.gameObject;
+                if (collider_object.tag == "Enemy")
+                {
+                    Vector3 dir_to_enemy = collider_object.transform.position - blast_epicentre;
+                    dir_to_enemy.Normalize();
+                    dir_to_enemy *= Time.deltaTime * max_blast_radius;
+                    collider_object.transform.Translate(dir_to_enemy, Space.World);
+                }
+            }
+        }
+    }
+
+    public Player.states GetState()
+    {
         return current_state;
     }
 
@@ -202,11 +224,13 @@ public class Player : MonoBehaviour
         {
             current_state = states.light;
             health_color.GetComponent<Image>().color = lightColour;
+            torch_object.GetComponent<LOSRadialLight>().color = new Color(1f, 1f, 1f, 0.5f);
         }
         else
         {
             current_state = states.dark;
             health_color.GetComponent<Image>().color = darkColour;
+            torch_object.GetComponent<LOSRadialLight>().color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
         }
     }
 
@@ -220,17 +244,17 @@ public class Player : MonoBehaviour
         UpdateMeters();
         UpdateWeaponCooldowns();
         UpdateColour();
-
+        UpdateLightPushBack();
     }
 
     private void UpdateColour()
     {
-        if(damage_countdown > 0.0f)
+        if (damage_countdown > 0.0f)
         {
             damage_countdown -= Time.deltaTime;
         }
 
-        if(current_state == states.dark)
+        if (current_state == states.dark)
         {
             sprite_renderer.color = darkColour + new Color(damage_countdown, 0.0f, 0.0f);
         }
