@@ -8,7 +8,7 @@ player_armour: 3
 player_accuracy: 30
 player_range: 10
 dark_fire_rate: 0.1
-light_fire_rate: 4
+light_fire_rate: 3
 light_damage: 10
 dark_damage: 25
 
@@ -16,13 +16,13 @@ tutorial_grunt_detection_rad: 0
 tutorial_grunt_wander_radius: 0
 
 grunt_move_speed: 4
-grunt_hp: 50
-grunt_detection_rad: 10
+grunt_hp: 30
+grunt_detection_rad: 20
 grunt_chase_radius_multiplier: 2
 grunt_wander_radius: 8
 grunt_damage: 5
 grunt_fire_rate: 1
-grunt_powerup_value: 5
+grunt_powerup_value: 3
 grunt_wall_avoidance: 1
 grunt_size: 1
 
@@ -47,21 +47,21 @@ sniper_damage: 5
 sniper_charge_time: 1
 sniper_warning_time: 0.2
 sniper_cooldown_time: 1
-sniper_powerup_value: 10
+sniper_powerup_value: 5
 sniper_hunt_time: 4
-sniper_min_range: 6
+sniper_min_range: 5
 sniper_wall_avoidance: 1
-sniper_range: 15
+sniper_range: 10
 sniper_size: 10
 
 tank_move_speed: 3
-tank_hp: 300
+tank_hp: 200
 tank_detection_rad: 4
 tank_chase_radius_multiplier: 10
 tank_wander_radius: 8
 tank_damage: 10
 tank_fire_rate: 2
-tank_powerup_value: 20
+tank_powerup_value: 10
 tank_wall_avoidance: 0.5
 tank_size: 20
 
