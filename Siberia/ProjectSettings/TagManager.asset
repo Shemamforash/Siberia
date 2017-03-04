@@ -8,6 +8,7 @@ TagManager:
   - Terrain
   - Bullet
   - Spawner
+  - Pickup_range
   layers:
   - Default
   - TransparentFX
