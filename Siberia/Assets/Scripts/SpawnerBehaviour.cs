@@ -8,6 +8,8 @@ public class SpawnerBehaviour : MonoBehaviour
     public int spawner_size = 100;
     public int enemies_allowed_on_screen = 10;
 
+    public bool allowed_to_spawn = true;
+
     private List<GameObject> enemies_on_screen = new List<GameObject>();
     public float spawn_rate = 1f;
     private float time_since_last;
@@ -21,7 +23,13 @@ public class SpawnerBehaviour : MonoBehaviour
 
     public Vector3 spawn_chances;
 
-    void Start(){
+    public void AllowSpawning()
+    {
+        allowed_to_spawn = true;
+    }
+
+    void Start()
+    {
         tank_chance = spawn_chances.z;
         sniper_chance = tank_chance + spawn_chances.y;
         sapper_chance = sniper_chance + spawn_chances.x;
@@ -31,60 +39,63 @@ public class SpawnerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        time_since_last += Time.deltaTime;
-        if (time_since_last >= spawn_rate)
+        if (allowed_to_spawn)
         {
-            time_since_last = 0f;
-            if (enemies_on_screen.Count < enemies_allowed_on_screen)
+            time_since_last += Time.deltaTime;
+            if (time_since_last >= spawn_rate)
             {
-                GameObject new_enemy = null;
-                bool enemy_spawned = false;
-                float random = Random.Range(0f, 1f);
-                GameObject prefab = null;
-
-                while (enemy_spawned == false)
+                time_since_last = 0f;
+                if (enemies_on_screen.Count < enemies_allowed_on_screen)
                 {
-                    int size = 0;
-                    random += Random.Range(0f, 0.2f);
-                    if (random > 1f)
-                    {
-                        random = 0;
-                    }
-                    if (random < tank_chance)
-                    {
-                        prefab = tank_prefab;
-                        size = (int)GameController.GetGameData()["tank_size"];
-                    }
-                    else if (random < sniper_chance)
-                    {
-                        prefab = sniper_prefab;
-                        size = (int)GameController.GetGameData()["sniper_size"];
-                    }
-                    else if (random < sapper_chance)
-                    {
-                        prefab = sapper_prefab;
-                        size = (int)GameController.GetGameData()["sapper_size"];
-                    }
-                    else
-                    {
-                        prefab = enemy_prefab;
-                        size = (int)GameController.GetGameData()["grunt_size"];
+                    GameObject new_enemy = null;
+                    bool enemy_spawned = false;
+                    float random = Random.Range(0f, 1f);
+                    GameObject prefab = null;
 
-                    }
-                    if (spawner_size - size >= 0)
+                    while (enemy_spawned == false)
                     {
-                        Vector3 random_pos = (Vector2)transform.position + Random.insideUnitCircle;
-                        new_enemy = GameObject.Instantiate(prefab, random_pos, transform.rotation);
-                        new_enemy.GetComponent<BasicEnemyController>().SetSpawner(gameObject);
-                        GameController.RegisterEnemy(new_enemy);
-                        spawner_size -= size;
-                        enemy_spawned = true;
+                        int size = 0;
+                        random += Random.Range(0f, 0.2f);
+                        if (random > 1f)
+                        {
+                            random = 0;
+                        }
+                        if (random < tank_chance)
+                        {
+                            prefab = tank_prefab;
+                            size = (int)GameController.GetGameData()["tank_size"];
+                        }
+                        else if (random < sniper_chance)
+                        {
+                            prefab = sniper_prefab;
+                            size = (int)GameController.GetGameData()["sniper_size"];
+                        }
+                        else if (random < sapper_chance)
+                        {
+                            prefab = sapper_prefab;
+                            size = (int)GameController.GetGameData()["sapper_size"];
+                        }
+                        else
+                        {
+                            prefab = enemy_prefab;
+                            size = (int)GameController.GetGameData()["grunt_size"];
+
+                        }
+                        if (spawner_size - size >= 0)
+                        {
+                            Vector3 random_pos = (Vector2)transform.position + Random.insideUnitCircle;
+                            new_enemy = GameObject.Instantiate(prefab, random_pos, transform.rotation);
+                            new_enemy.GetComponent<BasicEnemyController>().SetSpawner(gameObject);
+                            GameController.RegisterEnemy(new_enemy);
+                            spawner_size -= size;
+                            enemy_spawned = true;
+                        }
                     }
-                }
-                enemies_on_screen.Add(new_enemy);
-                if (spawner_size == 0)
-                {
-                    Destroy(gameObject);
+                    enemies_on_screen.Add(new_enemy);
+                    if (spawner_size == 0)
+                    {
+                        Destroy(gameObject);
+                    }
                 }
             }
         }
