@@ -59,10 +59,10 @@ GameObject:
   - component: {fileID: 4511618631294462}
   - component: {fileID: 212052253257656596}
   - component: {fileID: 114100950998832246}
-  - component: {fileID: 61636159108575074}
   - component: {fileID: 50823029063096070}
   - component: {fileID: 198320131078348866}
   - component: {fileID: 199776076964525366}
+  - component: {fileID: 58197810363034768}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -207,8 +207,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &61636159108575074
-BoxCollider2D:
+--- !u!58 &58197810363034768
+CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -220,7 +220,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 0.16, y: 0.16}
+  m_Radius: 0.3
 --- !u!114 &114100950998832246
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -348,7 +348,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1414023983
+  randomSeed: -2020387996
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -2943,7 +2943,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -428580231
+  randomSeed: 2095910572
   InitialModule:
     serializedVersion: 3
     enabled: 1
