@@ -4,7 +4,7 @@ level_basic_spawners: 4
 player_health: 100
 player_meter_loss_rate: 2
 player_move_speed: 8
-player_armour: 3
+player_armour: 1
 player_accuracy: 30
 player_range: 10
 dark_fire_rate: 0.1

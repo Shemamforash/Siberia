@@ -363,6 +363,7 @@ MonoBehaviour:
     type: 2}
   health_slider: {fileID: 0}
   health_color: {fileID: 0}
+  shield_indicator: {fileID: 0}
   mask:
     serializedVersion: 2
     m_Bits: 3072
@@ -478,7 +479,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1943060848
+  randomSeed: -839724325
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3073,7 +3074,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1061571439
+  randomSeed: -89141346
   InitialModule:
     serializedVersion: 3
     enabled: 1
