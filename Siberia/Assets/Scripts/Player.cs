@@ -80,7 +80,7 @@ public class Player : MonoBehaviour
         }
         else if (current_state == states.light)
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButtonDown(0))
             {
                 if (!fired_projectile_light)
                 {

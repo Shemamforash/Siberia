@@ -5,16 +5,18 @@ using UnityEngine;
 public class Spinny : MonoBehaviour {
 	private float rotation_speed;
 	private int value = -1;
-	private float time_alive = 0;
+	private float time_alive = 0, magnet_range = 3, force_multiplier = 10;
 
 	private Player.states type;
 
     //Used in tutorial
     [SerializeField]
     private GameObject door;
+	private GameObject player;
 
 	// Use this for initialization
 	void Start () {
+		player = GameObject.Find("Player");
 		rotation_speed = Random.Range(90f, 180f);
 		if(Random.Range(0f, 1f) < 0.5f){
 			rotation_speed *= -1;
@@ -36,6 +38,14 @@ public class Spinny : MonoBehaviour {
 		time_alive += Time.deltaTime * 2;
 		float new_scale = (Mathf.Sin(time_alive) / 2) + 1.5f;
 		transform.localScale = new Vector3(new_scale, new_scale, 0);
+
+		float distance_to_player = Vector3.Distance(transform.position, player.transform.position);
+		if(distance_to_player < magnet_range){
+			float force = 1 - distance_to_player / magnet_range;
+			force *= force_multiplier;
+			Vector3 dir = player.transform.position - transform.position;
+			transform.position += dir * force * Time.deltaTime;
+		}
 	}
 
 	public void SetPickupValue(int value, Player.states type){
