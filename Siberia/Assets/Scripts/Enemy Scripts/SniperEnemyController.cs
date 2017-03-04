@@ -30,6 +30,11 @@ public class SniperEnemyController : BasicEnemyController
     private float hunt_countdown;
     private int state; //0: aiming, 1: locking, 2: warning, 3: cooldown
 
+    //Audio
+    [SerializeField]
+    private AudioClip sniper_sfx;
+    private AudioSource audio_source;
+
     private Vector2 fire_direction;
 
     void Start()
@@ -64,6 +69,8 @@ public class SniperEnemyController : BasicEnemyController
         this.wall_avoidance_strength = game_data["sniper_wall_avoidance"];
         this.shot_range = game_data["sniper_range"];
         this.size = game_data["sniper_size"];
+
+        audio_source = gameObject.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -109,6 +116,8 @@ public class SniperEnemyController : BasicEnemyController
                     if (warning_countdown > warning_time)
                     {
                         state = 3;
+                        //Play firing noise
+                        audio_source.PlayOneShot(sniper_sfx, 0.5f);
                         GameObject projectile = Instantiate(sniper_shot, enemy_rigidbody.position, Quaternion.LookRotation(new Vector3(0.0f, 0.0f, 1.0f), fire_direction));
                         projectile.GetComponent<SniperProjectileBehaviour>().SetDamage(damage);
                         warning_countdown = 0;
