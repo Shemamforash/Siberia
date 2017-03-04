@@ -29,7 +29,10 @@ public class MenuNavigator : MonoBehaviour
     {
         SceneManager.LoadScene(next_level);
     }
-
+    
+    public void LoadTutorial(){
+        SceneManager.LoadScene("How To Play");
+    }
     public void NextLevel()
     {
 		++MenuNavigator.level_no;

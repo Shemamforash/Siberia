@@ -17,7 +17,7 @@ public class RolloverActivator : MonoBehaviour
         //Make sure that it is the player that has passed over
         if(!activated && other != null && other.gameObject.tag == "Player")
         {
-            obj.SetActive(true);
+            obj.GetComponent<SpawnerBehaviour>().AllowSpawning();
             activated = true;
         }
     }

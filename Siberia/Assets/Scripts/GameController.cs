@@ -45,9 +45,13 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void Update(){
-        if(enemies.Count == 0 && GameObject.FindGameObjectsWithTag("Spawner").Length == 0 && SceneManager.GetActiveScene().name.Contains("Level")) {
-            Camera.main.GetComponent<MenuNavigator>().NextLevel();
+    void Update(){
+        if(enemies.Count == 0 && GameObject.FindGameObjectsWithTag("Spawner").Length == 0) {
+            if(SceneManager.GetActiveScene().name.Contains("Level")){
+                Camera.main.GetComponent<MenuNavigator>().NextLevel();
+            } else if(SceneManager.GetActiveScene().name.Contains("How")){
+                Camera.main.GetComponent<MenuNavigator>().LoadMainMenu();
+            }
         }
     }
 
