@@ -41,6 +41,20 @@ public class Player : MonoBehaviour
     private Color darkColour = new Color(0.1f, 0.1f, 0.1f);
     private float damage_countdown;
 
+    //Sounds
+    [SerializeField]
+    private AudioClip pickup_sfx;
+    [SerializeField]
+    private AudioClip dark_sfx_1;
+    [SerializeField]
+    private AudioClip dark_sfx_2;
+    [SerializeField]
+    private AudioClip dark_sfx_3;
+    private AudioClip[] dark_sfx;
+    [SerializeField]
+    private AudioClip light_sfx;
+    private AudioSource audio_source;
+
     //Game logic
     private bool fired_projectile_light = false, fired_projectile_dark = false;
     private float current_health, damage, accuracy, range, move_speed, armour;
@@ -57,6 +71,9 @@ public class Player : MonoBehaviour
         residual_particles = gameObject.GetComponent<ParticleSystem>();
         blast_wave_particles = permanent_torch_object.GetComponent<ParticleSystem>();
 
+        audio_source = gameObject.GetComponent<AudioSource>();
+        dark_sfx = new AudioClip[3] { dark_sfx_1, dark_sfx_2, dark_sfx_3 };
+
         damage_countdown = 0.0f;
 
         current_health = Player.player_health;
@@ -70,11 +87,17 @@ public class Player : MonoBehaviour
             if (Input.GetMouseButton(0) && !fired_projectile_dark)
             {
                 current_health -= 0.2f;
+
                 float z_value = transform.rotation.eulerAngles.z;
                 z_value += Random.Range(-accuracy, accuracy);
+
                 Quaternion projectile_rotation = Quaternion.Euler(0, 0, z_value);
                 GameObject new_projectile = GameObject.Instantiate(projectile_prefab, transform.position, projectile_rotation);
                 new_projectile.GetComponent<ProjectileBehaviour>().SetDamage((int)damage);
+
+                //Play random shot sound
+                audio_source.PlayOneShot(dark_sfx[Random.Range(0, 3)], 0.5f);
+
                 fired_projectile_dark = true;
             }
         }
@@ -93,8 +116,12 @@ public class Player : MonoBehaviour
                     blast_module.startSpeed = range;
                     var residual_module = blast_wave_particles.main;
                     residual_module.startSpeed = range;
+
+                    audio_source.PlayOneShot(light_sfx, 0.5f);
+
                     fired_projectile_light = true;
                     emitting_blast = true;
+
                     blast_wave_particles.Play();
                     residual_particles.Play();
                 }
@@ -311,6 +338,8 @@ public class Player : MonoBehaviour
 
     public void ReceivePickup(int value, states type)
     {
+        audio_source.PlayOneShot(pickup_sfx, 1.0f);
+
         if (type == current_state)
         {
             current_health += value;
