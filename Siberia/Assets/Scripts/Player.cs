@@ -54,6 +54,13 @@ public class Player : MonoBehaviour
     private AudioClip[] dark_sfx;
     [SerializeField]
     private AudioClip light_sfx;
+    [SerializeField]
+    private AudioClip damage_sfx_1;
+    [SerializeField]
+    private AudioClip damage_sfx_2;
+    [SerializeField]
+    private AudioClip damage_sfx_3;
+    private AudioClip[] damage_sfx;
     private AudioSource audio_source;
 
     //Game logic
@@ -74,6 +81,7 @@ public class Player : MonoBehaviour
 
         audio_source = gameObject.GetComponent<AudioSource>();
         dark_sfx = new AudioClip[3] { dark_sfx_1, dark_sfx_2, dark_sfx_3 };
+        damage_sfx = new AudioClip[3] { damage_sfx_1, damage_sfx_2, damage_sfx_3 };
 
         damage_countdown = 0.0f;
 
@@ -97,7 +105,7 @@ public class Player : MonoBehaviour
                 new_projectile.GetComponent<ProjectileBehaviour>().SetDamage((int)damage);
 
                 //Play random shot sound
-                audio_source.PlayOneShot(dark_sfx[Random.Range(0, 3)], 0.5f);
+                audio_source.PlayOneShot(dark_sfx[Random.Range(0, 3)], 0.3f);
 
                 fired_projectile_dark = true;
             }
@@ -374,8 +382,9 @@ public class Player : MonoBehaviour
     {
         float miss_chance = Random.Range(0f, 1f);
         Debug.Log(armour + " " + miss_chance);
-        if (miss_chance < armour)
-        {
+        if (miss_chance < armour) {
+            audio_source.PlayOneShot(damage_sfx[Random.Range(0, 3)], 0.7f);
+            damage_countdown = 1.0f;
             current_health -= (int)(amount);
             damage_countdown = 1.0f;
             if (current_health < 0)
@@ -384,7 +393,6 @@ public class Player : MonoBehaviour
             }
         } else {
             shield_indicator_script.RefreshShield();
-            Debug.Log("shield");
         }
     }
 }
