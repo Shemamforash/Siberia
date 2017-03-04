@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
     //Exposed Variables
     public GameObject torch_object, permanent_torch_object, projectile_prefab;
     public GameObject health_slider, health_color;
+    public ShieldBehaviour shield_indicator_script;
     public LayerMask mask;
     private Rigidbody2D my_rigidBody;
     private SpriteRenderer sprite_renderer;
@@ -161,7 +162,8 @@ public class Player : MonoBehaviour
                 GameObject collider_object = collider.gameObject;
                 if (collider_object.tag == "Enemy")
                 {
-                    if(!enemies_hit_this_blast.Contains(collider_object)){
+                    if (!enemies_hit_this_blast.Contains(collider_object))
+                    {
                         collider_object.GetComponent<BasicEnemyController>().take_damage((int)Player.base_light_damage, Player.states.light);
                         enemies_hit_this_blast.Add(collider_object);
                     }
@@ -336,7 +338,7 @@ public class Player : MonoBehaviour
             damage = quarter_damage + (3 * quarter_damage * dark_mod);
             accuracy = Player.base_accuracy * dark_mod;
             move_speed = half_speed + (dark_mod * half_speed);
-            armour = 1 + Player.base_armour * light_mod;
+            armour = 0.5f + Player.base_armour * light_mod * 0.5f;
         }
         else
         {
@@ -344,7 +346,7 @@ public class Player : MonoBehaviour
             damage = quarter_damage + (3 * quarter_damage * light_mod);
             range = Player.base_range * dark_mod + 2;
             move_speed = half_speed + (light_mod * half_speed);
-            armour = 1 + Player.base_armour * dark_mod;
+            armour = 0.5f + Player.base_armour * dark_mod * 0.5f;
         }
 
         health_slider.GetComponent<Slider>().value = current_health;
@@ -378,13 +380,19 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
-        current_health -= (int)(amount / armour);
-        audio_source.PlayOneShot(damage_sfx[Random.Range(0, 3)], 0.7f);
-
-        damage_countdown = 1.0f;
-        if (current_health < 0)
-        {
-            current_health = 0;
+        float miss_chance = Random.Range(0f, 1f);
+        Debug.Log(armour + " " + miss_chance);
+        if (miss_chance < armour) {
+            audio_source.PlayOneShot(damage_sfx[Random.Range(0, 3)], 0.7f);
+            damage_countdown = 1.0f;
+            current_health -= (int)(amount);
+            damage_countdown = 1.0f;
+            if (current_health < 0)
+            {
+                current_health = 0;
+            }
+        } else {
+            shield_indicator_script.RefreshShield();
         }
     }
 }
