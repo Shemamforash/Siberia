@@ -80,7 +80,7 @@ public class Player : MonoBehaviour
         }
         else if (current_state == states.light)
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButtonDown(0))
             {
                 if (!fired_projectile_light)
                 {
@@ -159,6 +159,7 @@ public class Player : MonoBehaviour
         }
         if (fired_projectile_light)
         {
+            //Debug.Log(time_since_last_fire_dark + " " + Player.light_fire_rate);
             time_since_last_fire_light += Time.deltaTime;
             if (time_since_last_fire_light >= Player.light_fire_rate)
             {

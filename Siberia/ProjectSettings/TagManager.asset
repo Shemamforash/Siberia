@@ -8,6 +8,7 @@ TagManager:
   - Terrain
   - Bullet
   - Spawner
+  - Pickup_range
   layers:
   - Default
   - TransparentFX
@@ -53,4 +54,7 @@ TagManager:
     locked: 0
   - name: Entities
     uniqueID: 4076758373
+    locked: 0
+  - name: Overlay
+    uniqueID: 2779837217
     locked: 0
