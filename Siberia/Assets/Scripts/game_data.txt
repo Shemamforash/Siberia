@@ -15,9 +15,9 @@ dark_damage: 25
 tutorial_grunt_detection_rad: 0
 tutorial_grunt_wander_radius: 0
 
-grunt_move_speed: 3
+grunt_move_speed: 4
 grunt_hp: 25
-grunt_detection_rad: 20
+grunt_detection_rad: 30
 grunt_chase_radius_multiplier: 2
 grunt_wander_radius: 8
 grunt_damage: 5
@@ -26,11 +26,11 @@ grunt_powerup_value: 5
 grunt_wall_avoidance: 1
 grunt_size: 1
 
-sapper_move_speed: 4
+sapper_move_speed: 5
 sapper_hp: 1
-sapper_detection_rad: 4
+sapper_detection_rad: 30
 sapper_chase_radius_multiplier: 10
-sapper_wander_radius: 4
+sapper_wander_radius: 20
 sapper_damage: 10
 sapper_fire_rate: 1
 sapper_powerup_value: 0
@@ -40,7 +40,7 @@ sapper_size: 5
 
 sniper_move_speed: 2
 sniper_hp: 50
-sniper_detection_rad: 8
+sniper_detection_rad: 30
 sniper_chase_radius_multiplier: 10
 sniper_wander_radius: 15
 sniper_damage: 5
@@ -56,7 +56,7 @@ sniper_size: 10
 
 tank_move_speed: 3
 tank_hp: 200
-tank_detection_rad: 4
+tank_detection_rad: 30
 tank_chase_radius_multiplier: 10
 tank_wander_radius: 8
 tank_damage: 10

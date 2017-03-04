@@ -25,14 +25,16 @@ public class Player : MonoBehaviour
         Player.base_dark_damage = base_dark_damage;
     }
 
+    private SpeedBehaviour speed_indicator;
+
     //States
     public enum states { dark, light, none };
     private states current_state = states.light;
 
     //Exposed Variables
     public GameObject torch_object, permanent_torch_object, projectile_prefab;
-    public GameObject health_slider, health_color;
-    public ShieldBehaviour shield_indicator_script;
+    private GameObject health_slider, health_color;
+    private ShieldBehaviour shield_indicator_script;
     public LayerMask mask;
     private Rigidbody2D my_rigidBody;
     private SpriteRenderer sprite_renderer;
@@ -72,6 +74,11 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        shield_indicator_script = GameObject.Find("Shield Indicator").GetComponent<ShieldBehaviour>();
+        speed_indicator = GameObject.Find("Speed Indicator").GetComponent<SpeedBehaviour>();
+        health_slider = GameObject.Find("Health Slider");
+        health_color = GameObject.Find("Fill");
+
         my_rigidBody = gameObject.GetComponent<Rigidbody2D>();
         torch_object = transform.Find("Torch").gameObject;
         permanent_torch_object = transform.Find("Permanent Torch").gameObject;
@@ -350,7 +357,9 @@ public class Player : MonoBehaviour
         }
 
         health_slider.GetComponent<Slider>().value = current_health;
+        speed_indicator.UpdateSpeed(half_speed, move_speed - half_speed);
     }
+
 
     public void ReceivePickup(int value, states type)
     {
@@ -381,7 +390,6 @@ public class Player : MonoBehaviour
     public void TakeDamage(float amount)
     {
         float miss_chance = Random.Range(0f, 1f);
-        Debug.Log(armour + " " + miss_chance);
         if (miss_chance < armour) {
             audio_source.PlayOneShot(damage_sfx[Random.Range(0, 3)], 0.7f);
             damage_countdown = 1.0f;

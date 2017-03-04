@@ -357,13 +357,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24c9973169bc7834d86ecf38669cf05d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed_indicator: {fileID: 0}
   torch_object: {fileID: 1795275992338768}
   permanent_torch_object: {fileID: 1839229907805052}
   projectile_prefab: {fileID: 1850494287697962, guid: 7cc14c3b601274745983d04b86bbfad4,
     type: 2}
   health_slider: {fileID: 0}
   health_color: {fileID: 0}
-  shield_indicator: {fileID: 0}
+  shield_indicator_script: {fileID: 0}
   mask:
     serializedVersion: 2
     m_Bits: 3072
@@ -372,6 +373,9 @@ MonoBehaviour:
   dark_sfx_2: {fileID: 8300000, guid: 90d73b42ed2e7454399f19e0889a2d6f, type: 3}
   dark_sfx_3: {fileID: 8300000, guid: 029cc01e7e351c74ca114bd4ccacb51a, type: 3}
   light_sfx: {fileID: 8300000, guid: 2c53c77d6f4173b41bfc64f7f1178170, type: 3}
+  damage_sfx_1: {fileID: 0}
+  damage_sfx_2: {fileID: 0}
+  damage_sfx_3: {fileID: 0}
 --- !u!114 &114239148265554426
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -479,7 +483,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -839724325
+  randomSeed: -1236064923
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3074,7 +3078,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -89141346
+  randomSeed: -1862069912
   InitialModule:
     serializedVersion: 3
     enabled: 1
