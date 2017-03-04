@@ -34,6 +34,9 @@ public class Spinny : MonoBehaviour {
 		new_rot.z += rotation_speed * Time.deltaTime;
 		transform.rotation = Quaternion.Euler(new_rot);
 		time_alive += Time.deltaTime * 2;
+		if(time_alive > 10){
+			Destroy(gameObject);
+		}
 		float new_scale = (Mathf.Sin(time_alive) / 2) + 1.5f;
 		transform.localScale = new Vector3(new_scale, new_scale, 0);
 	}
