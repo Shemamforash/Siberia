@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ProjectileBehaviour : MonoBehaviour
 {
-    public float x_max_bound = 20, x_min_bound = -20, y_max_bound = 20, y_min_bound = -20;
     private float time_alive = 0f;
     private float duration, speed;
     private int damage;
@@ -30,31 +29,6 @@ public class ProjectileBehaviour : MonoBehaviour
         {
             DestroyProjectile();
         }
-    }
-
-    private void ClampToBounds()
-    {
-        Vector3 new_position = transform.position;
-        //Y bounds
-        if (transform.position.y < y_min_bound)
-        {
-            new_position.y = y_min_bound;
-        }
-        else if (transform.position.y > y_max_bound)
-        {
-            new_position.y = y_max_bound;
-        }
-
-        //X Bounds
-        if (transform.position.x < x_min_bound)
-        {
-            new_position.x = x_min_bound;
-        }
-        else if (transform.position.x > x_max_bound)
-        {
-            new_position.x = x_max_bound;
-        }
-        transform.position = new_position;
     }
 
     protected void DestroyProjectile()

@@ -8,15 +8,15 @@ player_armour: 1
 player_accuracy: 30
 player_range: 10
 dark_fire_rate: 0.1
-light_fire_rate: 2
-light_damage: 10
+light_fire_rate: 3
+light_damage: 20
 dark_damage: 25
 
 tutorial_grunt_detection_rad: 0
 tutorial_grunt_wander_radius: 0
 
 grunt_move_speed: 4
-grunt_hp: 25
+grunt_hp: 20
 grunt_detection_rad: 30
 grunt_chase_radius_multiplier: 2
 grunt_wander_radius: 8

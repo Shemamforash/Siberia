@@ -110,6 +110,7 @@ public abstract class BasicEnemyController : MonoBehaviour
         //Is the player within sight range of the enemy?
         if (distance_to_player.magnitude < active_detection_radius)
         {
+            seen_player = true;
             Vector2 dir_to_player = distance_to_player.normalized;
 
             //Can the enemy see the player, or has it seen it recently?

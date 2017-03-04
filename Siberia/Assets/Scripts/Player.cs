@@ -25,7 +25,6 @@ public class Player : MonoBehaviour
         Player.base_dark_damage = base_dark_damage;
     }
 
-    private SpeedBehaviour speed_indicator;
 
     //States
     public enum states { dark, light, none };
@@ -72,14 +71,49 @@ public class Player : MonoBehaviour
 
     private ParticleSystem blast_wave_particles, residual_particles;
 
+    private GameObject fade_out;
+    private bool fading = false;
+
+    public void FadeOut()
+    {
+        if (fading)
+        {
+            Color old_color = fade_out.GetComponent<Image>().color;
+            old_color.a += Time.deltaTime;
+            if (old_color.a >= 1)
+            {
+                if (SceneManager.GetActiveScene().name.Contains("Level"))
+                {
+                    Camera.main.GetComponent<MenuNavigator>().NextLevel();
+                }
+                else if (SceneManager.GetActiveScene().name.Contains("How"))
+                {
+                    Camera.main.GetComponent<MenuNavigator>().LoadMainMenu();
+                }
+            }
+            fade_out.GetComponent<Image>().color = old_color;
+        }
+    }
+
+    public void StartFading()
+    {
+        fading = true;
+    }
+
+    private GameObject cooldown_slider, cooldown_bar;
+
     void Start()
     {
         shield_indicator_script = GameObject.Find("Shield Indicator").GetComponent<ShieldBehaviour>();
-        speed_indicator = GameObject.Find("Speed Indicator").GetComponent<SpeedBehaviour>();
         health_slider = GameObject.Find("Health Slider");
         health_color = GameObject.Find("Fill");
+        damage_slider = GameObject.Find("Damage Slider");
+        damage_bar = GameObject.Find("Damage Amount");
+        fade_out = GameObject.Find("Fade Out");
+        cooldown_slider = GameObject.Find("Cooldown Slider");
+        cooldown_bar = GameObject.Find("Cooldown Amount");
 
-        my_rigidBody = gameObject.GetComponent<Rigidbody2D>();
+        my_rigidBody = GetComponent<Rigidbody2D>();
         torch_object = transform.Find("Torch").gameObject;
         permanent_torch_object = transform.Find("Permanent Torch").gameObject;
         sprite_renderer = GetComponent<SpriteRenderer>();
@@ -171,7 +205,14 @@ public class Player : MonoBehaviour
                 {
                     if (!enemies_hit_this_blast.Contains(collider_object))
                     {
-                        collider_object.GetComponent<BasicEnemyController>().take_damage((int)Player.base_light_damage, Player.states.light);
+                        if (collider_object.name.Contains("Sapper"))
+                        {
+                            collider_object.GetComponent<SapperBehaviour>().Detonate(gameObject);
+                        }
+                        else
+                        {
+                            collider_object.GetComponent<BasicEnemyController>().take_damage((int)damage, Player.states.light);
+                        }
                         enemies_hit_this_blast.Add(collider_object);
                     }
                     Vector3 dir_to_enemy = collider_object.transform.position - blast_epicentre;
@@ -203,13 +244,15 @@ public class Player : MonoBehaviour
         }
         if (fired_projectile_light)
         {
-            //Debug.Log(time_since_last_fire_dark + " " + Player.light_fire_rate);
             time_since_last_fire_light += Time.deltaTime;
+            float percent_cooldown = 1 - time_since_last_fire_light / Player.light_fire_rate;
+            cooldown_slider.GetComponent<Slider>().value = percent_cooldown;
             if (time_since_last_fire_light >= Player.light_fire_rate)
             {
                 time_since_last_fire_light = 0;
                 fired_projectile_light = false;
             }
+            
         }
     }
 
@@ -294,6 +337,8 @@ public class Player : MonoBehaviour
         UpdateWeaponCooldowns();
         UpdateColour();
         UpdateLightPushBack();
+        UpdateDamageBar();
+        FadeOut();
     }
 
     private void UpdateColour()
@@ -310,6 +355,22 @@ public class Player : MonoBehaviour
         else
         {
             sprite_renderer.color = lightColour - new Color(0.0f, damage_countdown, damage_countdown, 0.0f);
+        }
+    }
+
+    private float last_health, health_bar_falloff = 1f, health_bar_alpha = 0f;
+    private GameObject damage_bar, damage_slider;
+
+    public void UpdateDamageBar()
+    {
+        if (health_bar_alpha > 0)
+        {
+            health_bar_alpha -= health_bar_falloff * Time.deltaTime;
+            if (health_bar_alpha < 0)
+            {
+                health_bar_alpha = 0;
+            }
+            damage_bar.GetComponent<Image>().color = new Color(1, 0, 0, health_bar_alpha);
         }
     }
 
@@ -357,7 +418,6 @@ public class Player : MonoBehaviour
         }
 
         health_slider.GetComponent<Slider>().value = current_health;
-        speed_indicator.UpdateSpeed(half_speed, move_speed - half_speed);
     }
 
 
@@ -367,11 +427,11 @@ public class Player : MonoBehaviour
 
         if (type == current_state)
         {
-            current_health += value;
+            current_health += 2 * value;
         }
         else
         {
-            current_health += (int)(0.5f * value);
+            current_health += value;
         }
     }
 
@@ -390,16 +450,22 @@ public class Player : MonoBehaviour
     public void TakeDamage(float amount)
     {
         float miss_chance = Random.Range(0f, 1f);
-        if (miss_chance < armour) {
+        if (miss_chance < armour)
+        {
             audio_source.PlayOneShot(damage_sfx[Random.Range(0, 3)], 0.7f);
             damage_countdown = 1.0f;
+            last_health = current_health;
+            damage_slider.GetComponent<Slider>().value = last_health;
+            health_bar_alpha = 1f;
             current_health -= (int)(amount);
             damage_countdown = 1.0f;
             if (current_health < 0)
             {
                 current_health = 0;
             }
-        } else {
+        }
+        else
+        {
             shield_indicator_script.RefreshShield();
         }
     }
