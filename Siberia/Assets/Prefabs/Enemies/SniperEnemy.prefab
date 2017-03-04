@@ -36,10 +36,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4160751052776656}
   - component: {fileID: 212807833617832108}
-  - component: {fileID: 58970502336991202}
   - component: {fileID: 50947945844602062}
   - component: {fileID: 114116157508316230}
   - component: {fileID: 82469445774640434}
+  - component: {fileID: 60314627658292916}
   m_Layer: 11
   m_Name: SniperEnemy
   m_TagString: Enemy
@@ -94,8 +94,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &58970502336991202
-CircleCollider2D:
+--- !u!60 &60314627658292916
+PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -106,8 +106,17 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
+  m_Points:
+    m_Paths:
+    - - {x: -0.01, y: 0.39999998}
+      - {x: -0.07, y: 0.32999998}
+      - {x: -0.42999998, y: -0.32}
+      - {x: -0.42999998, y: -0.35999998}
+      - {x: 0.44, y: -0.35999998}
+      - {x: 0.44, y: -0.29999998}
+      - {x: 0.42, y: -0.26}
+      - {x: 0.14999999, y: 0.21}
+      - {x: 0.02, y: 0.39999998}
 --- !u!82 &82469445774640434
 AudioSource:
   m_ObjectHideFlags: 1

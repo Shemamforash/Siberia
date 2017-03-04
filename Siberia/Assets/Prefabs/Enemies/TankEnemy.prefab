@@ -20,11 +20,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4421921189362460}
   - component: {fileID: 212982940186611142}
-  - component: {fileID: 58310188939072306}
   - component: {fileID: 50811942364678160}
   - component: {fileID: 114886346079281246}
   - component: {fileID: 198561174440806238}
   - component: {fileID: 199339742263496910}
+  - component: {fileID: 60193623498935746}
   m_Layer: 11
   m_Name: TankEnemy
   m_TagString: Enemy
@@ -65,8 +65,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &58310188939072306
-CircleCollider2D:
+--- !u!60 &60193623498935746
+PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -77,8 +77,20 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
+  m_Points:
+    m_Paths:
+    - - {x: 0.38, y: 0.22999999}
+      - {x: 0.03, y: 0.42999998}
+      - {x: -0.04, y: 0.42999998}
+      - {x: -0.21, y: 0.34}
+      - {x: -0.39, y: 0.22}
+      - {x: -0.39, y: -0.22}
+      - {x: -0.38, y: -0.24}
+      - {x: -0.02, y: -0.45}
+      - {x: 0.02, y: -0.45}
+      - {x: 0.32999998, y: -0.26999998}
+      - {x: 0.39, y: -0.22999999}
+      - {x: 0.39, y: 0.21}
 --- !u!114 &114886346079281246
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -182,7 +182,8 @@ MonoBehaviour:
   environment_layer_mask:
     serializedVersion: 2
     m_Bits: 1024
-  player_object: {fileID: 0}
+  player_object: {fileID: 1882538889551224, guid: 03cfb824fa424644aa61314d57b917b7,
+    type: 2}
   light_pickup_prefab: {fileID: 1294057044569948, guid: e03b6a6c258aa6741a1aa32a3913d574,
     type: 2}
   dark_pickup_prefab: {fileID: 1624425020401072, guid: cf1bde400e5b60d4a8f951c1f9f5828e,
