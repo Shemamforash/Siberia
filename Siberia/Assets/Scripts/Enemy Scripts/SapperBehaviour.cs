@@ -9,6 +9,16 @@ public class SapperBehaviour : BasicEnemyController
     private bool exploding = false;
     private float exploding_time = 0f, explosion_duration = 2;
 
+    //Audio
+    [SerializeField]
+    private AudioClip explosion_sfx_1;
+    [SerializeField]
+    private AudioClip explosion_sfx_2;
+    [SerializeField]
+    private AudioClip explosion_sfx_3;
+    private AudioClip[] explosion_sfx;
+    private AudioSource audio_source;
+
     void Start()
     {
         base.Init();
@@ -28,6 +38,9 @@ public class SapperBehaviour : BasicEnemyController
         this.powerup_value = game_data["sapper_powerup_value"];
         this.damage_radius = (int)game_data["sapper_damage_radius"];
         this.size = game_data["sapper_size"];
+
+        audio_source = gameObject.GetComponent<AudioSource>();
+        explosion_sfx = new AudioClip[3] { explosion_sfx_1, explosion_sfx_2, explosion_sfx_3 };
     }
     void Update()
     {
@@ -68,6 +81,10 @@ public class SapperBehaviour : BasicEnemyController
         if (!exploding && (other.tag == "Player" || other.tag == "Bullet"))
         {
             exploding = true;
+
+            //Play random explosion sound
+            audio_source.PlayOneShot(explosion_sfx[Random.Range(0, 3)], 0.5f);
+
             Collider2D[] colliders_in_range = Physics2D.OverlapCircleAll(transform.position, damage_radius, mask);
             foreach (Collider2D g in colliders_in_range)
             {

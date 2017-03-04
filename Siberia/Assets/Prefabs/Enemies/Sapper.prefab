@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 198178415094021556}
   - component: {fileID: 199680739059353444}
   - component: {fileID: 60156047769845088}
+  - component: {fileID: 82742718829635238}
   m_Layer: 11
   m_Name: Sapper
   m_TagString: Enemy
@@ -87,6 +88,86 @@ PolygonCollider2D:
       - {x: 0.24, y: -0.01}
       - {x: 0.24, y: 0.04}
       - {x: 0.06, y: 0.22999999}
+--- !u!82 &82742718829635238
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1423884302061676}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!114 &114409126526216914
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -112,6 +193,9 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 2560
+  explosion_sfx_1: {fileID: 8300000, guid: e459fe9a045d8f04a9597485515df633, type: 3}
+  explosion_sfx_2: {fileID: 8300000, guid: 8c7ae80969c724b4da46af9805157a3f, type: 3}
+  explosion_sfx_3: {fileID: 8300000, guid: e363653122b8d7c4f9422ea6a52b828f, type: 3}
 --- !u!198 &198178415094021556
 ParticleSystem:
   m_ObjectHideFlags: 1
