@@ -63,7 +63,7 @@ GameObject:
   - component: {fileID: 198320131078348866}
   - component: {fileID: 199776076964525366}
   - component: {fileID: 58197810363034768}
-  - component: {fileID: 82120549065770840}
+  - component: {fileID: 82867306536921274}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -265,8 +265,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.75
---- !u!82 &82120549065770840
+  m_Radius: 2
+--- !u!82 &82867306536921274
 AudioSource:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -366,7 +366,11 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 3072
-  pickup_sfx: {fileID: 0}
+  pickup_sfx: {fileID: 8300000, guid: b0c9ed4b81e062b4093dc082f579569d, type: 3}
+  dark_sfx_1: {fileID: 8300000, guid: ceb14a6feb24bd441b690548652a70af, type: 3}
+  dark_sfx_2: {fileID: 8300000, guid: 90d73b42ed2e7454399f19e0889a2d6f, type: 3}
+  dark_sfx_3: {fileID: 8300000, guid: 029cc01e7e351c74ca114bd4ccacb51a, type: 3}
+  light_sfx: {fileID: 8300000, guid: 2c53c77d6f4173b41bfc64f7f1178170, type: 3}
 --- !u!114 &114239148265554426
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -381,7 +385,7 @@ MonoBehaviour:
   isStatic: 0
   coneAngle: 0
   faceAngle: 0
-  degreeStep: 0.58
+  degreeStep: 1.37
   invertMode: 0
   obstacleLayer:
     serializedVersion: 2
@@ -407,7 +411,7 @@ MonoBehaviour:
   isStatic: 0
   coneAngle: 0
   faceAngle: 90
-  degreeStep: 0.58
+  degreeStep: 1.27
   invertMode: 0
   obstacleLayer:
     serializedVersion: 2
@@ -474,7 +478,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1523246853
+  randomSeed: 1943060848
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3069,7 +3073,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1775172186
+  randomSeed: 1061571439
   InitialModule:
     serializedVersion: 3
     enabled: 1

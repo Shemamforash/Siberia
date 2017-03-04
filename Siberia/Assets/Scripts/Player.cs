@@ -103,7 +103,7 @@ public class Player : MonoBehaviour
         }
         else if (current_state == states.light)
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButtonDown(0))
             {
                 if (!fired_projectile_light)
                 {
@@ -122,6 +122,7 @@ public class Player : MonoBehaviour
                     fired_projectile_light = true;
                     emitting_blast = true;
 
+                    enemies_hit_this_blast = new List<GameObject>();
                     blast_wave_particles.Play();
                     residual_particles.Play();
                 }
@@ -131,6 +132,7 @@ public class Player : MonoBehaviour
     }
 
     private float current_blast_radius = 0, max_blast_radius = 0f, blast_timer, blast_max_time = 2f;
+    private List<GameObject> enemies_hit_this_blast = new List<GameObject>();
     private bool emitting_blast = false;
     private Vector3 blast_epicentre;
 
@@ -151,6 +153,10 @@ public class Player : MonoBehaviour
                 GameObject collider_object = collider.gameObject;
                 if (collider_object.tag == "Enemy")
                 {
+                    if(!enemies_hit_this_blast.Contains(collider_object)){
+                        collider_object.GetComponent<BasicEnemyController>().take_damage((int)Player.base_light_damage, Player.states.light);
+                        enemies_hit_this_blast.Add(collider_object);
+                    }
                     Vector3 dir_to_enemy = collider_object.transform.position - blast_epicentre;
                     dir_to_enemy.Normalize();
                     dir_to_enemy *= Time.deltaTime * max_blast_radius;
@@ -178,7 +184,7 @@ public class Player : MonoBehaviour
             }
 
         }
-        else if (fired_projectile_light)
+        if (fired_projectile_light)
         {
             //Debug.Log(time_since_last_fire_dark + " " + Player.light_fire_rate);
             time_since_last_fire_light += Time.deltaTime;
@@ -328,7 +334,7 @@ public class Player : MonoBehaviour
         {
             float quarter_damage = 0.25f * Player.base_light_damage;
             damage = quarter_damage + (3 * quarter_damage * light_mod);
-            range = Player.base_range * (dark_mod / 2f + 0.5f);
+            range = Player.base_range * dark_mod + 2;
             move_speed = half_speed + (light_mod * half_speed);
             armour = 1 + Player.base_armour * dark_mod;
         }
