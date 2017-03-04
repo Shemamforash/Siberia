@@ -9,13 +9,16 @@ public class RolloverActivator : MonoBehaviour
     //Object to activate
     [SerializeField]
     private GameObject obj;
+    //Only want to activate it once
+    bool activated = false;
 
     void OnTriggerEnter2D(Collider2D other)
     {
         //Make sure that it is the player that has passed over
-        if(other!= null && other.gameObject.tag == "Player")
+        if(!activated && other != null && other.gameObject.tag == "Player")
         {
             obj.SetActive(true);
+            activated = true;
         }
     }
 }
