@@ -369,7 +369,7 @@ MonoBehaviour:
   pickup_sfx: {fileID: 8300000, guid: b0c9ed4b81e062b4093dc082f579569d, type: 3}
   dark_sfx_1: {fileID: 8300000, guid: 9db1c78ac5a14654bb22ab8c79c50a1e, type: 3}
   dark_sfx_2: {fileID: 8300000, guid: 368e91b9a4d791f4f990c2c82c7940fd, type: 3}
-  dark_sfx_3: {fileID: 8300000, guid: 9db1c78ac5a14654bb22ab8c79c50a1e, type: 3}
+  dark_sfx_3: {fileID: 8300000, guid: b2c32cdd6db98da4c9533954a207a26b, type: 3}
   light_sfx: {fileID: 8300000, guid: 2c53c77d6f4173b41bfc64f7f1178170, type: 3}
   damage_sfx_1: {fileID: 8300000, guid: aa9bf5bc85fc36d4089fc57dc17f6816, type: 3}
   damage_sfx_2: {fileID: 8300000, guid: cfc614408783ea241805f90e8c4b90d0, type: 3}

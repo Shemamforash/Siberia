@@ -105,7 +105,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 72
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -193,9 +193,9 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 2560
-  explosion_sfx_1: {fileID: 8300000, guid: e459fe9a045d8f04a9597485515df633, type: 3}
-  explosion_sfx_2: {fileID: 8300000, guid: 8c7ae80969c724b4da46af9805157a3f, type: 3}
-  explosion_sfx_3: {fileID: 8300000, guid: e363653122b8d7c4f9422ea6a52b828f, type: 3}
+  explosion_sfx_1: {fileID: 8300000, guid: 2f165b1727b266944b95428d29a544a1, type: 3}
+  explosion_sfx_2: {fileID: 8300000, guid: 5a44799c56aaf194e892b89ee30d3d4f, type: 3}
+  explosion_sfx_3: {fileID: 8300000, guid: 065f3cf8a93b8f64aada073cbf225181, type: 3}
 --- !u!198 &198178415094021556
 ParticleSystem:
   m_ObjectHideFlags: 1
