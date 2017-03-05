@@ -34,6 +34,8 @@ public class SpawnerBehaviour : MonoBehaviour
         sniper_chance = tank_chance + spawn_chances.y;
         sapper_chance = sniper_chance + spawn_chances.x;
         grunt_chance = 1;
+
+        GameController.RegisterSpawner();
     }
 
     // Update is called once per frame
@@ -94,6 +96,7 @@ public class SpawnerBehaviour : MonoBehaviour
                     enemies_on_screen.Add(new_enemy);
                     if (spawner_size == 0)
                     {
+                        GameController.UnregisterSpawner();
                         Destroy(gameObject);
                     }
                 }

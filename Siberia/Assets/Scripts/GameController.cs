@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour
     private static List<GameObject> enemies = new List<GameObject>();
     private static Dictionary<string, float> game_data = new Dictionary<string, float>();
     private static bool read_data = false;
+    private static int active_spawners = 0;
 
     public TextAsset game_data_file;
 
@@ -45,11 +46,13 @@ public class GameController : MonoBehaviour
         }
     }
 
+    /*
     void Update(){
         if(enemies.Count == 0 && GameObject.FindGameObjectsWithTag("Spawner").Length == 0) {
             GameObject.Find("Player").GetComponent<Player>().StartFading();
         }
     }
+    */
 
     public static Dictionary<string, float> GetGameData()
     {
@@ -64,6 +67,32 @@ public class GameController : MonoBehaviour
     public static void UnregisterEnemy(GameObject enemy)
     {
         enemies.Remove(enemy);
+
+        //Check to see if all the enemies and spawners are dead.
+        //If so, end level.
+        if (enemies.Count == 0 && active_spawners == 0)
+        {
+            GameObject.Find("Player").GetComponent<Player>().StartFading();
+        }
+    }
+
+    //We don't do anything with spawners except count them
+    public static void RegisterSpawner()
+    {
+        active_spawners++;
+    }
+
+    
+    public static void UnregisterSpawner()
+    {
+        active_spawners--;
+
+        //Check to see if all the enemies and spawners are dead.
+        //If so, end level.
+        if (enemies.Count == 0 && active_spawners == 0)
+        {
+            GameObject.Find("Player").GetComponent<Player>().StartFading();
+        }
     }
 
     public static List<GameObject> Enemies()
