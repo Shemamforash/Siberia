@@ -197,6 +197,9 @@ public abstract class BasicEnemyController : MonoBehaviour
         }
     }
 
+    /*
+     * React to the player character in some way. Eg: Attack, approach, aim at etc.
+     */
     public abstract void Enemy_React(Rigidbody2D enemy_rigidbody, Vector2 player_position, Vector2 last_seen_player_location);
 
     /*

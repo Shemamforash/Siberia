@@ -83,13 +83,15 @@ public class SniperEnemyController : BasicEnemyController
     {
         Vector2 dir_to_player = player_position - enemy_rigidbody.position;
 
+        RaycastHit2D laser_hit;
+
         if (state == 0 || state == 1 || state == 2)
         {
             laser_sight.enabled = true;
             fire_direction = dir_to_player.normalized;
 
             //Aim in the player's direction
-            RaycastHit2D laser_hit = Physics2D.Raycast(enemy_rigidbody.position, dir_to_player, shot_range, sniper_mask);
+            laser_hit = Physics2D.Raycast(enemy_rigidbody.position, dir_to_player, shot_range, sniper_mask);
             if (laser_hit.collider != null && laser_hit.collider.tag == "Player")
             {
                 state = 1;
@@ -150,8 +152,16 @@ public class SniperEnemyController : BasicEnemyController
             }
 
             //Update the laser sight position
-            Vector3[] laser_sight_points = { enemy_rigidbody.position, laser_hit.point };
-            laser_sight.SetPositions(laser_sight_points);
+            if(laser_hit.collider != null)
+            {
+                Vector3[] laser_sight_points = { enemy_rigidbody.position, laser_hit.point };
+                laser_sight.SetPositions(laser_sight_points);
+            }
+            else
+            {
+                laser_sight.enabled = false;
+            }
+           
         }
         else if (state == 3)
         {
