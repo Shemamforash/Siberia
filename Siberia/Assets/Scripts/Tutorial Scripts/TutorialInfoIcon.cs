@@ -16,25 +16,31 @@ public class TutorialInfoIcon : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(tutorialBox1 != null)
-            tutorialBox1.SetActive(true);
+        if (collision.gameObject.tag == "Player")
+        {
+            if (tutorialBox1 != null)
+                tutorialBox1.SetActive(true);
 
-        if(tutorialBox2 != null)
-            tutorialBox2.SetActive(true);
+            if (tutorialBox2 != null)
+                tutorialBox2.SetActive(true);
 
-        if (tutorialBox3 != null)
-            tutorialBox3.SetActive(true);
+            if (tutorialBox3 != null)
+                tutorialBox3.SetActive(true);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if(tutorialBox1 != null)
-            tutorialBox1.SetActive(false);
+        if (collision.gameObject.tag == "Player")
+        {
+            if (tutorialBox1 != null)
+                tutorialBox1.SetActive(false);
 
-        if(tutorialBox2 != null)
-            tutorialBox2.SetActive(false);
+            if (tutorialBox2 != null)
+                tutorialBox2.SetActive(false);
 
-        if (tutorialBox3 != null)
-            tutorialBox3.SetActive(false);
+            if (tutorialBox3 != null)
+                tutorialBox3.SetActive(false);
+        }
     }
 }
