@@ -16,7 +16,6 @@ public class Spinny : MonoBehaviour
 
     //Has the pickup entered the pickup range of the player
     private bool in_pickup_range;
-    private float chase_speed = 10.0f;
 
     private Rigidbody2D player_body;
 
@@ -55,12 +54,15 @@ public class Spinny : MonoBehaviour
         Vector3 new_rot = transform.rotation.eulerAngles;
         new_rot.z += rotation_speed * Time.deltaTime;
         transform.rotation = Quaternion.Euler(new_rot);
-        time_alive += Time.deltaTime * 2;
-        if(time_alive > 10){
-			Destroy(gameObject);
-		}
         float new_scale = (Mathf.Sin(time_alive) / 2) + 1.5f;
         transform.localScale = new Vector3(new_scale, new_scale, 0);
+
+        //Decay over time
+        time_alive += Time.deltaTime * 2;
+        //Don't destroy pickup if linked to a door; required to open it
+        if (door == null && time_alive > 10){
+			Destroy(gameObject);
+		}
 
         //Move towards player if entered pickup range
         if (in_pickup_range)
