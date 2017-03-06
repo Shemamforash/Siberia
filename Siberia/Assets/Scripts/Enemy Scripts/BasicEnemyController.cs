@@ -80,14 +80,6 @@ public abstract class BasicEnemyController : MonoBehaviour
         MoveEnemy();
     }
 
-    void OnCollisionStay2D(Collision2D other)
-    {
-        if(other.gameObject.tag == "Terrain"){
-            Debug.Log("Dead");
-            take_damage(10000, Player.states.none);
-        }
-    }
-
     protected void UpdateColor()
     {
         float distance_to_player = Vector3.Distance(player_transform.position, transform.position);

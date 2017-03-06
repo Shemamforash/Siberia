@@ -17,7 +17,7 @@ public class DamageTextBehaviour : MonoBehaviour
     }
 	
     public void SetDamage(int damage){
-        transform.localScale *= Mathf.Sqrt(damage) / 4;
+        transform.localScale *= Mathf.Sqrt((float)damage) / 4f;
     }
 
     // Update is called once per frame
