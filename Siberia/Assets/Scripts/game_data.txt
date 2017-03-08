@@ -50,6 +50,7 @@ sniper_cooldown_time: 1
 sniper_powerup_value: 5
 sniper_hunt_time: 4
 sniper_min_range: 5
+sniper_max_range: 10
 sniper_wall_avoidance: 1
 sniper_range: 10
 sniper_size: 10

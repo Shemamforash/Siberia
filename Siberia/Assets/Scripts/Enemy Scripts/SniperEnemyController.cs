@@ -21,6 +21,7 @@ public class SniperEnemyController : BasicEnemyController
     private LayerMask sniper_mask = -1;
     [SerializeField]
     private float min_preferred_range = 5.0f;
+    private float max_preferred_range;
 
     private LineRenderer laser_sight;
 
@@ -66,6 +67,7 @@ public class SniperEnemyController : BasicEnemyController
         this.powerup_value = game_data["sniper_powerup_value"];
         this.hunt_time = game_data["sniper_hunt_time"];
         this.min_preferred_range = game_data["sniper_min_range"];
+        this.max_preferred_range = game_data["sniper_max_range"];
         this.wall_avoidance_strength = game_data["sniper_wall_avoidance"];
         this.shot_range = game_data["sniper_range"];
         this.size = game_data["sniper_size"];
@@ -177,45 +179,60 @@ public class SniperEnemyController : BasicEnemyController
 
         Face_direction(dir_to_player.normalized);
 
-        avoid_player(enemy_rigidbody, player_position);
+        track_player(enemy_rigidbody, player_position);
     }
 
-    private void avoid_player(Rigidbody2D enemy_rigidbody, Vector2 player_position)
+    /*
+     * Try to stay in the preferred range from the player
+     */
+    private void track_player(Rigidbody2D enemy_rigidbody, Vector2 player_position)
     {
-        //Move away from player
         Vector2 dir_awayfrom_player = enemy_rigidbody.position - player_position;
+        //Compare square edistances to avoid costly sqrt calls
         if (dir_awayfrom_player.sqrMagnitude < min_preferred_range * min_preferred_range)
         {
-            dir_awayfrom_player.Normalize();
-
-            Vector2 dir_to_move = dir_awayfrom_player * move_speed;
-
-            //Use raycasts to repel from walls
-            float raycastRange = 1.0f;
-            RaycastHit2D wallAvoidCastLeft = Physics2D.Raycast(enemy_rigidbody.position, Quaternion.AngleAxis(45, new Vector3(0.0f, 0.0f, 1.0f)) * dir_awayfrom_player, raycastRange, environment_layer_mask);
-            RaycastHit2D wallAvoidCastRight = Physics2D.Raycast(enemy_rigidbody.position, Quaternion.AngleAxis(-45, new Vector3(0.0f, 0.0f, 1.0f)) * dir_awayfrom_player, raycastRange, environment_layer_mask);
-            if (wallAvoidCastLeft.collider != null)
-            {
-                float x_distance = wallAvoidCastLeft.point.x - enemy_rigidbody.position.x;
-                float y_distance = wallAvoidCastLeft.point.y - enemy_rigidbody.position.y;
-                float sq_distance = x_distance * x_distance + y_distance * y_distance;
-                float repelForce = raycastRange * raycastRange - sq_distance;
-
-                Vector3 avoid_strength = Quaternion.AngleAxis(-90, new Vector3(0.0f, 0.0f, 1.0f)) * dir_awayfrom_player * repelForce * wall_avoidance_strength;
-                dir_to_move += new Vector2(avoid_strength.x, avoid_strength.y);
-            }
-            if (wallAvoidCastRight.collider != null)
-            {
-                float x_distance = wallAvoidCastRight.point.x - enemy_rigidbody.position.x;
-                float y_distance = wallAvoidCastRight.point.y - enemy_rigidbody.position.y;
-                float sq_distance = x_distance * x_distance + y_distance * y_distance;
-                float repelForce = raycastRange * raycastRange - sq_distance;
-
-                Vector3 avoid_strength = Quaternion.AngleAxis(90, new Vector3(0.0f, 0.0f, 1.0f)) * dir_awayfrom_player * repelForce * wall_avoidance_strength;
-                dir_to_move += new Vector2(avoid_strength.x, avoid_strength.y);
-            }
-
-            enemy_rigidbody.MovePosition(enemy_rigidbody.position + dir_to_move * Time.deltaTime);
+            change_distance(enemy_rigidbody, dir_awayfrom_player);
         }
+        else if(dir_awayfrom_player.sqrMagnitude > max_preferred_range * max_preferred_range)
+        {
+            change_distance(enemy_rigidbody, new Vector2(-dir_awayfrom_player.x, -dir_awayfrom_player.y));
+        }
+    }
+
+    /*
+     * Used to apprach and flee from player, avoiding walls
+     */
+    private void change_distance(Rigidbody2D enemy_rigidbody, Vector2 direction_to_move)
+    {
+        direction_to_move.Normalize();
+
+        Vector2 dir_to_move = direction_to_move * move_speed;
+
+        //Use raycasts to repel from walls
+        float raycastRange = 1.0f;
+        RaycastHit2D wallAvoidCastLeft = Physics2D.Raycast(enemy_rigidbody.position, Quaternion.AngleAxis(45, new Vector3(0.0f, 0.0f, 1.0f)) * direction_to_move, raycastRange, environment_layer_mask);
+        RaycastHit2D wallAvoidCastRight = Physics2D.Raycast(enemy_rigidbody.position, Quaternion.AngleAxis(-45, new Vector3(0.0f, 0.0f, 1.0f)) * direction_to_move, raycastRange, environment_layer_mask);
+        if (wallAvoidCastLeft.collider != null)
+        {
+            float x_distance = wallAvoidCastLeft.point.x - enemy_rigidbody.position.x;
+            float y_distance = wallAvoidCastLeft.point.y - enemy_rigidbody.position.y;
+            float sq_distance = x_distance * x_distance + y_distance * y_distance;
+            float repelForce = raycastRange * raycastRange - sq_distance;
+
+            Vector3 avoid_strength = Quaternion.AngleAxis(-90, new Vector3(0.0f, 0.0f, 1.0f)) * direction_to_move * repelForce * wall_avoidance_strength;
+            dir_to_move += new Vector2(avoid_strength.x, avoid_strength.y);
+        }
+        if (wallAvoidCastRight.collider != null)
+        {
+            float x_distance = wallAvoidCastRight.point.x - enemy_rigidbody.position.x;
+            float y_distance = wallAvoidCastRight.point.y - enemy_rigidbody.position.y;
+            float sq_distance = x_distance * x_distance + y_distance * y_distance;
+            float repelForce = raycastRange * raycastRange - sq_distance;
+
+            Vector3 avoid_strength = Quaternion.AngleAxis(90, new Vector3(0.0f, 0.0f, 1.0f)) * direction_to_move * repelForce * wall_avoidance_strength;
+            dir_to_move += new Vector2(avoid_strength.x, avoid_strength.y);
+        }
+
+        enemy_rigidbody.MovePosition(enemy_rigidbody.position + dir_to_move * Time.deltaTime);
     }
 }
