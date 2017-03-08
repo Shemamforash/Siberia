@@ -28,14 +28,14 @@ public class Player : MonoBehaviour
 
     //States
     public enum states { dark, light, none };
-    private states current_state = states.light;
+    protected states current_state = states.light;
 
     //Exposed Variables
     public GameObject torch_object, permanent_torch_object, projectile_prefab;
     private GameObject health_slider, health_color;
     private ShieldBehaviour shield_indicator_script;
     public LayerMask mask;
-    private Rigidbody2D my_rigidBody;
+    protected Rigidbody2D my_rigidBody;
     private SpriteRenderer sprite_renderer;
 
     //Colors!
@@ -66,8 +66,9 @@ public class Player : MonoBehaviour
 
     //Game logic
     private bool fired_projectile_light = false, fired_projectile_dark = false;
-    private float current_health, damage, accuracy, range, move_speed, armour;
+    private float damage, accuracy, range, armour;
     private float time_since_last_fire_dark = 0f, time_since_last_fire_light = 0f;
+    protected float current_health, move_speed;
 
     private ParticleSystem blast_wave_particles, residual_particles;
 
@@ -104,6 +105,11 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        init();
+    }
+
+    protected void init()
+    {
         shield_indicator_script = GameObject.Find("Shield Indicator").GetComponent<ShieldBehaviour>();
         health_slider = GameObject.Find("Health Slider");
         health_color = GameObject.Find("Fill");
@@ -130,7 +136,7 @@ public class Player : MonoBehaviour
         ToggleState();
     }
 
-    private void TakeMouse()
+    protected void TakeMouse()
     {
         if (current_state == states.dark)
         {
@@ -229,7 +235,7 @@ public class Player : MonoBehaviour
         return current_state;
     }
 
-    private void UpdateWeaponCooldowns()
+    protected void UpdateWeaponCooldowns()
     {
         if (fired_projectile_dark)
         {
@@ -256,7 +262,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void PointToMouse()
+    protected void PointToMouse()
     {
         Vector3 reference_dir = new Vector3(0, 1, 0);
         Vector3 mouse_screen = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -310,7 +316,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void ToggleState()
+    protected void ToggleState()
     {
         if (current_state == states.dark)
         {
@@ -329,7 +335,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DevInput();
+        //DevInput();
         TakeInput();
         PointToMouse();
         TakeMouse();
@@ -341,7 +347,7 @@ public class Player : MonoBehaviour
         FadeOut();
     }
 
-    private void UpdateColour()
+    protected void UpdateColour()
     {
         if (damage_countdown > 0.0f)
         {
@@ -374,7 +380,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void UpdateMeters()
+    protected void UpdateMeters()
     {
         if (current_health <= 0)
         {
