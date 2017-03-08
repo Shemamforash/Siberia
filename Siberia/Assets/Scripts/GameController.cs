@@ -44,6 +44,9 @@ public class GameController : MonoBehaviour
             );
             GameController.read_data = true;
         }
+
+        enemies.Clear();
+        active_spawners = 0;
     }
 
     /*

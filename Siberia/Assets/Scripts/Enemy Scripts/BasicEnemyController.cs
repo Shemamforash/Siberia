@@ -272,7 +272,7 @@ public abstract class BasicEnemyController : MonoBehaviour
     public void take_damage(int dmg, Player.states type)
     {
         health -= dmg;
-        Vector2 enemy_screen_location = Camera.main.WorldToScreenPoint(transform.position);
+        //Vector2 enemy_screen_location = Camera.main.WorldToScreenPoint(transform.position);
         GameObject new_damage = GameObject.Instantiate(damage_text, transform.position, Quaternion.Euler(Vector3.up));
         new_damage.transform.SetParent(Camera.main.transform);
         new_damage.GetComponent<DamageTextBehaviour>().SetDamage(dmg);
