@@ -22,7 +22,7 @@ grunt_chase_radius_multiplier: 2
 grunt_wander_radius: 8
 grunt_damage: 5
 grunt_fire_rate: 1
-grunt_powerup_value: 5
+grunt_powerup_value: 4
 grunt_wall_avoidance: 1
 grunt_size: 1
 
