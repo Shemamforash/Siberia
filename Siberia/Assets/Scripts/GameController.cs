@@ -49,14 +49,13 @@ public class GameController : MonoBehaviour
         active_spawners = 0;
     }
 
-    /*
     void Update(){
-        if(enemies.Count == 0 && GameObject.FindGameObjectsWithTag("Spawner").Length == 0) {
-            GameObject.Find("Player").GetComponent<Player>().StartFading();
+        if(Input.GetKey("escape"))
+        {
+            Application.Quit();
         }
     }
-    */
-
+    
     public static Dictionary<string, float> GetGameData()
     {
         return game_data;
